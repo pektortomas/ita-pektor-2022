@@ -1,25 +1,24 @@
 import './App.css'
+import Homework1 from './HW-1/Homework1'
 import React from 'react'
 import logo from './logo.svg'
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className='appContainer'>
+        <div className='appHeader'>
+          <img src={logo} className='App-logo' alt='logo' />
+          <h1>Homeworks</h1>
+          <h3>road to react-developer</h3>
+        </div>
+        <div className='homeworkHeader'>
+          <h2>Homework-1</h2>
+          <img src='https://www.bocconisustainablefinance.com/wp-content/uploads/2021/01/down-arrow.gif' />
+        </div>
+      </div>
+      <Homework1 />
+    </>
   )
 }
 
