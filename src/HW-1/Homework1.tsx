@@ -1,10 +1,44 @@
-import './Homework1.css'
+import { css, jsx } from '@emotion/react'
 import React from 'react'
+/** @jsxImportSource @emotion/react */
 
-function Homework1() {
+const homeworkOneStyles = css({
+  height: '100vh',
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  overflow: 'hidden',
+  backgroundColor: 'rgb(27, 27, 27)',
+  h1: {
+    fontSize: '2.5rem',
+  },
+  aside: {
+    maxWidth: '33%',
+    textAlign: 'center',
+    img: {
+      maxWidth: '50%',
+    },
+  },
+  main: {
+    maxWidth: '50%',
+    color: 'white',
+    padding: '5%',
+    background: 'rgba(255, 255, 255, 0.21)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    backdropFilter: 'blur(5px)',
+    WebkitBackdropFilter: 'blur(5px)',
+    border: '1px solid rgba(255, 255, 255, 0.35)',
+    borderRadius: '10px',
+  },
+  article: {
+    width: '100%',
+  },
+})
+
+export const Homework1 = () => {
   return (
     <>
-      <div className='container'>
+      <div css={homeworkOneStyles}>
         <aside>
           <img src='https://cdn.cdnlogo.com/logos/j/69/javascript.svg' alt='js_logo'></img>
         </aside>
@@ -45,5 +79,3 @@ function Homework1() {
     </>
   )
 }
-
-export default Homework1

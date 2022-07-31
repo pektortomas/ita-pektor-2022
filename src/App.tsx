@@ -1,5 +1,5 @@
 import './App.css'
-import Homework1 from './HW-1/Homework1'
+import { Homework1 } from './HW-1/Homework1'
 import React from 'react'
 import logo from './logo.svg'
 
