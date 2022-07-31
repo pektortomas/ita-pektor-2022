@@ -2,6 +2,7 @@ import { Global, css, jsx } from '@emotion/react'
 import { Home } from './Homeworks/Home'
 import { Homework1 } from './Homeworks/HW-1/Homework1'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { urls } from './Utils/urls'
 /** @jsxImportSource @emotion/react */
 
 const GlobalStyles = css({
@@ -18,8 +19,8 @@ function App() {
     <Router>
       <Global styles={GlobalStyles} />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/hw-1' element={<Homework1 />} />
+        <Route path={urls.home} element={<Home />} />
+        <Route path={urls.hwOne} element={<Homework1 />} />
       </Routes>
     </Router>
   )

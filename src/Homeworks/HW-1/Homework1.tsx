@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { theme } from '../../Utils/theme'
 import React from 'react'
 /** @jsxImportSource @emotion/react */
 
@@ -11,13 +12,13 @@ const homeworkOneStyles = css({
   overflow: 'hidden',
   backgroundColor: 'rgb(27, 27, 27)',
   span: {
-    color: 'white',
+    color: `${theme.colors.white}`,
     position: 'absolute',
     top: '3vh',
     left: '3vw',
   },
   h1: {
-    fontSize: '2.5rem',
+    fontSize: `${theme.fontSizes.h1}`,
   },
   aside: {
     maxWidth: '33%',
@@ -28,7 +29,7 @@ const homeworkOneStyles = css({
   },
   main: {
     maxWidth: '50%',
-    color: 'white',
+    color: `${theme.colors.white}`,
     padding: '5%',
     background: 'rgba(255, 255, 255, 0.21)',
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
