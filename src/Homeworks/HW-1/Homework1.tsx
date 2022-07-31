@@ -1,4 +1,5 @@
-import { css, jsx } from '@emotion/react'
+import { Link } from 'react-router-dom'
+import { css } from '@emotion/react'
 import React from 'react'
 /** @jsxImportSource @emotion/react */
 
@@ -9,6 +10,12 @@ const homeworkOneStyles = css({
   alignItems: 'center',
   overflow: 'hidden',
   backgroundColor: 'rgb(27, 27, 27)',
+  span: {
+    color: 'white',
+    position: 'absolute',
+    top: '3vh',
+    left: '3vw',
+  },
   h1: {
     fontSize: '2.5rem',
   },
@@ -39,6 +46,9 @@ export const Homework1 = () => {
   return (
     <>
       <div css={homeworkOneStyles}>
+        <Link to='/'>
+          <span>Back to Home Page</span>
+        </Link>
         <aside>
           <img src='https://cdn.cdnlogo.com/logos/j/69/javascript.svg' alt='js_logo'></img>
         </aside>
