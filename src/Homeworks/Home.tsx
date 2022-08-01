@@ -69,6 +69,12 @@ export const Home = () => {
               <p>Homework 1</p>
             </li>
           </Link>
+          <Link css={style.link} to={urls.hwTwo}>
+            <li css={style.homeworkListItem}>
+              <h4>Counter in class</h4>
+              <p>Homework 2</p>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
