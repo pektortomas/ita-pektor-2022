@@ -12,7 +12,6 @@ const homeworkOneStyle = css({
   alignItems: 'center',
   overflow: 'hidden',
   backgroundColor: theme.colors.darkGrey,
-  span: {},
   h1: {
     fontSize: theme.fontSizes.h1,
   },
