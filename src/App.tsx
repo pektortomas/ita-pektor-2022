@@ -1,6 +1,7 @@
 import { Global, css, jsx } from '@emotion/react'
 import { Home } from './Homeworks/Home'
 import { Homework1 } from './Homeworks/HW-1/Homework1'
+import { Homework2 } from './Homeworks/HW-2/Homework2'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { urls } from './Utils/urls'
 /** @jsxImportSource @emotion/react */
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path={urls.home} element={<Home />} />
         <Route path={urls.hwOne} element={<Homework1 />} />
+        <Route path={urls.hwTwo} element={<Homework2 />} />
       </Routes>
     </Router>
   )
