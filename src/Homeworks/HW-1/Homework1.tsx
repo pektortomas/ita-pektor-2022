@@ -1,16 +1,65 @@
-import './Homework1.css'
+import { Link } from 'react-router-dom'
+import { css } from '@emotion/react'
+import { theme } from '../../Utils/theme'
+import { urls } from '../../Utils/urls'
 import React from 'react'
+/** @jsxImportSource @emotion/react */
 
-function Homework1() {
+const style = {
+  homeworkOne: css({
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    overflow: 'hidden',
+    backgroundColor: theme.colors.darkGrey,
+  }),
+  homeworkHeading: css({
+    fontSize: theme.fontSizes.bigSize,
+  }),
+  homeworkMain: css({
+    maxWidth: '50%',
+    color: theme.colors.white,
+    padding: '5%',
+    background: theme.colors.lightGrey,
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    backdropFilter: 'blur(5px)',
+    WebkitBackdropFilter: 'blur(5px)',
+    borderRadius: '10px',
+  }),
+  homeworkAside: css({
+    maxWidth: '33%',
+    textAlign: 'center',
+  }),
+  homeworkImg: css({
+    maxWidth: '50%',
+  }),
+  homeworkBackToHomeLink: css({
+    color: theme.colors.white,
+    position: 'absolute',
+    top: '3vh',
+    left: '3vw',
+    textDecoration: 'none',
+  }),
+}
+
+export const Homework1 = () => {
   return (
     <>
-      <div className='container'>
-        <aside>
-          <img src='https://cdn.cdnlogo.com/logos/j/69/javascript.svg' alt='js_logo'></img>
+      <div css={style.homeworkOne}>
+        <Link css={style.homeworkBackToHomeLink} to={urls.home}>
+          <span>Back to Home Page</span>
+        </Link>
+        <aside css={style.homeworkAside}>
+          <img
+            css={style.homeworkImg}
+            src='https://cdn.cdnlogo.com/logos/j/69/javascript.svg'
+            alt='js_logo'
+          ></img>
         </aside>
-        <main>
+        <main css={style.homeworkMain}>
           <article>
-            <h1>A Brief History of JavaScript</h1>
+            <h1 css={style.homeworkHeading}>A Brief History of JavaScript</h1>
             <p>
               JavaScript is a programming language that represents one of the three core languages
               used to develop websites, alongside HTML and CSS. Whereas HTML and CSS give a website
@@ -45,5 +94,3 @@ function Homework1() {
     </>
   )
 }
-
-export default Homework1

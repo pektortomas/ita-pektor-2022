@@ -1,24 +1,28 @@
-import './App.css'
-import Homework1 from './HW-1/Homework1'
-import React from 'react'
-import logo from './logo.svg'
+import { Global, css, jsx } from '@emotion/react'
+import { Home } from './Homeworks/Home'
+import { Homework1 } from './Homeworks/HW-1/Homework1'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { urls } from './Utils/urls'
+/** @jsxImportSource @emotion/react */
+
+const GlobalStyles = css({
+  '& *': {
+    fontFamily: 'sans-serif',
+  },
+  body: {
+    margin: '0px',
+  },
+})
 
 function App() {
   return (
-    <>
-      <div className='appContainer'>
-        <div className='appHeader'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <h1>Homeworks</h1>
-          <h3>road to react-developer</h3>
-        </div>
-        <div className='homeworkHeader'>
-          <h2>Homework-1</h2>
-          <img src='https://www.bocconisustainablefinance.com/wp-content/uploads/2021/01/down-arrow.gif' />
-        </div>
-      </div>
-      <Homework1 />
-    </>
+    <Router>
+      <Global styles={GlobalStyles} />
+      <Routes>
+        <Route path={urls.home} element={<Home />} />
+        <Route path={urls.hwOne} element={<Homework1 />} />
+      </Routes>
+    </Router>
   )
 }
 
