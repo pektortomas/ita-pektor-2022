@@ -1,59 +1,60 @@
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { theme } from '../../Utils/theme'
+import { urls } from '../../Utils/urls'
 import React from 'react'
 /** @jsxImportSource @emotion/react */
 
-const homeworkOneStyles = css({
+const homeworkOneStyle = css({
   height: '100vh',
   display: 'flex',
   justifyContent: 'space-evenly',
   alignItems: 'center',
   overflow: 'hidden',
-  backgroundColor: 'rgb(27, 27, 27)',
-  span: {
-    color: `${theme.colors.white}`,
-    position: 'absolute',
-    top: '3vh',
-    left: '3vw',
-  },
+  backgroundColor: theme.colors.darkGrey,
+  span: {},
   h1: {
-    fontSize: `${theme.fontSizes.h1}`,
+    fontSize: theme.fontSizes.h1,
   },
-  aside: {
-    maxWidth: '33%',
-    textAlign: 'center',
-    img: {
-      maxWidth: '50%',
-    },
-  },
-  main: {
+})
+const homeworkMainStyle = css({
+  maxWidth: '50%',
+  color: theme.colors.white,
+  padding: '5%',
+  background: theme.colors.lightGrey,
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+  backdropFilter: 'blur(5px)',
+  WebkitBackdropFilter: 'blur(5px)',
+  borderRadius: '10px',
+})
+
+const homeworkAsideStyle = css({
+  maxWidth: '33%',
+  textAlign: 'center',
+  img: {
     maxWidth: '50%',
-    color: `${theme.colors.white}`,
-    padding: '5%',
-    background: 'rgba(255, 255, 255, 0.21)',
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    backdropFilter: 'blur(5px)',
-    WebkitBackdropFilter: 'blur(5px)',
-    border: '1px solid rgba(255, 255, 255, 0.35)',
-    borderRadius: '10px',
   },
-  article: {
-    width: '100%',
-  },
+})
+
+const homeworkBackToHomeLinkStyle = css({
+  color: theme.colors.white,
+  position: 'absolute',
+  top: '3vh',
+  left: '3vw',
+  textDecoration: 'none',
 })
 
 export const Homework1 = () => {
   return (
     <>
-      <div css={homeworkOneStyles}>
-        <Link to='/'>
+      <div css={homeworkOneStyle}>
+        <Link css={homeworkBackToHomeLinkStyle} to={urls.home}>
           <span>Back to Home Page</span>
         </Link>
-        <aside>
+        <aside css={homeworkAsideStyle}>
           <img src='https://cdn.cdnlogo.com/logos/j/69/javascript.svg' alt='js_logo'></img>
         </aside>
-        <main>
+        <main css={homeworkMainStyle}>
           <article>
             <h1>A Brief History of JavaScript</h1>
             <p>
