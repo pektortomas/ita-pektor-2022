@@ -15,7 +15,7 @@ const style = {
     backgroundColor: theme.colors.darkGrey,
   }),
   homeworkHeading: css({
-    fontSize: theme.fontSizes.h1,
+    fontSize: theme.fontSizes.bigSize,
   }),
   homeworkMain: css({
     maxWidth: '50%',

@@ -6,7 +6,7 @@ export const theme = {
     reactBlue: '#61DBFB',
   },
   fontSizes: {
-    h1: '2.5rem',
+    bigSize: '2.5rem',
   },
   transitions: {
     basicEaseIn: 'all ease-in .2s',
