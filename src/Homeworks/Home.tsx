@@ -38,6 +38,7 @@ const style = {
   }),
   homeworkListItem: css({
     lineHeight: '.5rem',
+    width: '10rem',
     border: '1px solid',
     borderColor: theme.colors.darkGrey,
     borderRadius: '10px',
@@ -73,6 +74,12 @@ export const Home = () => {
             <li css={style.homeworkListItem}>
               <h4>Counter in class</h4>
               <p>Homework 2</p>
+            </li>
+          </Link>
+          <Link css={style.link} to={urls.hwThree}>
+            <li css={style.homeworkListItem}>
+              <h4>Hacker Typer</h4>
+              <p>Homework 3</p>
             </li>
           </Link>
         </ul>
