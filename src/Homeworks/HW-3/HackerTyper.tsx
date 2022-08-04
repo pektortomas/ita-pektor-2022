@@ -7,8 +7,8 @@ import { useState } from 'react'
 const style = {
   homeworThree: css({
     background: theme.colors.reactBlue,
-    maxWidth: theme.widthSizes.fullWidth,
-    height: theme.heightSizes.fullHeight,
+    maxWidth: '100vw',
+    height: '100vh',
     overflow: 'hidden',
   }),
   hackerConsole: css({
@@ -27,18 +27,14 @@ const style = {
   }),
 }
 
-type pressCount = number
-type codeChars = string
-
 export const HackerTyper = () => {
-  const [pressCount, setPressCount] = useState<pressCount>(3)
-  const [codeChars, setCodeChars] = useState<codeChars>('Press key to start hacking...')
+  const [pressCount, setPressCount] = useState(3)
+  const [codeChars, setCodeChars] = useState('Press key to start hacking...')
 
   const showCode = () => {
     setPressCount(pressCount + 3)
-    pressCount > sourceCode.length
-      ? setPressCount(0)
-      : setCodeChars(sourceCode.slice(0, pressCount))
+    if (pressCount > sourceCode.length) setPressCount(0)
+    setCodeChars(sourceCode.slice(0, pressCount))
   }
 
   return (
@@ -48,7 +44,7 @@ export const HackerTyper = () => {
         autoFocus
         spellCheck={false}
         value={codeChars}
-        onChange={() => showCode()}
+        onChange={showCode}
       />
     </div>
   )
