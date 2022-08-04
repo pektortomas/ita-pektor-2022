@@ -27,15 +27,12 @@ const style = {
   }),
 }
 
-let pressCount = 3
-
 export const HackerTyper = () => {
-  const [codeChars, setCodeChars] = useState('Press key to start hacking...')
+  const [pressCount, setPressCount] = useState(0)
 
   const showCode = () => {
-    pressCount += 3
-    if (pressCount > sourceCode.length) pressCount = 3
-    setCodeChars(sourceCode.slice(0, pressCount))
+    setPressCount(pressCount + 3)
+    if (pressCount > sourceCode.length) setPressCount(0)
   }
 
   return (
@@ -44,7 +41,7 @@ export const HackerTyper = () => {
         css={style.hackerConsole}
         autoFocus
         spellCheck={false}
-        value={codeChars}
+        value={pressCount === 0 ? 'Start typing...' : sourceCode.slice(0, pressCount)}
         onChange={showCode}
       />
     </div>
