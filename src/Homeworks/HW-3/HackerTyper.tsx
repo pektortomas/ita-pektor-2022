@@ -27,13 +27,14 @@ const style = {
   }),
 }
 
+let pressCount = 3
+
 export const HackerTyper = () => {
-  const [pressCount, setPressCount] = useState(3)
   const [codeChars, setCodeChars] = useState('Press key to start hacking...')
 
   const showCode = () => {
-    setPressCount(pressCount + 3)
-    if (pressCount > sourceCode.length) setPressCount(0)
+    pressCount += 3
+    if (pressCount > sourceCode.length) pressCount = 3
     setCodeChars(sourceCode.slice(0, pressCount))
   }
 

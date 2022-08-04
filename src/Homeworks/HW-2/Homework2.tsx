@@ -12,7 +12,7 @@ type State = {
 
 const style = {
   homeworkTwo: css({
-    height: theme.heightSizes.fullHeight,
+    height: '100vh',
     overflow: 'hidden',
     backgroundColor: theme.colors.reactBlue,
     color: theme.colors.white,
