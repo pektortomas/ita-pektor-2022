@@ -13,10 +13,6 @@ type State = {
 const style = {
   homeworkTwo: css({
     height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: theme.colors.reactBlue,
     color: theme.colors.white,

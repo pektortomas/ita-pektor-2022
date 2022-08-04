@@ -1,6 +1,7 @@
 import { Global, css, jsx } from '@emotion/react'
+import { HackerTyper } from './Homeworks/HW-3/HackerTyper'
 import { Home } from './Homeworks/Home'
-import { Homework1 } from './Homeworks/HW-1/Homework1'
+import { Homework1 } from './Homeworks/HW-1/JSHistory'
 import { Homework2 } from './Homeworks/HW-2/Homework2'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { urls } from './Utils/urls'
@@ -12,6 +13,8 @@ const GlobalStyles = css({
   },
   body: {
     margin: '0px',
+    padding: '0px',
+    boxSizing: 'border-box',
   },
 })
 
@@ -23,6 +26,7 @@ function App() {
         <Route path={urls.home} element={<Home />} />
         <Route path={urls.hwOne} element={<Homework1 />} />
         <Route path={urls.hwTwo} element={<Homework2 />} />
+        <Route path={urls.hwThree} element={<HackerTyper />} />
       </Routes>
     </Router>
   )
