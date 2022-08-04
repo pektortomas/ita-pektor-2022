@@ -30,11 +30,6 @@ const style = {
 export const HackerTyper = () => {
   const [pressCount, setPressCount] = useState(0)
 
-  const showCode = () => {
-    setPressCount(pressCount + 3)
-    if (pressCount > sourceCode.length) setPressCount(0)
-  }
-
   return (
     <div css={style.homeworThree}>
       <textarea
@@ -42,7 +37,7 @@ export const HackerTyper = () => {
         autoFocus
         spellCheck={false}
         value={pressCount === 0 ? 'Start typing...' : sourceCode.slice(0, pressCount)}
-        onChange={showCode}
+        onChange={() => setPressCount(pressCount > sourceCode.length ? 0 : pressCount + 3)}
       />
     </div>
   )
