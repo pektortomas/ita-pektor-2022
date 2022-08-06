@@ -1,16 +1,22 @@
 import { css } from '@emotion/react'
+import { generateID, useLocalStorage } from '../util/functions'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
-// Types
 type Tasks = {
   id: number
   name: string
   complete: boolean
 }
+type TaskProps = {
+  id: number
+  name: string
+  complete: boolean
+  completeTask: (id: number) => void
+  removeTask: (id: number) => void
+}
 
-// Styles
 const style = {
   todoPage: css({
     background: theme.colors.reactBlue,
@@ -26,7 +32,8 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    border: '1px solid white',
+    border: '1px solid',
+    borderColor: theme.colors.white,
   }),
   todoInput: css({
     width: '40rem',
@@ -84,13 +91,21 @@ const style = {
     color: theme.colors.white,
   }),
   taskFilterButton: css({
-    width: '20%',
-    border: '1px solid white',
+    width: '30%',
+    border: '1px solid',
+    borderColor: theme.colors.white,
     padding: '0 1rem',
     borderTopLeftRadius: '15px',
     borderTopRightRadius: '15px',
     backgroundColor: theme.colors.white,
-    cursor: 'pointer',
+  }),
+  filterButtonsContainer: css({
+    width: '60%',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+  }),
+  disabled: css({
+    opacity: '0',
   }),
   taskRemoveButton: css({
     width: '20%',
@@ -104,39 +119,54 @@ const style = {
   }),
 }
 
-// Local Storage handeling
-const taskLSKey = 'tasks'
-const getTasksFromLS = (): Tasks[] => {
-  const lsTasks = localStorage.getItem(taskLSKey)
-  if (lsTasks) {
-    return JSON.parse(lsTasks)
-  }
-  return []
+const TaskComponent = (props: TaskProps) => {
+  return (
+    <div
+      css={
+        props.complete === true ? [style.taskContainer, style.taskComplete] : style.taskContainer
+      }
+    >
+      <button
+        css={[style.taskButton, style.complete]}
+        onClick={() => {
+          props.completeTask(props.id)
+        }}
+      >
+        O
+      </button>
+      <div css={style.taskTextContainer}>
+        <p>{props.name}</p>
+      </div>
+      <button
+        css={[style.taskButton, style.remove]}
+        onClick={() => {
+          props.removeTask(props.id)
+        }}
+      >
+        X
+      </button>
+    </div>
+  )
 }
 
-// Component
 export const TodoApp = () => {
-  const [tasks, _setTasks] = useState(getTasksFromLS())
+  const [tasks, _setTasks] = useLocalStorage<Tasks[]>('tasks', [])
+  const [filteredTasks, _setfilteredTasks] = useLocalStorage('filterdTasks', [])
   const [taskName, setTaskName] = useState('')
-
-  const setTasks = (task: Tasks[]) => {
-    localStorage.setItem(taskLSKey, JSON.stringify(task))
-    _setTasks(task)
-  }
 
   const completeTask = (id: number) => {
     const newTasks = [...tasks]
-    const taskToChange = newTasks.filter((task: any) => task.id === id)
+    const taskToChange = newTasks.filter((task: Tasks) => task.id === id)
     taskToChange[0].complete = !taskToChange[0].complete
-    setTasks(newTasks)
+    _setTasks(newTasks)
   }
 
   const removeTask = (id: number) => {
     const newTasks = [...tasks].filter(task => task.id !== id)
-    setTasks(newTasks)
+    _setTasks(newTasks)
   }
 
-  const lsTasks = JSON.parse(localStorage.getItem(taskLSKey)!)
+  const getFilterStatus = tasks.map((task: Tasks) => (task.complete ? true : false))
 
   return (
     <div css={style.todoPage}>
@@ -144,9 +174,9 @@ export const TodoApp = () => {
         <form
           onSubmit={e => {
             e.preventDefault()
-            setTasks([
+            _setTasks([
               {
-                id: Math.random() * 5,
+                id: generateID(),
                 name: taskName,
                 complete: false,
               },
@@ -165,57 +195,59 @@ export const TodoApp = () => {
           />
         </form>
         <div>
-          {tasks.map(task => (
-            <div
-              css={
-                task.complete === true
-                  ? [style.taskContainer, style.taskComplete]
-                  : style.taskContainer
-              }
-              key={task.id}
-            >
-              <button
-                css={[style.taskButton, style.complete]}
-                onClick={() => {
-                  completeTask(task.id)
-                }}
-              >
-                O
-              </button>
-              <div css={style.taskTextContainer}>
-                <p>{task.name}</p>
-              </div>
-              <button
-                css={[style.taskButton, style.remove]}
-                onClick={() => {
-                  removeTask(task.id)
-                }}
-              >
-                X
-              </button>
-            </div>
-          ))}
+          {filteredTasks.length > 0
+            ? filteredTasks.map((task: Tasks) => (
+                <TaskComponent
+                  key={task.id}
+                  id={task.id}
+                  complete={task.complete}
+                  name={task.name}
+                  completeTask={completeTask}
+                  removeTask={removeTask}
+                />
+              ))
+            : tasks.map((task: Tasks) => (
+                <TaskComponent
+                  key={task.id}
+                  id={task.id}
+                  complete={task.complete}
+                  name={task.name}
+                  completeTask={completeTask}
+                  removeTask={removeTask}
+                />
+              ))}
         </div>
         <nav css={style.taskFilterNav}>
-          <p>{`${tasks.filter(task => !task.complete).length} items left`}</p>
-          <button css={style.taskFilterButton} onClick={() => _setTasks(lsTasks ?? [])}>
-            All
-          </button>
-          <button
-            css={style.taskFilterButton}
-            onClick={() => _setTasks(lsTasks.filter((task: Tasks) => !task.complete))}
+          <p>{`${tasks.filter((task: Tasks) => !task.complete).length} items left`}</p>
+          <div
+            css={
+              getFilterStatus && tasks.length > 1
+                ? style.filterButtonsContainer
+                : [style.filterButtonsContainer, style.disabled]
+            }
           >
-            Active
-          </button>
-          <button
-            css={style.taskFilterButton}
-            onClick={() => _setTasks(lsTasks.filter((task: Tasks) => task.complete))}
-          >
-            Complete
-          </button>
+            <button css={style.taskFilterButton} onClick={() => _setfilteredTasks(tasks)}>
+              All
+            </button>
+            <button
+              css={style.taskFilterButton}
+              onClick={() => _setfilteredTasks(tasks.filter((task: Tasks) => !task.complete))}
+            >
+              Active
+            </button>
+            <button
+              css={style.taskFilterButton}
+              onClick={() => _setfilteredTasks(tasks.filter((task: Tasks) => task.complete))}
+            >
+              Complete
+            </button>
+          </div>
           <button
             css={style.taskRemoveButton}
-            onClick={() => setTasks(tasks.filter(task => !task.complete))}
+            onClick={() => [
+              _setTasks(tasks.filter((task: Tasks) => !task.complete)),
+              _setfilteredTasks([]),
+            ]}
           >
             Remove completed
           </button>
