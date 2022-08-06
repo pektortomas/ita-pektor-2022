@@ -1,8 +1,8 @@
 import { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { theme } from '../../Utils/theme'
-import { urls } from '../../Utils/urls'
+import { theme } from '../util/theme'
+import { urls } from '../util/urls'
 /** @jsxImportSource @emotion/react */
 
 type Props = {}
@@ -30,7 +30,7 @@ const style = {
   }),
 }
 
-export class Homework2 extends Component<Props, State> {
+export class Counter extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {

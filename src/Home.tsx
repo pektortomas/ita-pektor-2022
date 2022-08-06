@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { theme } from '../Utils/theme'
-import { urls } from '../Utils/urls'
-import logo from '../logo.svg'
+import { theme } from './util/theme'
+import { urls } from './util/urls'
+import logo from './logo.svg'
 /** @jsxImportSource @emotion/react */
 
 const style = {
@@ -64,25 +64,25 @@ export const Home = () => {
       <div css={style.homeworkContainer}>
         <h3>Click to view homework</h3>
         <ul css={style.homeworkList}>
-          <Link css={style.link} to={urls.hwOne}>
+          <Link css={style.link} to={urls.jsHistory}>
             <li css={style.homeworkListItem}>
               <h4>Javascript History</h4>
               <p>Homework 1</p>
             </li>
           </Link>
-          <Link css={style.link} to={urls.hwTwo}>
+          <Link css={style.link} to={urls.counterApp}>
             <li css={style.homeworkListItem}>
               <h4>Counter in class</h4>
               <p>Homework 2</p>
             </li>
           </Link>
-          <Link css={style.link} to={urls.hwThree}>
+          <Link css={style.link} to={urls.hackerTyper}>
             <li css={style.homeworkListItem}>
               <h4>Hacker Typer</h4>
               <p>Homework 3</p>
             </li>
           </Link>
-          <Link css={style.link} to={urls.hwThreeB}>
+          <Link css={style.link} to={urls.todoApp}>
             <li css={style.homeworkListItem}>
               <h4>Todo App</h4>
               <p>Homework 3-B</p>

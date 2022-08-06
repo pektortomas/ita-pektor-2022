@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { theme } from '../../Utils/theme'
-import { urls } from '../../Utils/urls'
+import { theme } from '../util/theme'
+import { urls } from '../util/urls'
 import React from 'react'
 /** @jsxImportSource @emotion/react */
 
@@ -43,7 +43,7 @@ const style = {
   }),
 }
 
-export const Homework1 = () => {
+export const JSHistory = () => {
   return (
     <>
       <div css={style.homeworkOne}>

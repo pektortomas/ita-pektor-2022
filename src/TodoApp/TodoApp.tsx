@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { theme } from '../../../Utils/theme'
+import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
