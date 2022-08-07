@@ -1,10 +1,10 @@
 import { css } from '@emotion/react'
-import { generateID, useLocalStorage } from '../util/functions'
+import { generateID, useLocalStorage } from '../util/helperFunctions'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
-type Tasks = {
+type Task = {
   id: number
   name: string
   complete: boolean
@@ -121,11 +121,7 @@ const style = {
 
 const TaskComponent = (props: TaskProps) => {
   return (
-    <div
-      css={
-        props.complete === true ? [style.taskContainer, style.taskComplete] : style.taskContainer
-      }
-    >
+    <div css={[style.taskContainer, props.complete === true ? style.taskComplete : undefined]}>
       <button
         css={[style.taskButton, style.complete]}
         onClick={() => {
@@ -150,23 +146,30 @@ const TaskComponent = (props: TaskProps) => {
 }
 
 export const TodoApp = () => {
-  const [tasks, _setTasks] = useLocalStorage<Tasks[]>('tasks', [])
-  const [filteredTasks, _setfilteredTasks] = useLocalStorage('filterdTasks', [])
+  const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', [] as Task[])
+  const [filter, setFilter] = useLocalStorage<'All' | 'Complete' | 'Active'>('filterdTasks', 'All')
   const [taskName, setTaskName] = useState('')
 
   const completeTask = (id: number) => {
-    const newTasks = [...tasks]
-    const taskToChange = newTasks.filter((task: Tasks) => task.id === id)
+    const newTasks = tasks.map(tasks => tasks)
+    const taskToChange = newTasks.filter(task => task.id === id)
     taskToChange[0].complete = !taskToChange[0].complete
-    _setTasks(newTasks)
+    setTasks(newTasks)
   }
 
   const removeTask = (id: number) => {
-    const newTasks = [...tasks].filter(task => task.id !== id)
-    _setTasks(newTasks)
+    setTasks(tasks.filter(task => task.id !== id))
   }
 
-  const getFilterStatus = tasks.map((task: Tasks) => (task.complete ? true : false))
+  const getFilteredTasks = () => {
+    if (filter === 'Active') {
+      return tasks.filter(task => !task.complete)
+    } else if (filter === 'Complete') {
+      return tasks.filter(task => task.complete)
+    } else {
+      return tasks
+    }
+  }
 
   return (
     <div css={style.todoPage}>
@@ -174,7 +177,7 @@ export const TodoApp = () => {
         <form
           onSubmit={e => {
             e.preventDefault()
-            _setTasks([
+            setTasks([
               {
                 id: generateID(),
                 name: taskName,
@@ -195,59 +198,33 @@ export const TodoApp = () => {
           />
         </form>
         <div>
-          {filteredTasks.length > 0
-            ? filteredTasks.map((task: Tasks) => (
-                <TaskComponent
-                  key={task.id}
-                  id={task.id}
-                  complete={task.complete}
-                  name={task.name}
-                  completeTask={completeTask}
-                  removeTask={removeTask}
-                />
-              ))
-            : tasks.map((task: Tasks) => (
-                <TaskComponent
-                  key={task.id}
-                  id={task.id}
-                  complete={task.complete}
-                  name={task.name}
-                  completeTask={completeTask}
-                  removeTask={removeTask}
-                />
-              ))}
+          {getFilteredTasks().map(task => (
+            <TaskComponent
+              key={task.id}
+              id={task.id}
+              complete={task.complete}
+              name={task.name}
+              completeTask={completeTask}
+              removeTask={removeTask}
+            />
+          ))}
         </div>
         <nav css={style.taskFilterNav}>
-          <p>{`${tasks.filter((task: Tasks) => !task.complete).length} items left`}</p>
-          <div
-            css={
-              getFilterStatus && tasks.length > 1
-                ? style.filterButtonsContainer
-                : [style.filterButtonsContainer, style.disabled]
-            }
-          >
-            <button css={style.taskFilterButton} onClick={() => _setfilteredTasks(tasks)}>
+          <p>{`${tasks.filter(task => !task.complete).length} items left`}</p>
+          <div css={[style.filterButtonsContainer]}>
+            <button css={style.taskFilterButton} onClick={() => setFilter('All')}>
               All
             </button>
-            <button
-              css={style.taskFilterButton}
-              onClick={() => _setfilteredTasks(tasks.filter((task: Tasks) => !task.complete))}
-            >
+            <button css={style.taskFilterButton} onClick={() => setFilter('Active')}>
               Active
             </button>
-            <button
-              css={style.taskFilterButton}
-              onClick={() => _setfilteredTasks(tasks.filter((task: Tasks) => task.complete))}
-            >
+            <button css={style.taskFilterButton} onClick={() => setFilter('Complete')}>
               Complete
             </button>
           </div>
           <button
             css={style.taskRemoveButton}
-            onClick={() => [
-              _setTasks(tasks.filter((task: Tasks) => !task.complete)),
-              _setfilteredTasks([]),
-            ]}
+            onClick={() => [setTasks(tasks.filter(task => !task.complete))]}
           >
             Remove completed
           </button>

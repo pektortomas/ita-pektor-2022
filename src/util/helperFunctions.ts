@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 export const generateID = () => {
-  return Math.random() * 5
+  return Math.floor(Math.random() * 1_000)
 }
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
-  const [storedValue, setStoredValue] = useState(() => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
@@ -24,5 +24,5 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
       console.error
     }
   }
-  return [storedValue, setValue]
+  return [storedValue, setValue] as const
 }
