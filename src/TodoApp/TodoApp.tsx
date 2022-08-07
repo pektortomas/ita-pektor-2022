@@ -9,7 +9,8 @@ type Task = {
   name: string
   complete: boolean
 }
-type TaskProps = Task & {
+type TaskProps = {
+  task: Task
   completeTask: (id: number) => void
   removeTask: (id: number) => void
 }
@@ -118,14 +119,20 @@ const style = {
 
 const TaskComponent = (props: TaskProps) => {
   return (
-    <div css={[style.taskContainer, props.complete === true ? style.taskComplete : undefined]}>
-      <button css={[style.taskButton, style.complete]} onClick={() => props.completeTask(props.id)}>
+    <div css={[style.taskContainer, props.task.complete === true ? style.taskComplete : undefined]}>
+      <button
+        css={[style.taskButton, style.complete]}
+        onClick={() => props.completeTask(props.task.id)}
+      >
         O
       </button>
       <div css={style.taskTextContainer}>
-        <p>{props.name}</p>
+        <p>{props.task.name}</p>
       </div>
-      <button css={[style.taskButton, style.remove]} onClick={() => props.removeTask(props.id)}>
+      <button
+        css={[style.taskButton, style.remove]}
+        onClick={() => props.removeTask(props.task.id)}
+      >
         X
       </button>
     </div>
@@ -189,9 +196,7 @@ export const TodoApp = () => {
           {getFilteredTasks().map(task => (
             <TaskComponent
               key={task.id}
-              id={task.id}
-              complete={task.complete}
-              name={task.name}
+              task={task}
               completeTask={completeTask}
               removeTask={removeTask}
             />
@@ -212,7 +217,7 @@ export const TodoApp = () => {
           </div>
           <button
             css={style.taskRemoveButton}
-            onClick={() => [setTasks(tasks.filter(task => !task.complete))]}
+            onClick={() => setTasks(tasks.filter(task => !task.complete))}
           >
             Remove completed
           </button>

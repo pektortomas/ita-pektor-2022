@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 export const generateID = () => {
-  return Math.floor(Math.random() * 1_000)
+  return Math.floor(Math.random() * 100_000_000)
 }
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
