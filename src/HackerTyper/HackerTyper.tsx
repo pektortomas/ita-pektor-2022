@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 const style = {
   homeworThree: css({
-    background: theme.colors.reactBlue,
+    background: theme.colors.lightReactBlue,
     maxWidth: '100vw',
     height: '100vh',
     overflow: 'hidden',
@@ -15,7 +15,7 @@ const style = {
     border: 'none',
     overflow: 'hidden',
     background: 'inherit',
-    color: theme.colors.white,
+    color: theme.colors.darkGrey,
     width: '90%',
     height: '90%',
     padding: '2rem',

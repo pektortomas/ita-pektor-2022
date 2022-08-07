@@ -18,9 +18,13 @@ const style = {
     justifyContent: 'space-evenly',
     alignItems: 'center',
     textAlign: 'center',
+    background: theme.colors.lightReactBlue,
   }),
   header: css({
     lineHeight: '.5rem',
+  }),
+  headingTitle: css({
+    fontSize: theme.fontSizes.bigSize,
   }),
   homeworkContainer: css({
     width: '100%',
@@ -39,14 +43,14 @@ const style = {
   homeworkListItem: css({
     lineHeight: '.5rem',
     width: '10rem',
-    border: '1px solid',
-    borderColor: theme.colors.darkGrey,
+    border: 'none',
+    backgroundColor: theme.colors.whiteTransparent,
     borderRadius: '10px',
     padding: '5px 25px',
     margin: '0 10px',
     transition: theme.transitions.basicEaseIn,
+    boxShadow: theme.shadows.basicShadow,
     '&:hover': {
-      color: theme.colors.white,
       backgroundColor: theme.colors.reactBlue,
       borderColor: theme.colors.white,
     },
@@ -58,7 +62,7 @@ export const Home = () => {
     <div css={style.home}>
       <div css={style.header}>
         <img src={logo} alt='react_logo' />
-        <h1>Homeworks</h1>
+        <h1 css={style.headingTitle}>Tomáš Pektor</h1>
         <h3>road to react-developer</h3>
       </div>
       <div css={style.homeworkContainer}>
@@ -67,25 +71,25 @@ export const Home = () => {
           <Link css={style.link} to={urls.jsHistory}>
             <li css={style.homeworkListItem}>
               <h4>Javascript History</h4>
-              <p>Homework 1</p>
+              <p>Static web</p>
             </li>
           </Link>
           <Link css={style.link} to={urls.counterApp}>
             <li css={style.homeworkListItem}>
-              <h4>Counter in class</h4>
-              <p>Homework 2</p>
+              <h4>Counter App</h4>
+              <p>App in class</p>
             </li>
           </Link>
           <Link css={style.link} to={urls.hackerTyper}>
             <li css={style.homeworkListItem}>
               <h4>Hacker Typer</h4>
-              <p>Homework 3</p>
+              <p>Typing game app</p>
             </li>
           </Link>
           <Link css={style.link} to={urls.todoApp}>
             <li css={style.homeworkListItem}>
               <h4>Todo App</h4>
-              <p>Homework 3-B</p>
+              <p>My Todo app</p>
             </li>
           </Link>
         </ul>

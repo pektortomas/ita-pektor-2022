@@ -5,12 +5,14 @@ import { Home } from './Home'
 import { JSHistory } from './JSHistory/JSHistory'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { TodoApp } from './TodoApp/TodoApp'
+import { theme } from './util/theme'
 import { urls } from './util/urls'
 /** @jsxImportSource @emotion/react */
 
 const GlobalStyles = css({
   '& *': {
     fontFamily: 'sans-serif',
+    color: theme.colors.darkGrey,
   },
   body: {
     margin: '0px',

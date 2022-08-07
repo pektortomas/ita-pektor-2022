@@ -12,17 +12,16 @@ const style = {
     justifyContent: 'space-evenly',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: theme.colors.darkGrey,
+    backgroundColor: theme.colors.lightReactBlue,
   }),
   homeworkHeading: css({
     fontSize: theme.fontSizes.bigSize,
   }),
   homeworkMain: css({
     maxWidth: '50%',
-    color: theme.colors.white,
     padding: '5%',
-    background: theme.colors.lightGrey,
-    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    background: theme.colors.whiteTransparent,
+    boxShadow: theme.shadows.basicShadow,
     backdropFilter: 'blur(5px)',
     WebkitBackdropFilter: 'blur(5px)',
     borderRadius: '10px',
@@ -35,7 +34,6 @@ const style = {
     maxWidth: '50%',
   }),
   homeworkBackToHomeLink: css({
-    color: theme.colors.white,
     position: 'absolute',
     top: '3vh',
     left: '3vw',
