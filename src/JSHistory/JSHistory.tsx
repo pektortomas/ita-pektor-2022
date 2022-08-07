@@ -7,13 +7,25 @@ import React from 'react'
 
 const style = {
   homeworkOne: css({
-    height: '100vh',
+    minHeight: '100vh',
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    overflow: 'hidden',
     backgroundColor: theme.colors.lightReactBlue,
   }),
+
+  homeworkContainer: css({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    '@media (max-width: 1280px)': {
+      flexDirection: 'column',
+      margin: '10vh 0',
+      textAlign: 'center',
+    },
+  }),
+
   homeworkHeading: css({
     fontSize: theme.fontSizes.bigSize,
   }),
@@ -27,11 +39,15 @@ const style = {
     borderRadius: '10px',
   }),
   homeworkAside: css({
-    maxWidth: '33%',
+    width: '30rem',
     textAlign: 'center',
   }),
   homeworkImg: css({
-    maxWidth: '50%',
+    width: '15rem',
+    '@media (max-width: 1280px)': {
+      width: '10rem',
+      margin: '5vh 0',
+    },
   }),
   homeworkBackToHomeLink: css({
     position: 'absolute',
@@ -43,11 +59,11 @@ const style = {
 
 export const JSHistory = () => {
   return (
-    <>
-      <div css={style.homeworkOne}>
-        <Link css={style.homeworkBackToHomeLink} to={urls.home}>
-          <span>Back to Home Page</span>
-        </Link>
+    <div css={style.homeworkOne}>
+      <Link css={style.homeworkBackToHomeLink} to={urls.home}>
+        <span>Back to Home Page</span>
+      </Link>
+      <div css={style.homeworkContainer}>
         <aside css={style.homeworkAside}>
           <img
             css={style.homeworkImg}
@@ -89,6 +105,6 @@ export const JSHistory = () => {
           </article>
         </main>
       </div>
-    </>
+    </div>
   )
 }

@@ -37,6 +37,7 @@ const style = {
     listStyle: 'none',
     padding: '0',
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
   }),
@@ -47,7 +48,7 @@ const style = {
     backgroundColor: theme.colors.whiteTransparent,
     borderRadius: '10px',
     padding: '5px 25px',
-    margin: '0 10px',
+    margin: '10px 10px',
     transition: theme.transitions.basicEaseIn,
     boxShadow: theme.shadows.basicShadow,
     '&:hover': {
