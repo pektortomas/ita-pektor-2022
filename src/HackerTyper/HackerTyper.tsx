@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { sourceCode } from './sourceCode'
-import { theme } from '../../Utils/theme'
+import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 

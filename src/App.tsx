@@ -1,10 +1,11 @@
+import { Counter } from './Counter/Counter'
 import { Global, css, jsx } from '@emotion/react'
-import { HackerTyper } from './Homeworks/HW-3/HackerTyper'
-import { Home } from './Homeworks/Home'
-import { Homework1 } from './Homeworks/HW-1/JSHistory'
-import { Homework2 } from './Homeworks/HW-2/Homework2'
+import { HackerTyper } from './HackerTyper/HackerTyper'
+import { Home } from './Home'
+import { JSHistory } from './JSHistory/JSHistory'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import { urls } from './Utils/urls'
+import { TodoApp } from './TodoApp/TodoApp'
+import { urls } from './util/urls'
 /** @jsxImportSource @emotion/react */
 
 const GlobalStyles = css({
@@ -24,9 +25,10 @@ function App() {
       <Global styles={GlobalStyles} />
       <Routes>
         <Route path={urls.home} element={<Home />} />
-        <Route path={urls.hwOne} element={<Homework1 />} />
-        <Route path={urls.hwTwo} element={<Homework2 />} />
-        <Route path={urls.hwThree} element={<HackerTyper />} />
+        <Route path={urls.jsHistory} element={<JSHistory />} />
+        <Route path={urls.counterApp} element={<Counter />} />
+        <Route path={urls.hackerTyper} element={<HackerTyper />} />
+        <Route path={urls.todoApp} element={<TodoApp />} />
       </Routes>
     </Router>
   )

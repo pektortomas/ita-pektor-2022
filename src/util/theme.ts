@@ -5,6 +5,8 @@ export const theme = {
     darkGrey: 'rgba(25, 25, 25, 0.35)',
     lightGrey: 'rgba(255, 255, 255, 0.21)',
     reactBlue: '#61DBFB',
+    red: 'red',
+    green: 'green',
   },
   fontSizes: {
     bigSize: '2.5rem',
