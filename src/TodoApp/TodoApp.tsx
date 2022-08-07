@@ -17,7 +17,7 @@ type TaskProps = {
 
 const style = {
   todoPage: css({
-    background: theme.colors.reactBlue,
+    background: theme.colors.lightReactBlue,
     height: '100vh',
     display: 'flex',
     flexDirection: 'column',
@@ -59,7 +59,9 @@ const style = {
     textAlign: 'center',
   }),
   taskComplete: css({
-    color: theme.colors.darkGrey,
+    opacity: '70%',
+  }),
+  taskTextCompleted: css({
     textDecoration: 'line-through',
   }),
   taskButton: css({
@@ -70,6 +72,7 @@ const style = {
     backgroundColor: theme.colors.reactBlue,
     color: theme.colors.white,
     cursor: 'pointer',
+    transition: theme.transitions.basicEaseIn,
   }),
   complete: css({
     '&:hover': {
@@ -93,9 +96,10 @@ const style = {
     border: '1px solid',
     borderColor: theme.colors.white,
     padding: '0 1rem',
-    borderTopLeftRadius: '15px',
-    borderTopRightRadius: '15px',
+    borderTopLeftRadius: '10px',
+    borderTopRightRadius: '10px',
     backgroundColor: theme.colors.white,
+    cursor: 'pointer',
   }),
   filterButtonsContainer: css({
     width: '60%',
@@ -109,8 +113,8 @@ const style = {
     width: '20%',
     border: 'none',
     padding: '0 1rem',
-    borderTopLeftRadius: '15px',
-    borderTopRightRadius: '15px',
+    borderTopLeftRadius: '10px',
+    borderTopRightRadius: '10px',
     backgroundColor: theme.colors.red,
     color: theme.colors.white,
     cursor: 'pointer',
@@ -126,7 +130,12 @@ const TaskComponent = (props: TaskProps) => {
       >
         O
       </button>
-      <div css={style.taskTextContainer}>
+      <div
+        css={[
+          style.taskTextContainer,
+          props.task.complete === true ? style.taskTextCompleted : undefined,
+        ]}
+      >
         <p>{props.task.name}</p>
       </div>
       <button

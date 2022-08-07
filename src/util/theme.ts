@@ -1,12 +1,13 @@
 export const theme = {
   colors: {
     white: 'white',
+    whiteTransparent: 'rgba(255, 255, 255, 0.65)',
     black: 'black',
-    darkGrey: 'rgba(25, 25, 25, 0.35)',
-    lightGrey: 'rgba(255, 255, 255, 0.21)',
+    darkGrey: '#334A52',
     reactBlue: '#61DBFB',
-    red: 'red',
-    green: 'green',
+    lightReactBlue: '#CCF2FA',
+    red: '#FF7276',
+    green: '#A2E4B8',
   },
   fontSizes: {
     bigSize: '2.5rem',
@@ -14,5 +15,8 @@ export const theme = {
   },
   transitions: {
     basicEaseIn: 'all ease-in .2s',
+  },
+  shadows: {
+    basicShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
   },
 } as const
