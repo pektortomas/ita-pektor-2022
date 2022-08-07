@@ -9,10 +9,7 @@ type Task = {
   name: string
   complete: boolean
 }
-type TaskProps = {
-  id: number
-  name: string
-  complete: boolean
+type TaskProps = Task & {
   completeTask: (id: number) => void
   removeTask: (id: number) => void
 }
@@ -122,23 +119,13 @@ const style = {
 const TaskComponent = (props: TaskProps) => {
   return (
     <div css={[style.taskContainer, props.complete === true ? style.taskComplete : undefined]}>
-      <button
-        css={[style.taskButton, style.complete]}
-        onClick={() => {
-          props.completeTask(props.id)
-        }}
-      >
+      <button css={[style.taskButton, style.complete]} onClick={() => props.completeTask(props.id)}>
         O
       </button>
       <div css={style.taskTextContainer}>
         <p>{props.name}</p>
       </div>
-      <button
-        css={[style.taskButton, style.remove]}
-        onClick={() => {
-          props.removeTask(props.id)
-        }}
-      >
+      <button css={[style.taskButton, style.remove]} onClick={() => props.removeTask(props.id)}>
         X
       </button>
     </div>
@@ -151,10 +138,11 @@ export const TodoApp = () => {
   const [taskName, setTaskName] = useState('')
 
   const completeTask = (id: number) => {
-    const newTasks = tasks.map(tasks => tasks)
-    const taskToChange = newTasks.filter(task => task.id === id)
-    taskToChange[0].complete = !taskToChange[0].complete
-    setTasks(newTasks)
+    setTasks(tasks => {
+      return tasks.map(task => {
+        return task.id === id ? { ...task, complete: !task.complete } : task
+      })
+    })
   }
 
   const removeTask = (id: number) => {
@@ -210,7 +198,7 @@ export const TodoApp = () => {
           ))}
         </div>
         <nav css={style.taskFilterNav}>
-          <p>{`${tasks.filter(task => !task.complete).length} items left`}</p>
+          <p>{tasks.filter(task => !task.complete).length} items left</p>
           <div css={[style.filterButtonsContainer]}>
             <button css={style.taskFilterButton} onClick={() => setFilter('All')}>
               All
