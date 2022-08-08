@@ -36,7 +36,7 @@ const style = {
     alignContent: 'center',
     border: '1px solid',
     borderColor: theme.colors.white,
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '90%',
       textAlign: 'center',
     },
@@ -72,7 +72,7 @@ const style = {
     backgroundColor: theme.colors.white,
     color: theme.colors.black,
     borderRadius: '3rem',
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '90%',
       textAlign: 'center',
     },
@@ -115,7 +115,7 @@ const style = {
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     color: theme.colors.white,
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       height: '20%',
       flexDirection: 'column',
       textAlign: 'center',
@@ -130,7 +130,7 @@ const style = {
     borderTopRightRadius: '10px',
     backgroundColor: theme.colors.white,
     cursor: 'pointer',
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       borderRadius: '10px',
       height: '3rem',
       textAlign: 'center',
@@ -143,7 +143,7 @@ const style = {
     width: '60%',
     display: 'flex',
     justifyContent: 'space-evenly',
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '100%',
     },
   }),
@@ -159,7 +159,7 @@ const style = {
     backgroundColor: theme.colors.red,
     color: theme.colors.white,
     cursor: 'pointer',
-    '@media (max-width: 1000px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '100%',
       height: '4rem',
       marginTop: '1rem',

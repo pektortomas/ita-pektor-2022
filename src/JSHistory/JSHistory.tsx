@@ -8,6 +8,7 @@ import React from 'react'
 const style = {
   homeworkOne: css({
     minHeight: '100vh',
+    width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
@@ -19,7 +20,7 @@ const style = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    '@media (max-width: 1280px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
       flexDirection: 'column',
       margin: '10vh 0',
       textAlign: 'center',
@@ -44,7 +45,7 @@ const style = {
   }),
   homeworkImg: css({
     width: '15rem',
-    '@media (max-width: 1280px)': {
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
       width: '10rem',
       margin: '5vh 0',
     },
