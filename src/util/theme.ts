@@ -13,6 +13,12 @@ export const theme = {
     bigSize: '2.5rem',
     midSize: '1.5rem',
   },
+  mediaMaxSizes: {
+    mobile: '480px',
+    tablet: '1024px',
+    desktop: '1280px',
+    desktopBig: '1600px',
+  },
   transitions: {
     basicEaseIn: 'all ease-in .2s',
   },

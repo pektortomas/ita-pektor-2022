@@ -18,7 +18,8 @@ type TaskProps = {
 const style = {
   todoPage: css({
     background: theme.colors.lightReactBlue,
-    height: '100vh',
+    minHeight: '100vh',
+    minWidth: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
@@ -26,32 +27,55 @@ const style = {
   }),
   todoContainer: css({
     display: 'flex',
+    margin: '2% 0',
     minHeight: '20rem',
+    width: '50rem',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    alignContent: 'center',
     border: '1px solid',
     borderColor: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '90%',
+      textAlign: 'center',
+    },
+  }),
+  todoForm: css({
+    width: '100%',
   }),
   todoInput: css({
-    width: '40rem',
     height: '5rem',
+    width: '100%',
     border: 'none',
     outline: 'none',
-    padding: '0px 2rem',
+    padding: '0',
     textAlign: 'center',
     fontSize: theme.fontSizes.midSize,
   }),
+  taskList: css({
+    width: '100%',
+    margin: '5%',
+    minHeight: '10rem',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  }),
   taskContainer: css({
-    padding: '20px 30px',
-    margin: '20px 30px',
-    width: '30rem',
+    padding: '3%',
+    width: '70%',
+    marginTop: '2%',
     height: '3rem',
     display: 'flex',
     justifyContent: 'space-evenly',
     backgroundColor: theme.colors.white,
     color: theme.colors.black,
     borderRadius: '3rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '90%',
+      textAlign: 'center',
+    },
   }),
   taskTextContainer: css({
     width: '70%',
@@ -85,11 +109,17 @@ const style = {
     },
   }),
   taskFilterNav: css({
-    width: '40rem',
+    width: '100%',
     height: '3rem',
     display: 'flex',
+    flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      height: '20%',
+      flexDirection: 'column',
+      textAlign: 'center',
+    },
   }),
   taskFilterButton: css({
     width: '30%',
@@ -100,11 +130,22 @@ const style = {
     borderTopRightRadius: '10px',
     backgroundColor: theme.colors.white,
     cursor: 'pointer',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      borderRadius: '10px',
+      height: '3rem',
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   }),
   filterButtonsContainer: css({
     width: '60%',
     display: 'flex',
     justifyContent: 'space-evenly',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100%',
+    },
   }),
   disabled: css({
     opacity: '0',
@@ -118,6 +159,11 @@ const style = {
     backgroundColor: theme.colors.red,
     color: theme.colors.white,
     cursor: 'pointer',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100%',
+      height: '4rem',
+      marginTop: '1rem',
+    },
   }),
 }
 
@@ -179,6 +225,7 @@ export const TodoApp = () => {
     <div css={style.todoPage}>
       <div css={style.todoContainer}>
         <form
+          css={style.todoForm}
           onSubmit={e => {
             e.preventDefault()
             setTasks([
@@ -201,7 +248,7 @@ export const TodoApp = () => {
             onChange={e => setTaskName(e.target.value)}
           />
         </form>
-        <div>
+        <div css={style.taskList}>
           {getFilteredTasks().map(task => (
             <TaskComponent
               key={task.id}
@@ -213,7 +260,7 @@ export const TodoApp = () => {
         </div>
         <nav css={style.taskFilterNav}>
           <p>{tasks.filter(task => !task.complete).length} items left</p>
-          <div css={[style.filterButtonsContainer]}>
+          <div css={style.filterButtonsContainer}>
             <button css={style.taskFilterButton} onClick={() => setFilter('All')}>
               All
             </button>
