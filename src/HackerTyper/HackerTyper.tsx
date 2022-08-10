@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { css } from '@emotion/react'
 import { sourceCode } from './sourceCode'
 import { theme } from '../util/theme'
@@ -32,6 +33,11 @@ export const HackerTyper = () => {
 
   return (
     <div css={style.homeworThree}>
+      <Helmet>
+        <title>Tomáš Pektor - Hacker Typer</title>
+        <meta name='description' content='Jednoduchá React aplikace ve formě function komponenty' />
+        <link rel='canonical' href='http://tomaspektor.cz/hacker-typer' />
+      </Helmet>
       <textarea
         css={style.hackerConsole}
         autoFocus

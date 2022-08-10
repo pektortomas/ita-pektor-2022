@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { theme } from '../util/theme'
@@ -61,6 +62,11 @@ const style = {
 export const JSHistory = () => {
   return (
     <div css={style.homeworkOne}>
+      <Helmet>
+        <title>Tomáš Pektor - Javascript History</title>
+        <meta name='description' content='Statická stránka v Reactu' />
+        <link rel='canonical' href='http://tomaspektor.cz/js-history' />
+      </Helmet>
       <Link css={style.homeworkBackToHomeLink} to={urls.home}>
         <span>Back to Home Page</span>
       </Link>

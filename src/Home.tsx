@@ -1,8 +1,10 @@
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { theme } from './util/theme'
 import { urls } from './util/urls'
 import logo from './logo.svg'
+
 /** @jsxImportSource @emotion/react */
 
 const style = {
@@ -19,6 +21,9 @@ const style = {
     alignItems: 'center',
     textAlign: 'center',
     background: theme.colors.lightReactBlue,
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      minHeight: '100%',
+    },
   }),
   header: css({
     lineHeight: '.5rem',
@@ -36,6 +41,7 @@ const style = {
   homeworkList: css({
     listStyle: 'none',
     padding: '0',
+    margin: '0',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -48,7 +54,7 @@ const style = {
     backgroundColor: theme.colors.whiteTransparent,
     borderRadius: '10px',
     padding: '5px 25px',
-    margin: '10px 10px',
+    margin: '0 10px 10px 10px',
     transition: theme.transitions.basicEaseIn,
     boxShadow: theme.shadows.basicShadow,
     '&:hover': {
@@ -61,6 +67,11 @@ const style = {
 export const Home = () => {
   return (
     <div css={style.home}>
+      <Helmet>
+        <title>Tomáš Pektor - React portfolio</title>
+        <meta name='description' content='Portfolio react aplikací' />
+        <link rel='canonical' href='http://tomaspektor.cz' />
+      </Helmet>
       <div css={style.header}>
         <img src={logo} alt='react_logo' />
         <h1 css={style.headingTitle}>Tomáš Pektor</h1>
