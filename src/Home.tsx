@@ -21,6 +21,9 @@ const style = {
     alignItems: 'center',
     textAlign: 'center',
     background: theme.colors.lightReactBlue,
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      minHeight: '100%',
+    },
   }),
   header: css({
     lineHeight: '.5rem',
@@ -38,6 +41,7 @@ const style = {
   homeworkList: css({
     listStyle: 'none',
     padding: '0',
+    margin: '0',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -50,7 +54,7 @@ const style = {
     backgroundColor: theme.colors.whiteTransparent,
     borderRadius: '10px',
     padding: '5px 25px',
-    margin: '10px 10px',
+    margin: '0 10px 10px 10px',
     transition: theme.transitions.basicEaseIn,
     boxShadow: theme.shadows.basicShadow,
     '&:hover': {
