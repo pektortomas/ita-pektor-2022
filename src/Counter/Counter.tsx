@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { theme } from '../util/theme'
@@ -68,6 +69,11 @@ export class Counter extends Component<Props, State> {
   render() {
     return (
       <div css={style.homeworkTwo}>
+        <Helmet>
+          <title>Tomáš Pektor - Counter App</title>
+          <meta name='description' content='Jednoduchá aplikace v class komponentě' />
+          <link rel='canonical' href='http://tomaspektor.cz/counter' />
+        </Helmet>
         <Link css={style.homeworkBackToHomeLink} to={urls.home}>
           <span>Back to Home Page</span>
         </Link>

@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { css } from '@emotion/react'
 import { generateID, useLocalStorage } from '../util/helperFunctions'
 import { theme } from '../util/theme'
@@ -223,6 +224,11 @@ export const TodoApp = () => {
 
   return (
     <div css={style.todoPage}>
+      <Helmet>
+        <title>Tomáš Pektor - Todo App</title>
+        <meta name='description' content='Todo aplikace vytvořená ve frameworku React' />
+        <link rel='canonical' href='http://tomaspektor.cz/todo-app' />
+      </Helmet>
       <div css={style.todoContainer}>
         <form
           css={style.todoForm}
