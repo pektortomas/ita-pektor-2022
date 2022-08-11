@@ -1,20 +1,9 @@
 import { Helmet } from 'react-helmet'
+import { createContext, useContext, useState } from 'react'
 import { css } from '@emotion/react'
 import { generateID, useLocalStorage } from '../util/helperFunctions'
 import { theme } from '../util/theme'
-import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
-
-type Task = {
-  id: number
-  name: string
-  complete: boolean
-}
-type TaskProps = {
-  task: Task
-  completeTask: (id: number) => void
-  removeTask: (id: number) => void
-}
 
 const style = {
   todoPage: css({
@@ -168,34 +157,32 @@ const style = {
   }),
 }
 
-const TaskComponent = (props: TaskProps) => {
-  return (
-    <div css={[style.taskContainer, props.task.complete === true ? style.taskComplete : undefined]}>
-      <button
-        css={[style.taskButton, style.complete]}
-        onClick={() => props.completeTask(props.task.id)}
-      >
-        O
-      </button>
-      <div
-        css={[
-          style.taskTextContainer,
-          props.task.complete === true ? style.taskTextCompleted : undefined,
-        ]}
-      >
-        <p>{props.task.name}</p>
-      </div>
-      <button
-        css={[style.taskButton, style.remove]}
-        onClick={() => props.removeTask(props.task.id)}
-      >
-        X
-      </button>
-    </div>
-  )
+type Task = {
+  id: number
+  name: string
+  complete: boolean
+}
+type TaskProps = {
+  task: Task
+}
+type Props = {
+  children: React.ReactNode
 }
 
-export const TodoApp = () => {
+export const genericHookContextBuilder = <T, P>(hook: () => T) => {
+  const Context = createContext<T>(undefined as never)
+
+  return {
+    Context,
+    ContextProvider: (props: Props & P) => {
+      const value = hook()
+
+      return <Context.Provider value={value}>{props.children}</Context.Provider>
+    },
+  }
+}
+
+const useLogicState = () => {
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', [] as Task[])
   const [filter, setFilter] = useLocalStorage<'All' | 'Complete' | 'Active'>('filterdTasks', 'All')
   const [taskName, setTaskName] = useState('')
@@ -222,6 +209,61 @@ export const TodoApp = () => {
     }
   }
 
+  return {
+    tasks,
+    setTasks,
+    filter,
+    setFilter,
+    taskName,
+    setTaskName,
+    completeTask,
+    removeTask,
+    getFilteredTasks,
+  }
+}
+
+export const { ContextProvider: LogicStateContextProvider, Context: LogicStateContext } =
+  genericHookContextBuilder(useLogicState)
+
+export const TodoApp = () => {
+  return (
+    <LogicStateContextProvider>
+      <TodosBoard />
+    </LogicStateContextProvider>
+  )
+}
+
+const TaskComponent = (props: TaskProps) => {
+  const logic = useContext(LogicStateContext)
+  return (
+    <div css={[style.taskContainer, props.task.complete === true ? style.taskComplete : undefined]}>
+      <button
+        css={[style.taskButton, style.complete]}
+        onClick={() => logic.completeTask(props.task.id)}
+      >
+        O
+      </button>
+      <div
+        css={[
+          style.taskTextContainer,
+          props.task.complete === true ? style.taskTextCompleted : undefined,
+        ]}
+      >
+        <p>{props.task.name}</p>
+      </div>
+      <button
+        css={[style.taskButton, style.remove]}
+        onClick={() => logic.removeTask(props.task.id)}
+      >
+        X
+      </button>
+    </div>
+  )
+}
+
+export const TodosBoard = () => {
+  const logic = useContext(LogicStateContext)
+
   return (
     <div css={style.todoPage}>
       <Helmet>
@@ -234,15 +276,15 @@ export const TodoApp = () => {
           css={style.todoForm}
           onSubmit={e => {
             e.preventDefault()
-            setTasks([
+            logic.setTasks([
               {
                 id: generateID(),
-                name: taskName,
+                name: logic.taskName,
                 complete: false,
               },
-              ...tasks,
+              ...logic.tasks,
             ])
-            setTaskName('')
+            logic.setTaskName('')
           }}
         >
           <input
@@ -250,36 +292,31 @@ export const TodoApp = () => {
             type='text'
             placeholder='Enter your task....'
             autoFocus={true}
-            value={taskName}
-            onChange={e => setTaskName(e.target.value)}
+            value={logic.taskName}
+            onChange={e => logic.setTaskName(e.target.value)}
           />
         </form>
         <div css={style.taskList}>
-          {getFilteredTasks().map(task => (
-            <TaskComponent
-              key={task.id}
-              task={task}
-              completeTask={completeTask}
-              removeTask={removeTask}
-            />
+          {logic.getFilteredTasks().map(task => (
+            <TaskComponent key={task.id} task={task} />
           ))}
         </div>
         <nav css={style.taskFilterNav}>
-          <p>{tasks.filter(task => !task.complete).length} items left</p>
+          <p>{logic.tasks.filter(task => !task.complete).length} items left</p>
           <div css={style.filterButtonsContainer}>
-            <button css={style.taskFilterButton} onClick={() => setFilter('All')}>
+            <button css={style.taskFilterButton} onClick={() => logic.setFilter('All')}>
               All
             </button>
-            <button css={style.taskFilterButton} onClick={() => setFilter('Active')}>
+            <button css={style.taskFilterButton} onClick={() => logic.setFilter('Active')}>
               Active
             </button>
-            <button css={style.taskFilterButton} onClick={() => setFilter('Complete')}>
+            <button css={style.taskFilterButton} onClick={() => logic.setFilter('Complete')}>
               Complete
             </button>
           </div>
           <button
             css={style.taskRemoveButton}
-            onClick={() => setTasks(tasks.filter(task => !task.complete))}
+            onClick={() => logic.setTasks(logic.tasks.filter(task => !task.complete))}
           >
             Remove completed
           </button>
