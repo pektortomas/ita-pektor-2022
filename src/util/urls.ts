@@ -4,4 +4,5 @@ export const urls = {
   counterApp: '/counter',
   hackerTyper: '/hacker-typer',
   todoApp: '/todo-app',
+  mortgageCalculator: '/mortgage-calculator',
 }
