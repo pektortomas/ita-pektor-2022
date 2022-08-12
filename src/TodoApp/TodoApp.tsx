@@ -1,8 +1,9 @@
 import { Helmet } from 'react-helmet'
-import { createContext, useContext, useState } from 'react'
 import { css } from '@emotion/react'
 import { generateID, useLocalStorage } from '../util/helperFunctions'
+import { genericHookContextBuilder } from '../util/genericHookContextBuilder'
 import { theme } from '../util/theme'
+import { useContext, useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
 const style = {
@@ -165,22 +166,6 @@ type Task = {
 type TaskProps = {
   task: Task
 }
-type Props = {
-  children: React.ReactNode
-}
-
-export const genericHookContextBuilder = <T, P>(hook: () => T) => {
-  const Context = createContext<T>(undefined as never)
-
-  return {
-    Context,
-    ContextProvider: (props: Props & P) => {
-      const value = hook()
-
-      return <Context.Provider value={value}>{props.children}</Context.Provider>
-    },
-  }
-}
 
 const useLogicState = () => {
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', [] as Task[])
@@ -222,19 +207,19 @@ const useLogicState = () => {
   }
 }
 
-export const { ContextProvider: LogicStateContextProvider, Context: LogicStateContext } =
+export const { ContextProvider: TodoContextProvider, Context: TodoContext } =
   genericHookContextBuilder(useLogicState)
 
 export const TodoApp = () => {
   return (
-    <LogicStateContextProvider>
+    <TodoContextProvider>
       <TodosBoard />
-    </LogicStateContextProvider>
+    </TodoContextProvider>
   )
 }
 
 const TaskComponent = (props: TaskProps) => {
-  const logic = useContext(LogicStateContext)
+  const logic = useContext(TodoContext)
   return (
     <div css={[style.taskContainer, props.task.complete === true ? style.taskComplete : undefined]}>
       <button
@@ -262,7 +247,7 @@ const TaskComponent = (props: TaskProps) => {
 }
 
 export const TodosBoard = () => {
-  const logic = useContext(LogicStateContext)
+  const logic = useContext(TodoContext)
 
   return (
     <div css={style.todoPage}>
