@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet'
 import { css } from '@emotion/react'
-import { isNumberObject } from 'util/types'
 import { theme } from '../util/theme'
 import React, { useState } from 'react'
 /** @jsxImportSource @emotion/react */
@@ -68,40 +67,42 @@ const style = {
   }),
 }
 
-type MortgageData = {
-  amount: number | null
-  interest: number | null
-  months: number | null
+type MortgageData = number | ''
+
+export const calculateMortgageTotal = (
+  dataAmount: MortgageData,
+  dataInterest: MortgageData,
+  dataYears: MortgageData
+) => {
+  const amount = typeof dataAmount === 'number' ? dataAmount : 0
+  const interest = dataInterest ? dataInterest / 100 / 12 : 0
+  const time = dataYears ? dataYears * 12 : 0
+  const calculateTotal = () => {
+    if (interest)
+      return (amount * interest * Math.pow(1 + interest, time)) / (Math.pow(1 + interest, time) - 1)
+    return amount / time
+  }
+
+  if (calculateTotal && isFinite(calculateTotal())) {
+    return calculateTotal().toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  }
 }
 
 export default function MortgageCalculator() {
-  const [mortgageData, setMortgageData] = useState<MortgageData>({
-    amount: null,
-    interest: null,
-    months: null,
-  })
+  const [amount, setAmount] = useState<MortgageData>('')
+  const [interest, setInterest] = useState<MortgageData>('')
+  const [years, setYears] = useState<MortgageData>('')
 
-  const calculateMortgageTotal = () => {
-    const amount = mortgageData.amount ?? 0
-    const interest = mortgageData.interest ? mortgageData.interest / 100 / 12 : 0
-    const time = mortgageData.months ? mortgageData.months * 12 : 0
-    const calculateTotal = () => {
-      if (interest)
-        return (
-          (amount * interest * Math.pow(1 + interest, time)) / (Math.pow(1 + interest, time) - 1)
-        )
-      return amount / time
-    }
-
-    if (calculateTotal && isFinite(calculateTotal())) {
-      return calculateTotal().toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    }
-  }
   return (
     <div css={style.MortgageCalculatorPage}>
+      <Helmet>
+        <title>Tomáš Pektor - Mortgage Calculator</title>
+        <meta name='description' content='Kalkulátor hypotéky v Reactu' />
+        <link rel='canonical' href='http://tomaspektor.cz/mortgage-calculator' />
+      </Helmet>
       <div css={style.MortgageCalculator}>
         <h2 css={style.heading}>Mortgage Calculator</h2>
         <div css={style.inputs}>
@@ -113,9 +114,10 @@ export default function MortgageCalculator() {
               name='amount'
               placeholder='Enter value'
               step='100000'
+              autoComplete='off'
               required
-              value={mortgageData.amount ?? ''}
-              onChange={e => setMortgageData({ ...mortgageData, amount: parseInt(e.target.value) })}
+              value={amount ?? ''}
+              onChange={e => setAmount(parseInt(e.target.value))}
             />
           </label>
 
@@ -128,11 +130,10 @@ export default function MortgageCalculator() {
               placeholder='Enter value'
               min='0.0'
               step='0.1'
+              autoComplete='off'
               required
-              value={mortgageData.interest ?? ''}
-              onChange={e =>
-                setMortgageData({ ...mortgageData, interest: parseFloat(e.target.value) })
-              }
+              value={interest ?? ''}
+              onChange={e => setInterest(parseFloat(e.target.value))}
             />
           </label>
 
@@ -143,15 +144,16 @@ export default function MortgageCalculator() {
               type='number'
               name='time'
               placeholder='Enter value'
+              autoComplete='off'
               required
-              value={mortgageData.months ?? ''}
-              onChange={e => setMortgageData({ ...mortgageData, months: parseInt(e.target.value) })}
+              value={years ?? ''}
+              onChange={e => setYears(parseInt(e.target.value))}
             />
           </label>
         </div>
         <div>
           <p>Payment for month</p>
-          <h2>{calculateMortgageTotal() ?? 0} CZK</h2>
+          <h2>{calculateMortgageTotal(amount, interest!, years!) ?? 0} CZK</h2>
         </div>
       </div>
     </div>
