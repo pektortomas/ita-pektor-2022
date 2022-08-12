@@ -104,6 +104,12 @@ export const Home = () => {
               <p>My Todo app</p>
             </li>
           </Link>
+          <Link css={style.link} to={urls.mortgageCalculator}>
+            <li css={style.homeworkListItem}>
+              <h4>Mortgage Calculator</h4>
+              <p>React calculator</p>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
