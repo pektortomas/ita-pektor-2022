@@ -162,7 +162,7 @@ const cardsPack =
     return { ...card, id: index + 1 }
   })
 
-const maxScore = cards.length / 2
+const maxScore = cardsPack.length / 2
 const startRound = 0
 
 const MemoryGameCard = (props: CardProps) => {
@@ -171,7 +171,9 @@ const MemoryGameCard = (props: CardProps) => {
       <div>
         <img
           onClick={() => {
-            if (props.isGuessed || props.isReveal) props.revealCard(props.cardData)
+            if (!props.isGuessed || !props.isReveal) {
+              props.revealCard(props.cardData)
+            }
           }}
           css={[style.memoryGameCard, style.reveal, props.isGuessed ? style.guessed : undefined]}
           src={props.isReveal || props.isGuessed ? props.cardData.src : DefaultImg}
@@ -192,17 +194,16 @@ export const MemoryGame = () => {
   }
 
   const setCorrectGuess = async () => {
-    if (revealCards.length === 2) {
-      await pause(600)
-      const [firstCard, secondCard] = revealCards
-      if (firstCard.name === secondCard.name) {
-        setCorretGuessed([...corretGuessed, firstCard])
-        setRevealCards([])
-        setGameRound(gameRound + 1)
-      }
-      setGameRound(gameRound + 1)
+    if (revealCards.length !== 2) return
+    await pause(600)
+    const [firstCard, secondCard] = revealCards
+    if (firstCard.name === secondCard.name) {
+      setCorretGuessed([...corretGuessed, firstCard])
       setRevealCards([])
+      setGameRound(gameRound + 1)
     }
+    setGameRound(gameRound + 1)
+    setRevealCards([])
   }
 
   const getRevalCards = (id: number) => {
