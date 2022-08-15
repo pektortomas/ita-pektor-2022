@@ -116,7 +116,7 @@ export default function MortgageCalculator() {
               step='100000'
               autoComplete='off'
               required
-              value={amount ?? ''}
+              value={amount}
               onChange={e => setAmount(parseInt(e.target.value))}
             />
           </label>
@@ -132,7 +132,7 @@ export default function MortgageCalculator() {
               step='0.1'
               autoComplete='off'
               required
-              value={interest ?? ''}
+              value={interest}
               onChange={e => setInterest(parseFloat(e.target.value))}
             />
           </label>
@@ -146,7 +146,7 @@ export default function MortgageCalculator() {
               placeholder='Enter value'
               autoComplete='off'
               required
-              value={years ?? ''}
+              value={years}
               onChange={e => setYears(parseInt(e.target.value))}
             />
           </label>

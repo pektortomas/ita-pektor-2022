@@ -3,6 +3,7 @@ import { Global, css, jsx } from '@emotion/react'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './Home'
 import { JSHistory } from './JSHistory/JSHistory'
+import { MemoryGame } from './MemoryGame/MemoryGame'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { TodoApp } from './TodoApp/TodoApp'
 import { theme } from './util/theme'
@@ -32,6 +33,7 @@ function App() {
         <Route path={urls.counterApp} element={<Counter />} />
         <Route path={urls.hackerTyper} element={<HackerTyper />} />
         <Route path={urls.todoApp} element={<TodoApp />} />
+        <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
       </Routes>
     </Router>
