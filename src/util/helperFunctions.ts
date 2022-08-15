@@ -26,3 +26,15 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
   }
   return [storedValue, setValue] as const
 }
+
+export const pause = (ms: number) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(undefined)
+    }, ms)
+  })
+}
+
+export const shuffle = <T>(arr: T[]): T[] => {
+  return arr.sort(() => Math.random() - 0.5)
+}
