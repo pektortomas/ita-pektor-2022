@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { pause, shuffle } from '../util/helperFunctions'
+import { generateID, pause, shuffle } from '../util/helperFunctions'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 import CssImg from './cardImages/css.jpg'
@@ -102,43 +102,35 @@ const cards = [
   {
     name: 'html',
     src: HtmlImg,
-    id: 0,
   },
   {
     name: 'css',
     src: CssImg,
-    id: 0,
   },
   {
     name: 'js',
     src: JsImg,
-    id: 0,
   },
 
   {
     name: 'react',
     src: ReactImg,
-    id: 0,
   },
   {
     name: 'gitlab',
     src: GitlabImg,
-    id: 0,
   },
   {
     name: 'node',
     src: NodeImg,
-    id: 0,
   },
   {
     name: 'webpack',
     src: WebpackImg,
-    id: 0,
   },
   {
     name: 'typescript',
     src: TSImg,
-    id: 0,
   },
 ]
 
@@ -151,54 +143,48 @@ type Card = {
 type CardProps = {
   key: number
   cardData: Card
-  revealCard: (card: Card) => void
+  revealCard: (card: number) => void
   isReveal: boolean
   isGuessed: boolean
+  isCorrect: Promise<void>
 }
 
-const cardsPack =
-  cards &&
-  cards.concat(cards).map((card, index) => {
-    return { ...card, id: index + 1 }
-  })
+const cardsPack = [...cards, ...cards].map(card => ({ ...card, id: generateID() }))
 
-const maxScore = cardsPack.length / 2
+const maxScore = cardsPack.length
 const startRound = 0
 
-const MemoryGameCard = (props: CardProps) => {
-  return (
-    <>
-      <div>
-        <img
-          onClick={() => {
-            if (!props.isGuessed || !props.isReveal) {
-              props.revealCard(props.cardData)
-            }
-          }}
-          css={[style.memoryGameCard, style.reveal, props.isGuessed ? style.guessed : undefined]}
-          src={props.isReveal || props.isGuessed ? props.cardData.src : DefaultImg}
-        />
-      </div>
-    </>
-  )
-}
+const MemoryGameCard = (props: CardProps) => (
+  <div>
+    <img
+      onClick={() => {
+        if (!props.isGuessed || !props.isReveal) {
+          props.revealCard(props.cardData.id)
+        }
+      }}
+      css={[style.memoryGameCard, style.reveal, props.isGuessed ? style.guessed : undefined]}
+      src={props.isReveal || props.isGuessed ? props.cardData.src : DefaultImg}
+    />
+  </div>
+)
 
 export const MemoryGame = () => {
   const [playCards, setplayCards] = useState(cardsPack as Card[])
-  const [revealCards, setRevealCards] = useState([] as [] | [Card] | [Card, Card])
-  const [corretGuessed, setCorretGuessed] = useState([] as Card[])
+  const [revealCards, setRevealCards] = useState([] as [] | [number] | [number, number])
+  const [corretGuessed, setCorretGuessed] = useState([] as number[])
   const [gameRound, setGameRound] = useState(0)
 
-  const handleClickTip = (card: Card) => {
-    setRevealCards([...revealCards, card] as [Card] | [Card, Card])
+  const handleClickTip = (cardID: number) => {
+    setRevealCards([...revealCards, cardID] as [number] | [number, number])
   }
 
   const setCorrectGuess = async () => {
     if (revealCards.length !== 2) return
+
+    const firstName = playCards.filter(card => revealCards.includes(card.id))
     await pause(600)
-    const [firstCard, secondCard] = revealCards
-    if (firstCard.name === secondCard.name) {
-      setCorretGuessed([...corretGuessed, firstCard])
+    if (firstName[0].name === firstName[1].name) {
+      setCorretGuessed([...corretGuessed, firstName[0].id, firstName[1].id])
       setRevealCards([])
       setGameRound(gameRound + 1)
     }
@@ -207,12 +193,11 @@ export const MemoryGame = () => {
   }
 
   const getRevalCards = (id: number) => {
-    setCorrectGuess()
-    return revealCards.some(card => card.id === id)
+    return revealCards.some(cardID => cardID === id)
   }
 
-  const getCorrectCards = (name: string) => {
-    return corretGuessed.some(card => card.name === name)
+  const getCorrectCards = (id: number) => {
+    return corretGuessed.some(cardID => cardID === id)
   }
 
   return (
@@ -222,7 +207,8 @@ export const MemoryGame = () => {
           <button
             css={style.button}
             onClick={() => {
-              setplayCards(shuffle(cardsPack)), setGameRound(1)
+              setplayCards(shuffle(cardsPack))
+              setGameRound(1)
             }}
           >
             Start Game
@@ -232,7 +218,9 @@ export const MemoryGame = () => {
           <button
             css={style.button}
             onClick={() => {
-              setplayCards(shuffle(cardsPack)), setGameRound(1), setCorretGuessed([])
+              setplayCards(shuffle(cardsPack))
+              setGameRound(1)
+              setCorretGuessed([])
             }}
           >
             Restart Game
@@ -242,7 +230,7 @@ export const MemoryGame = () => {
           <>
             <div css={style.actualScore}>
               <h3>Skóre</h3>
-              <p>{corretGuessed.length}</p>
+              <p>{corretGuessed.length / 2}</p>
             </div>
             <div css={style.actualRound}>
               <h3>Kolo</h3>
@@ -258,7 +246,8 @@ export const MemoryGame = () => {
             cardData={card}
             revealCard={handleClickTip}
             isReveal={gameRound === startRound ? true : getRevalCards(card.id)}
-            isGuessed={getCorrectCards(card.name)}
+            isGuessed={getCorrectCards(card.id)}
+            isCorrect={setCorrectGuess()}
           />
         ))}
       </div>
