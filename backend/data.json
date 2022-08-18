@@ -1,0 +1,28 @@
+{
+    "users" : [
+        {
+            "id": "1",
+            "name": "Tom"
+        },
+        {
+            "id": "2",
+            "name": "Kačka"
+        },
+        {
+            "id": "3",
+            "name": "Kuba"
+        },
+        {
+            "id": "4",
+            "name": "Petr"
+        },
+        {
+            "id": "5",
+            "name": "Lukáš"
+        },
+        {
+            "id": "6",
+            "name": "Tonda"
+        }
+    ]
+}
