@@ -26,8 +26,14 @@ export const HttpFilter = () => {
         value={value}
         onChange={async e => {
           setValue(e.target.value)
-          const response = await fetch(`http://localhost:1234/http-filter?search=${e.target.value}`)
-          setData(await response.json())
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_HTTP_FILTER_URL}?search=${e.target.value}`
+            )
+            setData(await response.json())
+          } catch (err) {
+            if (err) alert('chyba serveru')
+          }
         }}
       />
       {data.map(i => (
