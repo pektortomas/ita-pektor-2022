@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet'
 import { css } from '@emotion/react'
 import { theme } from '../util/theme'
-import React, { useState } from 'react'
+import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
 const style = {
   MortgageCalculatorPage: css({
-    height: '100vh',
+    height: '100%',
     margin: '0px',
     display: 'flex',
     flexDirection: 'column',
@@ -65,10 +65,23 @@ const style = {
     alignItems: 'center',
     textAlign: 'center',
   }),
+  table: css({
+    display: 'table',
+    textAlign: 'center',
+    margin: '5rem',
+    background: theme.colors.whiteTransparent,
+    padding: '3rem',
+    borderRadius: '10px',
+    width: '25rem',
+  }),
+}
+type PaymentData = {
+  currentValue: number
+  monthInterest: number
+  monthPrincipal: number
 }
 
-type MortgageData = number | ''
-
+type MortgageData = number
 export const calculateMortgageTotal = (
   dataAmount: MortgageData,
   dataInterest: MortgageData,
@@ -77,24 +90,50 @@ export const calculateMortgageTotal = (
   const amount = typeof dataAmount === 'number' ? dataAmount : 0
   const interest = dataInterest ? dataInterest / 100 / 12 : 0
   const time = dataYears ? dataYears * 12 : 0
-  const calculateTotal = () => {
-    if (interest)
-      return (amount * interest * Math.pow(1 + interest, time)) / (Math.pow(1 + interest, time) - 1)
-    return amount / time
-  }
 
-  if (calculateTotal && isFinite(calculateTotal())) {
-    return calculateTotal().toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+  if (interest)
+    return (amount * interest * Math.pow(1 + interest, time)) / (Math.pow(1 + interest, time) - 1)
+
+  return amount / time
+}
+
+const calculateAnnuityPayment = (interest: number, years: number, total: number) => {
+  if (!years || !total) return
+  const payment = [] as PaymentData[]
+  const months = years * 12
+  const totalValue = parseFloat((total * months).toFixed(2))
+  const getMonthInterest = (prevValue: number) => {
+    return (interest / 12) * (prevValue / 100)
+  }
+  const getMonthPrincipal = (monthInterest: number) => {
+    return total - monthInterest
+  }
+  for (let i = 0; i < months; i++) {
+    payment.push({
+      currentValue:
+        i > 0
+          ? payment[i - 1].currentValue -
+            (getMonthInterest(payment[i - 1].currentValue) +
+              getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue)))
+          : totalValue,
+      monthInterest:
+        i > 0 ? getMonthInterest(payment[i - 1].currentValue) : getMonthInterest(totalValue),
+      monthPrincipal:
+        i > 0
+          ? getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue))
+          : getMonthPrincipal(getMonthInterest(totalValue)),
     })
   }
+  return payment
 }
 
 export default function MortgageCalculator() {
-  const [amount, setAmount] = useState<MortgageData>('')
-  const [interest, setInterest] = useState<MortgageData>('')
-  const [years, setYears] = useState<MortgageData>('')
+  const [amount, setAmount] = useState<MortgageData>(2_500_000)
+  const [interest, setInterest] = useState<MortgageData>(6)
+  const [years, setYears] = useState<MortgageData>(5)
+
+  const total = calculateMortgageTotal(amount, interest!, years!)
+  const payment = calculateAnnuityPayment(interest, years, total)
 
   return (
     <div css={style.MortgageCalculatorPage}>
@@ -114,6 +153,7 @@ export default function MortgageCalculator() {
               name='amount'
               placeholder='Enter value'
               step='100000'
+              min='1000'
               autoComplete='off'
               required
               value={amount}
@@ -143,6 +183,7 @@ export default function MortgageCalculator() {
               css={style.input}
               type='number'
               name='time'
+              min='1'
               placeholder='Enter value'
               autoComplete='off'
               required
@@ -153,9 +194,28 @@ export default function MortgageCalculator() {
         </div>
         <div>
           <p>Payment for month</p>
-          <h2>{calculateMortgageTotal(amount, interest!, years!) ?? 0} CZK</h2>
+          <h2>{Math.round(calculateMortgageTotal(amount, interest!, years!)) ?? 0} CZK</h2>
         </div>
       </div>
+      <table css={style.table}>
+        <thead>
+          <tr>
+            <th>Balance</th>
+            <th>Interest</th>
+            <th>Principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payment &&
+            payment.map(row => (
+              <tr key={row.currentValue}>
+                <td>{parseFloat(row.currentValue.toFixed(2))}</td>
+                <td>{parseFloat(row.monthInterest.toFixed(2))}</td>
+                <td>{parseFloat(row.monthPrincipal.toFixed(2))}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </div>
   )
 }
