@@ -1,7 +1,5 @@
-import { backendUrls } from '../util/backendUrls'
+import { backendFilterUrl } from '../util/backendUrls'
 import { css } from '@emotion/react'
-import { pause } from '../util/helperFunctions'
-import { setTimeout } from 'timers/promises'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
@@ -33,11 +31,12 @@ export const HttpFilter = () => {
           setValue(e.target.value)
           try {
             setLoading(true)
-            const response = await fetch(`${backendUrls.filterUrl}${e.target.value}`)
+            const response = await fetch(backendFilterUrl(e.target.value))
             setData(await response.json())
             setLoading(false)
           } catch (err) {
             if (err) setCustomError('Databáze je dočasně nedostupná')
+            setLoading(false)
           }
         }}
       />

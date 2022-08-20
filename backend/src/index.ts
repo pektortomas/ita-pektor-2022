@@ -1,4 +1,3 @@
-import { pause } from '../../src/util/helperFunctions'
 import cors from 'cors'
 import express from 'express'
 import fs from 'fs'
