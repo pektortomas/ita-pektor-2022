@@ -1,3 +1,4 @@
+import { backendUrls } from '../util/backendUrls'
 import { css } from '@emotion/react'
 import { theme } from '../util/theme'
 import { useState } from 'react'
@@ -29,9 +30,7 @@ export const HttpFilter = () => {
         onChange={async e => {
           setValue(e.target.value)
           try {
-            const response = await fetch(
-              `${process.env.REACT_APP_HTTP_FILTER_URL}?search=${e.target.value}`
-            )
+            const response = await fetch(`${backendUrls.filterUrl}${e.target.value}`)
             setLoading(true)
             setData(await response.json())
             setLoading(false)

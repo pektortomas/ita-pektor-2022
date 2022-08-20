@@ -25,13 +25,13 @@ try {
     const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
     const data = JSON.parse(dataString).users
 
-    if (data.every((e: Data) => e.hasOwnProperty('name' && 'id'))) {
-      res.send(
-        data.filter((i: Data) =>
-          setUnifyString(i.name).includes(setUnifyString(req.query.search!.toString()))
-        )
+    if (data.every((e: Data) => !e.name || !e.id)) throw new SyntaxError('Invalid data')
+
+    res.send(
+      data.filter((i: Data) =>
+        setUnifyString(i.name).includes(setUnifyString(req.query.search!.toString()))
       )
-    }
+    )
   })
 } catch (err) {
   console.log(err)
