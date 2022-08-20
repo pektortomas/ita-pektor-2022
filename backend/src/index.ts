@@ -20,20 +20,22 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/http-filter', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
-  const data = JSON.parse(dataString).users
+try {
+  app.get('/http-filter', (req, res) => {
+    const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
+    const data = JSON.parse(dataString).users
 
-  try {
-    res.send(
-      data.filter((i: Data) =>
-        setUnifyString(i.name).includes(setUnifyString(req.query.search!.toString()))
+    if (data.every((e: Data) => e.hasOwnProperty('name' && 'id'))) {
+      res.send(
+        data.filter((i: Data) =>
+          setUnifyString(i.name).includes(setUnifyString(req.query.search!.toString()))
+        )
       )
-    )
-  } catch (err) {
-    console.log(err)
-  }
-})
+    }
+  })
+} catch (err) {
+  console.log(err)
+}
 
 app.listen(port)
 

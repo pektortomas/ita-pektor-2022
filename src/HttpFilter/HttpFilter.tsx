@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { theme } from '../util/theme'
-import React, { useState } from 'react'
+import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 
 const style = {
@@ -19,6 +19,8 @@ const style = {
 export const HttpFilter = () => {
   const [value, setValue] = useState('')
   const [data, setData] = useState([] as { id: string; name: string }[])
+  const [customError, setCustomError] = useState('')
+  const [loading, setLoading] = useState(false)
   return (
     <div css={style.page}>
       <input
@@ -30,15 +32,21 @@ export const HttpFilter = () => {
             const response = await fetch(
               `${process.env.REACT_APP_HTTP_FILTER_URL}?search=${e.target.value}`
             )
+            setLoading(true)
             setData(await response.json())
+            setLoading(false)
           } catch (err) {
-            if (err) alert('chyba serveru')
+            if (err) setCustomError('Databáze je dočasně nedostupná')
           }
         }}
       />
-      {data.map(i => (
-        <div key={i.id}>{i.name}</div>
-      ))}
+      {customError.length > 0 ? (
+        <div>{customError}</div>
+      ) : loading ? (
+        <div>Loading...</div>
+      ) : (
+        data.map(i => <div key={i.id}>{i.name}</div>)
+      )}
     </div>
   )
 }
