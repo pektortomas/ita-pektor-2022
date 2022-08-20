@@ -1,5 +1,7 @@
 import { backendUrls } from '../util/backendUrls'
 import { css } from '@emotion/react'
+import { pause } from '../util/helperFunctions'
+import { setTimeout } from 'timers/promises'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
@@ -30,8 +32,8 @@ export const HttpFilter = () => {
         onChange={async e => {
           setValue(e.target.value)
           try {
-            const response = await fetch(`${backendUrls.filterUrl}${e.target.value}`)
             setLoading(true)
+            const response = await fetch(`${backendUrls.filterUrl}${e.target.value}`)
             setData(await response.json())
             setLoading(false)
           } catch (err) {

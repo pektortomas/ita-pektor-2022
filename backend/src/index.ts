@@ -1,3 +1,4 @@
+import { pause } from '../../src/util/helperFunctions'
 import cors from 'cors'
 import express from 'express'
 import fs from 'fs'
@@ -20,22 +21,21 @@ app.use((req, res, next) => {
   next()
 })
 
-try {
-  app.get('/http-filter', (req, res) => {
-    const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
-    const data = JSON.parse(dataString).users
+app.get('/http-filter', (req, res) => {
+  const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
+  const data = JSON.parse(dataString).users
 
-    if (data.every((e: Data) => !e.name || !e.id)) throw new SyntaxError('Invalid data')
-
+  if (data.every((e: Data) => !e.name || !e.id)) {
+    res.sendStatus(422)
+    console.log('Invalid data in data.users')
+  } else {
     res.send(
       data.filter((i: Data) =>
         setUnifyString(i.name).includes(setUnifyString(req.query.search!.toString()))
       )
     )
-  })
-} catch (err) {
-  console.log(err)
-}
+  }
+})
 
 app.listen(port)
 
