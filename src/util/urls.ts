@@ -6,4 +6,5 @@ export const urls = {
   todoApp: '/todo-app',
   memoryGame: '/memory-game',
   mortgageCalculator: '/mortgage-calculator',
+  httpFilter: '/http-filter',
 }

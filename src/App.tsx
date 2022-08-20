@@ -2,6 +2,7 @@ import { Counter } from './Counter/Counter'
 import { Global, css, jsx } from '@emotion/react'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './Home'
+import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JSHistory } from './JSHistory/JSHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
@@ -35,6 +36,7 @@ function App() {
         <Route path={urls.todoApp} element={<TodoApp />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
+        <Route path={urls.httpFilter} element={<HttpFilter />} />
       </Routes>
     </Router>
   )
