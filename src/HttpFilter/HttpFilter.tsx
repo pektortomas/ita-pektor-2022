@@ -33,9 +33,9 @@ export const HttpFilter = () => {
             setLoading(true)
             const response = await fetch(backendFilterUrl(e.target.value))
             setData(await response.json())
-            setLoading(false)
           } catch (err) {
             if (err) setCustomError('Databáze je dočasně nedostupná')
+          } finally {
             setLoading(false)
           }
         }}
