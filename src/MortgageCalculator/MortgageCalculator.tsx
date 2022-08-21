@@ -81,11 +81,10 @@ type PaymentData = {
   monthPrincipal: number
 }
 
-type MortgageData = number
 export const calculateMortgageTotal = (
-  dataAmount: MortgageData,
-  dataInterest: MortgageData,
-  dataYears: MortgageData
+  dataAmount: number,
+  dataInterest: number,
+  dataYears: number
 ) => {
   const amount = typeof dataAmount === 'number' ? dataAmount : 0
   const interest = dataInterest ? dataInterest / 100 / 12 : 0
@@ -101,13 +100,14 @@ const calculateAnnuityPayment = (interest: number, years: number, total: number)
   if (!years || !total) return
   const payment = [] as PaymentData[]
   const months = years * 12
-  const totalValue = parseFloat((total * months).toFixed(2))
+  const totalValue = total * months
   const getMonthInterest = (prevValue: number) => {
     return (interest / 12) * (prevValue / 100)
   }
   const getMonthPrincipal = (monthInterest: number) => {
     return total - monthInterest
   }
+
   for (let i = 0; i < months; i++) {
     payment.push({
       currentValue:
@@ -128,13 +128,13 @@ const calculateAnnuityPayment = (interest: number, years: number, total: number)
 }
 
 export default function MortgageCalculator() {
-  const [amount, setAmount] = useState<MortgageData>(2_500_000)
-  const [interest, setInterest] = useState<MortgageData>(6)
-  const [years, setYears] = useState<MortgageData>(5)
-
+  const [amount, setAmount] = useState(2_500_000 as number)
+  const [interest, setInterest] = useState(6 as number)
+  const [years, setYears] = useState(5 as number)
   const total = calculateMortgageTotal(amount, interest!, years!)
   const payment = calculateAnnuityPayment(interest, years, total)
 
+  console.log(calculateAnnuityPayment(interest, years, total))
   return (
     <div css={style.MortgageCalculatorPage}>
       <Helmet>
@@ -194,7 +194,7 @@ export default function MortgageCalculator() {
         </div>
         <div>
           <p>Payment for month</p>
-          <h2>{Math.round(calculateMortgageTotal(amount, interest!, years!)) ?? 0} CZK</h2>
+          <h2>{Math.round(calculateMortgageTotal(amount, interest, years)) ?? 0} CZK</h2>
         </div>
       </div>
       <table css={style.table}>
