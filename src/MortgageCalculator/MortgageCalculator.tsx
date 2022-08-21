@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 
 const style = {
   MortgageCalculatorPage: css({
@@ -65,14 +66,24 @@ const style = {
     alignItems: 'center',
     textAlign: 'center',
   }),
+  tableContainer: css({
+    maxHeight: '50vh',
+    overflow: 'scroll',
+    overflowX: 'hidden',
+    margin: '5rem 0 ',
+    padding: '0 3rem',
+  }),
   table: css({
     display: 'table',
     textAlign: 'center',
-    margin: '5rem',
     background: theme.colors.whiteTransparent,
     padding: '3rem',
     borderRadius: '10px',
     width: '25rem',
+    maxHeight: '10vh',
+  }),
+  chart: css({
+    margin: '5rem',
   }),
 }
 type PaymentData = {
@@ -96,11 +107,15 @@ export const calculateMortgageTotal = (
   return amount / time
 }
 
-const calculateAnnuityPayment = (interest: number, years: number, total: number) => {
+const calculateAnnuityPayment = (
+  interest: number,
+  years: number,
+  total: number,
+  amount: number
+) => {
   if (!years || !total) return
   const payment = [] as PaymentData[]
   const months = years * 12
-  const totalValue = total * months
   const getMonthInterest = (prevValue: number) => {
     return (interest / 12) * (prevValue / 100)
   }
@@ -108,33 +123,34 @@ const calculateAnnuityPayment = (interest: number, years: number, total: number)
     return total - monthInterest
   }
 
-  for (let i = 0; i < months; i++) {
+  for (let i = 0; i < months + 1; i++) {
     payment.push({
       currentValue:
         i > 0
           ? payment[i - 1].currentValue -
-            (getMonthInterest(payment[i - 1].currentValue) +
-              getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue)))
-          : totalValue,
+            getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue))
+          : amount,
       monthInterest:
-        i > 0 ? getMonthInterest(payment[i - 1].currentValue) : getMonthInterest(totalValue),
+        i > 0 ? getMonthInterest(payment[i - 1].currentValue) : getMonthInterest(amount),
       monthPrincipal:
         i > 0
           ? getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue))
-          : getMonthPrincipal(getMonthInterest(totalValue)),
+          : getMonthPrincipal(getMonthInterest(amount)),
     })
   }
   return payment
 }
 
-export default function MortgageCalculator() {
-  const [amount, setAmount] = useState(2_500_000 as number)
-  const [interest, setInterest] = useState(6 as number)
-  const [years, setYears] = useState(5 as number)
+export const MortgageCalculator = () => {
+  const [amount, setAmount] = useState(2_500_000)
+  const [interest, setInterest] = useState(6)
+  const [years, setYears] = useState(5)
   const total = calculateMortgageTotal(amount, interest!, years!)
-  const payment = calculateAnnuityPayment(interest, years, total)
+  const payment = calculateAnnuityPayment(interest, years, total, amount)
+  const principalPay = payment?.map(payment => {
+    return { principalPay: amount - payment.currentValue }
+  })
 
-  console.log(calculateAnnuityPayment(interest, years, total))
   return (
     <div css={style.MortgageCalculatorPage}>
       <Helmet>
@@ -197,25 +213,59 @@ export default function MortgageCalculator() {
           <h2>{Math.round(calculateMortgageTotal(amount, interest, years)) ?? 0} CZK</h2>
         </div>
       </div>
-      <table css={style.table}>
-        <thead>
-          <tr>
-            <th>Balance</th>
-            <th>Interest</th>
-            <th>Principal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {payment &&
-            payment.map(row => (
-              <tr key={row.currentValue}>
-                <td>{parseFloat(row.currentValue.toFixed(2))}</td>
-                <td>{parseFloat(row.monthInterest.toFixed(2))}</td>
-                <td>{parseFloat(row.monthPrincipal.toFixed(2))}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div css={style.tableContainer}>
+        <table css={style.table}>
+          <thead>
+            <tr>
+              <th>Balance</th>
+              <th>Interest</th>
+              <th>Principal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {payment &&
+              payment.map(row => (
+                <tr key={row.currentValue}>
+                  <td>{parseFloat(row.currentValue.toFixed(2))}</td>
+                  <td>{parseFloat(row.monthInterest.toFixed(2))}</td>
+                  <td>{parseFloat(row.monthPrincipal.toFixed(2))}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <LineChart width={460} height={300} data={payment}>
+          <CartesianGrid />
+          <XAxis dataKey='currentValue' tick={false} />
+          <YAxis yAxisId='left' />
+          <YAxis yAxisId='right' orientation='right' />
+          <Tooltip />
+          <Legend />
+          <Line
+            yAxisId='left'
+            type='monotone'
+            dataKey='monthInterest'
+            stroke='#8884d8'
+            activeDot={{ r: 8 }}
+          />
+          <Line yAxisId='right' type='monotone' dataKey='monthPrincipal' stroke='#82ca9d' />
+        </LineChart>
+        <LineChart width={410} height={300} data={principalPay}>
+          <CartesianGrid />
+          <XAxis dataKey='principalPay' tick={false} />
+          <YAxis yAxisId='left' />
+          <Tooltip />
+          <Legend />
+          <Line
+            yAxisId='left'
+            type='monotone'
+            dataKey='principalPay'
+            stroke='#8884d8'
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </div>
     </div>
   )
 }
