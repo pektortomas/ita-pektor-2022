@@ -5,11 +5,11 @@ import { Home } from './Home'
 import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JSHistory } from './JSHistory/JSHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
+import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { TodoApp } from './TodoApp/TodoApp'
 import { theme } from './util/theme'
 import { urls } from './util/urls'
-import MortgageCalculator from './MortgageCalculator/MortgageCalculator'
 /** @jsxImportSource @emotion/react */
 
 const GlobalStyles = css({
