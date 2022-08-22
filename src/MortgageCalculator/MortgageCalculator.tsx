@@ -4,6 +4,7 @@ import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
+import { type } from '@testing-library/user-event/dist/type'
 
 const style = {
   MortgageCalculatorPage: css({
@@ -91,6 +92,13 @@ type PaymentData = {
   monthInterest: number
   monthPrincipal: number
 }
+type TableProps = {
+  payment: PaymentData[] | []
+}
+type ChartProps = {
+  payment: PaymentData[] | []
+  principalPay: { principalPay: number }[] | []
+}
 
 export const calculateMortgageTotal = (
   dataAmount: number,
@@ -107,38 +115,106 @@ export const calculateMortgageTotal = (
   return amount / time
 }
 
-const calculateAnnuityPayment = (
-  interest: number,
-  years: number,
-  total: number,
+const calculateAnnuityPayment = (arg: {
+  interest: number
+  years: number
+  total: number
   amount: number
-) => {
-  if (!years || !total) return
+}) => {
+  if (!arg.years || !arg.total) return
   const payment = [] as PaymentData[]
-  const months = years * 12
+  const months = new Array(arg.years * 12).fill(1)
   const getMonthInterest = (prevValue: number) => {
-    return (interest / 12) * (prevValue / 100)
+    return (arg.interest / 12) * (prevValue / 100)
   }
   const getMonthPrincipal = (monthInterest: number) => {
-    return total - monthInterest
+    return arg.total - monthInterest
   }
 
-  for (let i = 0; i < months + 1; i++) {
+  months.forEach((month, i) => {
     payment.push({
       currentValue:
         i > 0
           ? payment[i - 1].currentValue -
             getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue))
-          : amount,
+          : arg.amount,
       monthInterest:
-        i > 0 ? getMonthInterest(payment[i - 1].currentValue) : getMonthInterest(amount),
+        i > 0 ? getMonthInterest(payment[i - 1].currentValue) : getMonthInterest(arg.amount),
       monthPrincipal:
         i > 0
           ? getMonthPrincipal(getMonthInterest(payment[i - 1].currentValue))
-          : getMonthPrincipal(getMonthInterest(amount)),
+          : getMonthPrincipal(getMonthInterest(arg.amount)),
     })
-  }
+  })
+
   return payment
+}
+
+const MortgageTable = (props: TableProps) => {
+  return (
+    <div css={style.tableContainer}>
+      <table css={style.table}>
+        <thead>
+          <tr>
+            <th>Balance</th>
+            <th>Interest</th>
+            <th>Principal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.payment?.map(row => (
+            <tr key={row.currentValue}>
+              <td>{parseFloat(row.currentValue.toFixed(2))}</td>
+              <td>{parseFloat(row.monthInterest.toFixed(2))}</td>
+              <td>{parseFloat(row.monthPrincipal.toFixed(2))}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+const MortgageGraphs = (props: ChartProps) => {
+  return (
+    <div>
+      <LineChart width={460} height={300} data={props.payment}>
+        <CartesianGrid />
+        <XAxis dataKey='currentValue' tick={false} />
+        <YAxis yAxisId='left' />
+        <YAxis yAxisId='right' orientation='right' />
+        <Tooltip />
+        <Legend />
+        <Line
+          yAxisId='left'
+          type='monotone'
+          dataKey='monthInterest'
+          stroke={theme.colors.reactBlue}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          yAxisId='right'
+          type='monotone'
+          dataKey='monthPrincipal'
+          stroke={theme.colors.green}
+        />
+      </LineChart>
+      <LineChart width={410} height={300} data={props.principalPay}>
+        <CartesianGrid />
+        <XAxis dataKey='principalPay' tick={false} />
+        <YAxis yAxisId='left' />
+        <Tooltip />
+        <Legend />
+        <Line
+          yAxisId='left'
+          type='monotone'
+          dataKey='principalPay'
+          stroke={theme.colors.reactBlue}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </div>
+  )
 }
 
 export const MortgageCalculator = () => {
@@ -146,10 +222,8 @@ export const MortgageCalculator = () => {
   const [interest, setInterest] = useState(6)
   const [years, setYears] = useState(5)
   const total = calculateMortgageTotal(amount, interest!, years!)
-  const payment = calculateAnnuityPayment(interest, years, total, amount)
-  const principalPay = payment?.map(payment => {
-    return { principalPay: amount - payment.currentValue }
-  })
+  const payment = calculateAnnuityPayment({ interest, years, total, amount })
+  const principalPay = payment?.map(payment => ({ principalPay: amount - payment.currentValue }))
 
   return (
     <div css={style.MortgageCalculatorPage}>
@@ -213,59 +287,8 @@ export const MortgageCalculator = () => {
           <h2>{Math.round(calculateMortgageTotal(amount, interest, years)) ?? 0} CZK</h2>
         </div>
       </div>
-      <div css={style.tableContainer}>
-        <table css={style.table}>
-          <thead>
-            <tr>
-              <th>Balance</th>
-              <th>Interest</th>
-              <th>Principal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {payment &&
-              payment.map(row => (
-                <tr key={row.currentValue}>
-                  <td>{parseFloat(row.currentValue.toFixed(2))}</td>
-                  <td>{parseFloat(row.monthInterest.toFixed(2))}</td>
-                  <td>{parseFloat(row.monthPrincipal.toFixed(2))}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <LineChart width={460} height={300} data={payment}>
-          <CartesianGrid />
-          <XAxis dataKey='currentValue' tick={false} />
-          <YAxis yAxisId='left' />
-          <YAxis yAxisId='right' orientation='right' />
-          <Tooltip />
-          <Legend />
-          <Line
-            yAxisId='left'
-            type='monotone'
-            dataKey='monthInterest'
-            stroke='#8884d8'
-            activeDot={{ r: 8 }}
-          />
-          <Line yAxisId='right' type='monotone' dataKey='monthPrincipal' stroke='#82ca9d' />
-        </LineChart>
-        <LineChart width={410} height={300} data={principalPay}>
-          <CartesianGrid />
-          <XAxis dataKey='principalPay' tick={false} />
-          <YAxis yAxisId='left' />
-          <Tooltip />
-          <Legend />
-          <Line
-            yAxisId='left'
-            type='monotone'
-            dataKey='principalPay'
-            stroke='#8884d8'
-            activeDot={{ r: 8 }}
-          />
-        </LineChart>
-      </div>
+      <MortgageTable payment={payment ?? []} />
+      <MortgageGraphs payment={payment ?? []} principalPay={principalPay ?? []} />
     </div>
   )
 }
