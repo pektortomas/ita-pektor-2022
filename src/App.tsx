@@ -1,3 +1,9 @@
+import {
+  BlogAddArticlePage,
+  BlogAppContextProvider,
+  BlogArticlePage,
+  BlogPage,
+} from './BlogApp/BlogApp'
 import { Counter } from './Counter/Counter'
 import { Global, css, jsx } from '@emotion/react'
 import { HackerTyper } from './HackerTyper/HackerTyper'
@@ -37,6 +43,31 @@ function App() {
         <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.httpFilter} element={<HttpFilter />} />
+
+        <Route
+          path={urls.blogApp.blogPage}
+          element={
+            <BlogAppContextProvider>
+              <BlogPage />
+            </BlogAppContextProvider>
+          }
+        />
+        <Route
+          path={urls.blogApp.newArticle}
+          element={
+            <BlogAppContextProvider>
+              <BlogAddArticlePage />
+            </BlogAppContextProvider>
+          }
+        />
+        <Route
+          path={urls.blogApp.articleDetail}
+          element={
+            <BlogAppContextProvider>
+              <BlogArticlePage />
+            </BlogAppContextProvider>
+          }
+        />
       </Routes>
     </Router>
   )

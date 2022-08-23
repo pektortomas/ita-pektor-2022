@@ -7,4 +7,9 @@ export const urls = {
   memoryGame: '/memory-game',
   mortgageCalculator: '/mortgage-calculator',
   httpFilter: '/http-filter',
-}
+  blogApp: {
+    blogPage: '/blog',
+    newArticle: '/blog/new-article',
+    articleDetail: '/blog/article/:slug',
+  },
+} as const
