@@ -38,3 +38,7 @@ export const pause = (ms: number) => {
 export const shuffle = <T>(arr: T[]): T[] => {
   return arr.sort(() => Math.random() - 0.5)
 }
+
+export const generateSlug = (textToSlug: string) => {
+  return `${textToSlug.toLowerCase().replace(/\W+/g, '-')}-${generateID()}`
+}
