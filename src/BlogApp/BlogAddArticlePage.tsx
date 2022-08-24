@@ -43,24 +43,24 @@ export const BlogAddArticlePage = () => {
         <button>Back to blog</button>
       </Link>
       <div css={style.formContainer}>
-        <form css={style.form}>
+        <form
+          css={style.form}
+          onSubmit={e => {
+            e.preventDefault()
+            logic.createArticle()
+          }}
+        >
           <label>Title</label>
+          {logic.titleError}
           <input onChange={e => logic.setTitle(e.target.value)} value={logic.title} type='text' />
           <label>Text</label>
+          {logic.textError}
           <textarea
             onChange={e => logic.setText(e.target.value)}
             value={logic.text}
             css={style.textarea}
           />
-          <button
-            type='submit'
-            onClick={e => {
-              e.preventDefault()
-              logic.createArticle()
-            }}
-          >
-            Save
-          </button>
+          <button type='submit'>Save</button>
         </form>
       </div>
     </div>

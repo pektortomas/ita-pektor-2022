@@ -12,9 +12,31 @@ type Article = {
 const useLogicState = () => {
   const [article, setArticle] = useLocalStorage('article', [] as Article[])
   const [title, setTitle] = useState('')
+  const [titleError, setTitleError] = useState('')
   const [text, setText] = useState('')
+  const [textError, setTextError] = useState('')
 
   const createArticle = () => {
+    setTitleError('')
+    setTextError('')
+
+    if (title === '') {
+      setTitleError('Zadejte prosím název článku')
+      return
+    }
+    if (title.length < 3) {
+      setTitleError('Název článku musí obsahovat alespoň 3 znaky')
+      return
+    }
+    if (text === '') {
+      setTextError('Zadejte prosím text článku')
+      return
+    }
+    if (text.length < 3) {
+      setTextError('Článek musí obsahovat alespoň 3 znaky')
+      return
+    }
+
     setArticle([
       {
         id: generateID(),
@@ -36,6 +58,8 @@ const useLogicState = () => {
     text,
     setText,
     createArticle,
+    titleError,
+    textError,
   }
 }
 
