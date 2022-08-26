@@ -158,19 +158,19 @@ const getMonthInflationFromYearData = (
   monthPrincipal: number[],
   years: number
 ) => {
-  const monthlyInflation = (1 - yearlyInflation / 100) ** (1 / 12) - 1
+  const monthlyInflation = (1 + -yearlyInflation / 100) ** (1 / 12) - 1
   const valuesWithInflation = new Array()
   const months = new Array(years * 12).fill(1)
+  let inflationCoeficient = 1
 
   months.forEach((month, i) => {
     valuesWithInflation.push({
-      totalWithInflation:
-        i > 0 ? valuesWithInflation[i - 1].totalWithInflation * (1 + monthlyInflation) : total,
-      interestWithInflation:
-        i > 0 ? monthInterest[i - 1] * (1 + monthlyInflation) : monthInterest[i],
+      totalWithInflation: i > 0 ? total * inflationCoeficient : total,
+      interestWithInflation: i > 0 ? monthInterest[i - 1] * inflationCoeficient : monthInterest[i],
       principlaWithInflation:
-        i > 0 ? monthPrincipal[i - 1] * (1 + monthlyInflation) : monthPrincipal[i],
+        i > 0 ? monthPrincipal[i - 1] * inflationCoeficient : monthPrincipal[i],
     })
+    inflationCoeficient = inflationCoeficient * (1 + monthlyInflation)
   })
 
   return valuesWithInflation
@@ -274,7 +274,7 @@ const MortgageGraphs = (props: ChartProps) => {
 export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
-  const [years, setYears] = useState(30)
+  const [years, setYears] = useState(1)
   const [inflation, setInflation] = useState(2)
   const total = calculateMortgageTotal(amount, interest!, years!)
   const payment = calculateAnnuityPayment({ interest, years, total, amount })
