@@ -98,7 +98,7 @@ type TableProps = {
 type ChartProps = {
   payment: PaymentData[] | []
   principalPay: { principalPay: number }[] | []
-  principalWithInflation: { valueWithInflation: number }[] | []
+  dataWithInflation: { valueWithInflation: number }[] | []
 }
 
 export const calculateMortgageTotal = (
@@ -151,21 +151,29 @@ const calculateAnnuityPayment = (arg: {
   return payment
 }
 
-const calculatePrincipalWithInflation = (yearlyInflation: number, principal: number[]) => {
-  const monthlyInflation = yearlyInflation ** (1 / 12)
-  const principalWithInflation = new Array()
-  if (principal) {
-    principal.forEach((value, i) => {
-      i > 0 && principalWithInflation.length > 0
-        ? principalWithInflation.push({
-            valueWithInflation:
-              (principalWithInflation[i - 1].valueWithInflation / 100) * (100 - monthlyInflation),
-          })
-        : principalWithInflation.push({ valueWithInflation: value })
+const getMonthInflationFromYearData = (
+  yearlyInflation: number,
+  total: number,
+  monthInterest: number[],
+  monthPrincipal: number[],
+  years: number
+) => {
+  const monthlyInflation = (1 - yearlyInflation / 100) ** (1 / 12) - 1
+  const valuesWithInflation = new Array()
+  const months = new Array(years * 12).fill(1)
+
+  months.forEach((month, i) => {
+    valuesWithInflation.push({
+      totalWithInflation:
+        i > 0 ? valuesWithInflation[i - 1].totalWithInflation * (1 + monthlyInflation) : total,
+      interestWithInflation:
+        i > 0 ? monthInterest[i - 1] * (1 + monthlyInflation) : monthInterest[i],
+      principlaWithInflation:
+        i > 0 ? monthPrincipal[i - 1] * (1 + monthlyInflation) : monthPrincipal[i],
     })
-    return principalWithInflation
-  }
-  return
+  })
+
+  return valuesWithInflation
 }
 
 const MortgageTable = (props: TableProps) => {
@@ -198,7 +206,7 @@ const MortgageGraphs = (props: ChartProps) => {
     <div>
       <LineChart width={460} height={300} data={props.payment}>
         <CartesianGrid />
-        <XAxis dataKey='currentValue' tick={false} />
+        <XAxis dataKey='monthInterest' tick={false} />
         <YAxis yAxisId='left' />
         <YAxis yAxisId='right' orientation='right' />
         <Tooltip />
@@ -231,18 +239,32 @@ const MortgageGraphs = (props: ChartProps) => {
           activeDot={{ r: 8 }}
         />
       </LineChart>
-      <LineChart width={410} height={300} data={props.principalWithInflation}>
+      <h1>Data with inflation</h1>
+      <LineChart width={460} height={300} data={props.dataWithInflation}>
         <CartesianGrid />
-        <XAxis dataKey='valueWithInflation' tick={false} />
+        <XAxis dataKey='' tick={false} />
         <YAxis yAxisId='left' />
+        <YAxis yAxisId='right' orientation='right' />
         <Tooltip />
         <Legend />
         <Line
+          yAxisId='right'
+          type='monotone'
+          dataKey='totalWithInflation'
+          stroke={theme.colors.red}
+        />
+        <Line
           yAxisId='left'
           type='monotone'
-          dataKey='valueWithInflation'
+          dataKey='interestWithInflation'
           stroke={theme.colors.reactBlue}
           activeDot={{ r: 8 }}
+        />
+        <Line
+          yAxisId='right'
+          type='monotone'
+          dataKey='principlaWithInflation'
+          stroke={theme.colors.green}
         />
       </LineChart>
     </div>
@@ -252,14 +274,21 @@ const MortgageGraphs = (props: ChartProps) => {
 export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
-  const [years, setYears] = useState(5)
-  const [inflation, setInflation] = useState(16.5)
+  const [years, setYears] = useState(30)
+  const [inflation, setInflation] = useState(2)
   const total = calculateMortgageTotal(amount, interest!, years!)
   const payment = calculateAnnuityPayment({ interest, years, total, amount })
   const principalPay = payment?.map(payment => ({ principalPay: amount - payment.currentValue }))
-  const principalWithInflation = calculatePrincipalWithInflation(
+  const dataWithInflation = getMonthInflationFromYearData(
     inflation,
-    payment!.map(payment => payment.monthPrincipal)
+    total,
+    payment!.map(pay => {
+      return pay.monthInterest
+    }),
+    payment!.map(pay => {
+      return pay.monthPrincipal
+    }),
+    years
   )
 
   return (
@@ -343,7 +372,7 @@ export const MortgageCalculator = () => {
       <MortgageGraphs
         payment={payment ?? []}
         principalPay={principalPay ?? []}
-        principalWithInflation={principalWithInflation ?? []}
+        dataWithInflation={dataWithInflation ?? []}
       />
     </div>
   )
