@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const generateID = () => {
   return Math.floor(Math.random() * 100_000_000)
@@ -39,6 +39,12 @@ export const shuffle = <T>(arr: T[]): T[] => {
   return arr.sort(() => Math.random() - 0.5)
 }
 
-export const generateSlug = (textToSlug: string) => {
-  return `${textToSlug.toLowerCase().replace(/\W+/g, '-')}-${generateID()}`
+export const generateSlug = (textToSlug: string, id: number | string) => {
+  return `${textToSlug.toLowerCase().replace(/\W+/g, '-')}-${id}`
+}
+
+export const useComponentDidMount = (fn: () => void) => {
+  useEffect(() => {
+    fn()
+  }, [])
 }

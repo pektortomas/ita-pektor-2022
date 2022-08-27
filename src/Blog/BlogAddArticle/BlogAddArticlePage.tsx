@@ -1,8 +1,9 @@
-import { BlogAppContext } from './BlogAppContext'
+import { BlogAddArticleContext } from './BlogAddArticleContext'
+import { BlogAppContext } from '../Blogapp/BlogAppContext'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { theme } from '../util/theme'
-import { urls } from '../util/urls'
+import { theme } from '../../util/theme'
+import { urls } from '../../util/urls'
 import { useContext } from 'react'
 /** @jsxImportSource @emotion/react */
 
@@ -35,7 +36,7 @@ const style = {
 }
 
 export const BlogAddArticlePage = () => {
-  const logic = useContext(BlogAppContext)
+  const logic = useContext(BlogAddArticleContext)
 
   return (
     <div css={style.blogPage}>

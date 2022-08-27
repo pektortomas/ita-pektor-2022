@@ -11,5 +11,6 @@ export const urls = {
     blogPage: '/blog',
     newArticle: '/blog/new-article',
     articleDetail: '/blog/article/:slug',
+    updateArticle: '/blog/update-article/:slug',
   },
 } as const
