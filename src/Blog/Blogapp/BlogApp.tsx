@@ -1,6 +1,6 @@
-import { BEblogFilterUrl } from '../../util/backendUrls'
 import { BlogAppContext } from './BlogAppContext'
 import { Link } from 'react-router-dom'
+import { backendBlogFilterUrl } from '../../util/backendUrls'
 import { css } from '@emotion/react'
 import { theme } from '../../util/theme'
 import { urls } from '../../util/urls'
@@ -58,7 +58,7 @@ export const BlogPage = () => {
               logic.setValue(e.target.value)
               try {
                 logic.setLoading(true)
-                const response = await fetch(BEblogFilterUrl(e.target.value))
+                const response = await fetch(backendBlogFilterUrl(e.target.value))
                 logic.setFilterArticles(await response.json())
               } catch (err) {
                 if (err) logic.setCustomError('Databáze je dočasně nedostupná')

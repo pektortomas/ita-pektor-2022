@@ -1,3 +1,4 @@
+import { beckendUrls } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
@@ -12,7 +13,7 @@ const useLogicState = () => {
 
   const getArticleData = async () => {
     try {
-      const response = await fetch('http://localhost:1234/articles')
+      const response = await fetch(beckendUrls.getArticles)
       setArticleData(await response.json())
     } catch (err) {
       if (err) setCustomError('Vytvořte svůj první článek')

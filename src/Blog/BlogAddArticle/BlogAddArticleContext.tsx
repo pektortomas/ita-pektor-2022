@@ -1,3 +1,4 @@
+import { beckendUrls } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
 import { useState } from 'react'
 
@@ -9,7 +10,7 @@ const useLogicState = () => {
 
   const setNewArticleData = async () => {
     const payload = { title: title, text: text }
-    await fetch('http://localhost:1234/articles', {
+    await fetch(beckendUrls.getArticles, {
       method: 'POST',
       headers: new Headers({
         'content-type': 'application/json',

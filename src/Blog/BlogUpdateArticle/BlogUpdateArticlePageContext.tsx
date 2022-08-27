@@ -1,4 +1,4 @@
-import { generateID, generateSlug, useLocalStorage } from '../../util/helperFunctions'
+import { backendBlogGetBySlugUrl, backendBlogUpdateBySlugUrl } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
@@ -23,7 +23,7 @@ const useLogicState = () => {
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(`http://localhost:1234/articles/${slug}`)
+      const response = await fetch(backendBlogGetBySlugUrl(slug!))
       const responseJson = (await response.json()) as Article
       setTitle(await responseJson.body.title)
       setText(await responseJson.body.text)
@@ -36,7 +36,7 @@ const useLogicState = () => {
 
   const updateArticleData = async () => {
     const payload = { title: title, text: text }
-    await fetch(`http://localhost:1234/update-article/${slug}`, {
+    await fetch(backendBlogUpdateBySlugUrl(slug!), {
       method: 'POST',
       headers: new Headers({
         'content-type': 'application/json',

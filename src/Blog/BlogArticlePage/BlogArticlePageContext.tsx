@@ -1,3 +1,4 @@
+import { backendBlogDeleteBySlugUrl, backendBlogGetBySlugUrl } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
@@ -19,7 +20,7 @@ const useLogicState = () => {
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(`http://localhost:1234/articles/${slug}`)
+      const response = await fetch(backendBlogGetBySlugUrl(slug!))
       setArticleData(await response.json())
     } catch (err) {
       if (err) setCustomError('Databáze je dočasně nedostupná')
@@ -29,7 +30,7 @@ const useLogicState = () => {
   }
 
   const deleteArticle = async () => {
-    await fetch(`http://localhost:1234/delete-article/${slug}`, {
+    await fetch(backendBlogDeleteBySlugUrl(slug!), {
       method: 'DELETE',
       headers: new Headers({
         'Access-Control-Allow-Origin': '*',
