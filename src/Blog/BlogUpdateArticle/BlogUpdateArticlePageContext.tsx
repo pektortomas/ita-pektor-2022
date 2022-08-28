@@ -1,5 +1,5 @@
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
-import { serviceUrls } from '../../util/backendUrls'
+import { services } from '../../util/serviceLayer'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -14,7 +14,7 @@ type Article = {
 
 const useLogicState = () => {
   const [loading, setLoading] = useState(true)
-  const [customError, setCustomError] = useState('')
+  const [error, setError] = useState('')
   const [title, setTitle] = useState('')
   const [titleError, setTitleError] = useState('')
   const [text, setText] = useState('')
@@ -24,26 +24,19 @@ const useLogicState = () => {
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(serviceUrls.blog.getBySlug(slug!))
-      const responseJson = (await response.json()) as Article
-      setTitle(await responseJson.body.title)
-      setText(await responseJson.body.text)
+      const response = (await services.blog.getBySlug(slug!)) as Article
+      setTitle(await response.body.title)
+      setText(await response.body.text)
     } catch (err) {
-      setCustomError('Database is temporarily unavailable')
+      setError('Database is temporarily unavailable')
     } finally {
       setLoading(false)
     }
   }
 
   const updateArticleData = async () => {
-    const payload = { title: title, text: text }
-    await fetch(serviceUrls.blog.updateBySllug(slug!), {
-      method: 'POST',
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-      body: JSON.stringify(payload),
-    })
+    const payload = { title, text }
+    services.blog.updateBySlug(slug!, payload)
   }
 
   const updateArticle = () => {
@@ -82,8 +75,9 @@ const useLogicState = () => {
     textError,
     getArticleData,
     slug,
-    customError,
+    setError,
     loading,
+    error,
   }
 }
 

@@ -8,6 +8,9 @@ type Data = {
   id: string
   name: string
 }
+type Articles = {
+  articles: Article[]
+}
 type Article = {
   id: number
   slug: string
@@ -32,6 +35,16 @@ const generateSlug = (textToSlug: string, id: number | string) => {
 const generateID = () => {
   return Math.floor(Math.random() * 100_000_000)
 }
+const getDataFromJSON = (fileName: string): Articles => {
+  const dataString = fs.readFileSync(`${__dirname}/../${fileName}.json`, 'utf-8')
+  return JSON.parse(dataString)
+}
+const putDataToJSON = (fileName: string, dataToJSON: {}) => {
+  fs.writeFileSync(`${__dirname}/../${fileName}.json`, JSON.stringify(dataToJSON))
+}
+const isArticleReadable = (dataToRead: Article[]) => {
+  return dataToRead.every((e: Article) => !e.id || !e.slug || !e.body.title || !e.body.text)
+}
 
 app.get('/http-filter', (req, res) => {
   const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
@@ -49,14 +62,13 @@ app.get('/http-filter', (req, res) => {
 })
 
 app.get('/blog-filter', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
-  const data = JSON.parse(dataString).articles
+  const data = getDataFromJSON('articles').articles
 
-  if (data.every((e: Article) => !e.id || !e.slug || !e.body.title || !e.body.text)) {
+  if (isArticleReadable(data)) {
     res.sendStatus(422)
   } else {
     res.send(
-      data.filter((e: Article) =>
+      data.filter(e =>
         setUnifyString(e.body.title).includes(setUnifyString(req.query.search?.toString() ?? ''))
       )
     )
@@ -64,12 +76,11 @@ app.get('/blog-filter', (req, res) => {
 })
 
 app.get('/articles', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
-  const data = JSON.parse(dataString).articles
+  const data = getDataFromJSON('articles').articles
 
   if (data.length < 1) {
     res.send(204)
-  } else if (data.every((e: Article) => !e.id || !e.slug || !e.body.title || !e.body.text)) {
+  } else if (isArticleReadable(data)) {
     res.sendStatus(422)
   } else {
     res.send(data)
@@ -77,10 +88,9 @@ app.get('/articles', (req, res) => {
 })
 
 app.get('/articles/:slug', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
-  const dataJson = JSON.parse(dataString)
+  const data = getDataFromJSON('articles').articles
   const slug = req.params.slug
-  const filteredArticle = dataJson.articles.filter((article: Article) => article.slug === slug)
+  const filteredArticle = data.filter(article => article.slug === slug)
 
   if (filteredArticle.length < 1) {
     res.sendStatus(404)
@@ -90,31 +100,27 @@ app.get('/articles/:slug', (req, res) => {
 })
 
 app.post('/articles/', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
-  const dataJson = JSON.parse(dataString)
+  const data = getDataFromJSON('articles')
   const id = generateID()
-  dataJson.articles.unshift({ id: id, slug: generateSlug(req.body.title, id), body: req.body })
-  fs.writeFileSync(`${__dirname}/../articles.json`, JSON.stringify(dataJson))
+  data.articles.unshift({ id: id, slug: generateSlug(req.body.title, id), body: req.body })
+  putDataToJSON('articles', data)
 })
 
 app.post('/update-article/:slug', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
+  const data = getDataFromJSON('articles')
   const slug = req.params.slug
-  const dataJson = JSON.parse(dataString)
-  const articles = dataJson.articles.map((article: Article) =>
+  const articles = data.articles.map(article =>
     article.slug === slug ? { ...article, body: req.body } : article
   )
-
-  fs.writeFileSync(`${__dirname}/../articles.json`, JSON.stringify({ articles }))
+  putDataToJSON('articles', { articles })
 })
 
 app.delete('/delete-article/:slug', (req, res) => {
-  const dataString = fs.readFileSync(`${__dirname}/../articles.json`, 'utf-8')
+  const data = getDataFromJSON('articles')
   const slug = req.params.slug
-  const dataJson = JSON.parse(dataString)
-  const articles = dataJson.articles.filter((article: Article) => article.slug !== slug)
+  const articles = data.articles.filter(article => article.slug !== slug)
 
-  fs.writeFileSync(`${__dirname}/../articles.json`, JSON.stringify({ articles }))
+  putDataToJSON('articles', { articles })
 })
 
 app.listen(port)

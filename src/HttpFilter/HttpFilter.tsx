@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { serviceUrls } from '../util/backendUrls'
+import { services } from '../util/serviceLayer'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
@@ -31,8 +31,7 @@ export const HttpFilter = () => {
           setValue(e.target.value)
           try {
             setLoading(true)
-            const response = await fetch(serviceUrls.httpFilter.filter(e.target.value))
-            setData(await response.json())
+            setData(await services.httpFilter.filter(e.target.value))
           } catch (err) {
             if (err) setCustomError('Database is temporarily unavailable')
           } finally {

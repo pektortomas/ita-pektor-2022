@@ -1,24 +1,28 @@
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
-import { serviceUrls } from '../../util/backendUrls'
+import { services } from '../../util/serviceLayer'
 import { useState } from 'react'
+
+type Article = {
+  id: number
+  slug: string
+  body: {
+    title: string
+    text: string
+  }
+}
 
 const useLogicState = () => {
   const [value, setValue] = useState('')
-  const [articleData, setArticleData] = useState([] as any[])
+  const [articleData, setArticleData] = useState([] as Article[])
   const [filterArticles, setFilterArticles] = useState(articleData)
   const [loading, setLoading] = useState(true)
-  const [customError, setCustomError] = useState('')
+  const [error, setError] = useState('')
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(serviceUrls.blog.getAll)
-      if (await response.ok) {
-        setArticleData(await response.json())
-      } else {
-        setCustomError('Database is temporarily unavailable')
-        throw new Error('Error in database')
-      }
+      setArticleData(await services.blog.getAll())
     } catch (err) {
+      setError('Database is temporarily unavailable')
       console.info(err)
     } finally {
       setLoading(false)
@@ -29,13 +33,13 @@ const useLogicState = () => {
     articleData,
     getArticleData,
     loading,
-    customError,
+    error,
     value,
     setValue,
     setLoading,
     setFilterArticles,
     filterArticles,
-    setCustomError,
+    setError,
   }
 }
 

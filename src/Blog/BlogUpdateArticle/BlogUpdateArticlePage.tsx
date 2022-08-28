@@ -44,8 +44,8 @@ export const BlogUpdateArticlePage = () => {
       <Link to={urls.blogApp.blogPage}>
         <button>Back to blog</button>
       </Link>
-      {logic.customError.length > 0 ? (
-        <div>{logic.customError}</div>
+      {logic.error.length > 0 ? (
+        <div>{logic.error}</div>
       ) : logic.loading ? (
         <p>...Loading</p>
       ) : (

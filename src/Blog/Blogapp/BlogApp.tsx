@@ -1,7 +1,7 @@
 import { BlogAppContext } from './BlogAppContext'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { serviceUrls } from '../../util/backendUrls'
+import { services } from '../../util/serviceLayer'
 import { theme } from '../../util/theme'
 import { urls } from '../../util/urls'
 import { useComponentDidMount } from '../../util/helperFunctions'
@@ -58,18 +58,17 @@ export const BlogPage = () => {
               logic.setValue(e.target.value)
               try {
                 logic.setLoading(true)
-                const response = await fetch(serviceUrls.blog.filter(e.target.value))
-                logic.setFilterArticles(await response.json())
+                logic.setFilterArticles(await services.blog.filter(e.target.value))
               } catch (err) {
-                logic.setCustomError('Database is temporarily unavailable')
+                logic.setError('Database is temporarily unavailable')
               } finally {
                 logic.setLoading(false)
               }
             }}
           />
         </div>
-        {logic.customError.length > 0 ? (
-          <div>{logic.customError}</div>
+        {logic.error.length > 0 ? (
+          <div>{logic.error}</div>
         ) : logic.loading ? (
           <p>...Loading</p>
         ) : logic.articleData.length < 1 ? (
@@ -78,7 +77,6 @@ export const BlogPage = () => {
           logic.filterArticles.map(article => (
             <div css={style.post} key={article.id}>
               <h3>{article.body.title}</h3>
-              <p>Jsem z BE</p>
               <Link to={urls.blogApp.getAarticleDetail(article.slug)}>
                 <button>Show article</button>
               </Link>
@@ -88,7 +86,6 @@ export const BlogPage = () => {
           logic.articleData.map(article => (
             <div css={style.post} key={article.id}>
               <h3>{article.body.title}</h3>
-              <p>Jsem z BE</p>
               <Link to={urls.blogApp.getAarticleDetail(article.slug)}>
                 <button>Show article</button>
               </Link>

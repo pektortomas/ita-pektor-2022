@@ -1,5 +1,5 @@
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
-import { serviceUrls } from '../../util/backendUrls'
+import { services } from '../../util/serviceLayer'
 import { useState } from 'react'
 
 const useLogicState = () => {
@@ -10,13 +10,7 @@ const useLogicState = () => {
 
   const setNewArticleData = async () => {
     const payload = { title, text }
-    await fetch(serviceUrls.blog.getAll, {
-      method: 'POST',
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-      body: JSON.stringify(payload),
-    })
+    services.blog.setNew(payload)
   }
 
   const createArticle = () => {
