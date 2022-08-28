@@ -1,6 +1,5 @@
-import { beckendUrls } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
-import { useParams } from 'react-router-dom'
+import { serviceUrls } from '../../util/backendUrls'
 import { useState } from 'react'
 
 const useLogicState = () => {
@@ -9,14 +8,18 @@ const useLogicState = () => {
   const [filterArticles, setFilterArticles] = useState(articleData)
   const [loading, setLoading] = useState(true)
   const [customError, setCustomError] = useState('')
-  const { slug } = useParams()
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(beckendUrls.getArticles)
-      setArticleData(await response.json())
+      const response = await fetch(serviceUrls.blog.getAll)
+      if (await response.ok) {
+        setArticleData(await response.json())
+      } else {
+        setCustomError('Database is temporarily unavailable')
+        throw new Error('Error in database')
+      }
     } catch (err) {
-      if (err) setCustomError('Vytvořte svůj první článek')
+      console.info(err)
     } finally {
       setLoading(false)
     }

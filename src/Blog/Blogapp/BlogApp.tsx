@@ -1,7 +1,7 @@
 import { BlogAppContext } from './BlogAppContext'
 import { Link } from 'react-router-dom'
-import { backendBlogFilterUrl } from '../../util/backendUrls'
 import { css } from '@emotion/react'
+import { serviceUrls } from '../../util/backendUrls'
 import { theme } from '../../util/theme'
 import { urls } from '../../util/urls'
 import { useComponentDidMount } from '../../util/helperFunctions'
@@ -58,10 +58,10 @@ export const BlogPage = () => {
               logic.setValue(e.target.value)
               try {
                 logic.setLoading(true)
-                const response = await fetch(backendBlogFilterUrl(e.target.value))
+                const response = await fetch(serviceUrls.blog.filter(e.target.value))
                 logic.setFilterArticles(await response.json())
               } catch (err) {
-                if (err) logic.setCustomError('Databáze je dočasně nedostupná')
+                logic.setCustomError('Database is temporarily unavailable')
               } finally {
                 logic.setLoading(false)
               }
@@ -72,12 +72,14 @@ export const BlogPage = () => {
           <div>{logic.customError}</div>
         ) : logic.loading ? (
           <p>...Loading</p>
+        ) : logic.articleData.length < 1 ? (
+          <p>Vytvořte svůj první článek</p>
         ) : logic.value.length > 0 ? (
           logic.filterArticles.map(article => (
             <div css={style.post} key={article.id}>
               <h3>{article.body.title}</h3>
               <p>Jsem z BE</p>
-              <Link to={`article/${article.slug}`}>
+              <Link to={urls.blogApp.getAarticleDetail(article.slug)}>
                 <button>Show article</button>
               </Link>
             </div>
@@ -87,7 +89,7 @@ export const BlogPage = () => {
             <div css={style.post} key={article.id}>
               <h3>{article.body.title}</h3>
               <p>Jsem z BE</p>
-              <Link to={`article/${article.slug}`}>
+              <Link to={urls.blogApp.getAarticleDetail(article.slug)}>
                 <button>Show article</button>
               </Link>
             </div>

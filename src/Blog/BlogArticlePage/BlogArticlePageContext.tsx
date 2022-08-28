@@ -1,5 +1,5 @@
-import { backendBlogDeleteBySlugUrl, backendBlogGetBySlugUrl } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
+import { serviceUrls } from '../../util/backendUrls'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -16,28 +16,28 @@ const useLogicState = () => {
   const [articleData, setArticleData] = useState(undefined as Article | undefined)
   const [loading, setLoading] = useState(true)
   const [customError, setCustomError] = useState('')
-  const { slug } = useParams()
+  const params = useParams<{ slug: string }>()
+  const slug = params.slug
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(backendBlogGetBySlugUrl(slug!))
-      setArticleData(await response.json())
+      const response = await fetch(serviceUrls.blog.getBySlug(slug!))
+      if (await response.ok) {
+        setArticleData(await response.json())
+      } else {
+        setCustomError('Article not found')
+        throw new Error('Error in database')
+      }
     } catch (err) {
-      if (err) setCustomError('Databáze je dočasně nedostupná')
+      console.info(err)
     } finally {
       setLoading(false)
     }
   }
 
   const deleteArticle = async () => {
-    await fetch(backendBlogDeleteBySlugUrl(slug!), {
+    await fetch(serviceUrls.blog.deleteBySlug(slug!), {
       method: 'DELETE',
-      headers: new Headers({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Z-Key',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      }),
     })
   }
 

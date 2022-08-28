@@ -1,18 +1,14 @@
-export const backendFilterUrl = (filterValue: string) => {
-  return `${process.env.REACT_APP_HTTP_FILTER_URL}?search=${filterValue}`
-}
-export const backendBlogFilterUrl = (filterValue: string) => {
-  return `${process.env.REACT_APP_BLOG_BACKEND_URL}blog-filter?search=${filterValue}`
-}
-export const backendBlogGetBySlugUrl = (slug: string) => {
-  return `${process.env.REACT_APP_BLOG_BACKEND_URL}articles/${slug}`
-}
-export const backendBlogDeleteBySlugUrl = (slug: string) => {
-  return `${process.env.REACT_APP_BLOG_BACKEND_URL}delete-article/${slug}`
-}
-export const backendBlogUpdateBySlugUrl = (slug: string) => {
-  return `${process.env.REACT_APP_BLOG_BACKEND_URL}update-article/${slug}`
-}
-export const beckendUrls = {
-  getArticles: `${process.env.REACT_APP_BLOG_BACKEND_URL}articles`,
+const apiURL = process.env.REACT_APP_BLOG_BACKEND_URL
+
+export const serviceUrls = {
+  httpFilter: {
+    filter: (filterValue: string) => `${apiURL}http-filter?search=${filterValue}`,
+  },
+  blog: {
+    filter: (filterValue: string) => `${apiURL}blog-filter?search=${filterValue}`,
+    getBySlug: (slug: string) => `${apiURL}articles/${slug}`,
+    deleteBySlug: (slug: string) => `${apiURL}delete-article/${slug}`,
+    updateBySllug: (slug: string) => `${apiURL}update-article/${slug}`,
+    getAll: `${apiURL}articles`,
+  },
 }

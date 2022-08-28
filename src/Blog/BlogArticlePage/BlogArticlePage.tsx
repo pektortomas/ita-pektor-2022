@@ -53,7 +53,7 @@ export const BlogArticlePage = () => {
           <ReactMarkdown>{logic.articleData!.body.title}</ReactMarkdown>
         </div>
       )}
-      <Link to={`/blog/update-article/${logic.slug}`}>
+      <Link to={urls.blogApp.setAarticleUpdate(logic.slug!)}>
         <button>Update article</button>
       </Link>
       <button

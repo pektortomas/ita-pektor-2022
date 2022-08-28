@@ -1,5 +1,5 @@
-import { backendBlogGetBySlugUrl, backendBlogUpdateBySlugUrl } from '../../util/backendUrls'
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
+import { serviceUrls } from '../../util/backendUrls'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -19,16 +19,17 @@ const useLogicState = () => {
   const [titleError, setTitleError] = useState('')
   const [text, setText] = useState('')
   const [textError, setTextError] = useState('')
-  const { slug } = useParams()
+  const params = useParams<{ slug: string }>()
+  const slug = params.slug
 
   const getArticleData = async () => {
     try {
-      const response = await fetch(backendBlogGetBySlugUrl(slug!))
+      const response = await fetch(serviceUrls.blog.getBySlug(slug!))
       const responseJson = (await response.json()) as Article
       setTitle(await responseJson.body.title)
       setText(await responseJson.body.text)
     } catch (err) {
-      if (err) setCustomError('Databáze je dočasně nedostupná')
+      setCustomError('Database is temporarily unavailable')
     } finally {
       setLoading(false)
     }
@@ -36,7 +37,7 @@ const useLogicState = () => {
 
   const updateArticleData = async () => {
     const payload = { title: title, text: text }
-    await fetch(backendBlogUpdateBySlugUrl(slug!), {
+    await fetch(serviceUrls.blog.updateBySllug(slug!), {
       method: 'POST',
       headers: new Headers({
         'content-type': 'application/json',
