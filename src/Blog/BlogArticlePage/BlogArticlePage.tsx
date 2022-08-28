@@ -49,17 +49,24 @@ export const BlogArticlePage = () => {
         <p>...Loading</p>
       ) : (
         <div css={style.article}>
-          <h1>{logic.articleData?.body.title}</h1>
-          <ReactMarkdown>{logic.articleData!.body.title}</ReactMarkdown>
+          <h1>{logic.article?.body.title}</h1>
+          <ReactMarkdown>{logic.article!.body.text}</ReactMarkdown>
         </div>
       )}
       <Link to={urls.blogApp.setAarticleUpdate(logic.slug!)}>
         <button>Update article</button>
       </Link>
       <button
-        onClick={() => {
-          logic.deleteArticle()
-          navigate(urls.blogApp.blogPage)
+        onClick={async () => {
+          try {
+            logic.setLoading(true)
+            await logic.deleteArticle()
+            navigate(urls.blogApp.blogPage)
+          } catch (err) {
+            logic.setError('Database is temporarily unavailable')
+          } finally {
+            logic.setLoading(false)
+          }
         }}
       >
         Delete article

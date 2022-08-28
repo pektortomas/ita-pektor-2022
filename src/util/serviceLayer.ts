@@ -33,7 +33,7 @@ export const services = {
         body: JSON.stringify(body),
       })
       if (!response.ok) throw new Error('Error in database')
-      return await response.json()
+      return await response
     },
     getAll: async () => {
       const response = await fetch(`${apiURL}articles`)

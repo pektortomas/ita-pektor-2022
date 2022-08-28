@@ -1,5 +1,5 @@
 import { BlogUpdateArticlePageContext } from './BlogUpdateArticlePageContext'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { theme } from '../../util/theme'
 import { urls } from '../../util/urls'
@@ -38,6 +38,7 @@ const style = {
 export const BlogUpdateArticlePage = () => {
   const logic = useContext(BlogUpdateArticlePageContext)
   useComponentDidMount(logic.getArticleData)
+  let navigate = useNavigate()
 
   return (
     <div css={style.blogPage}>
@@ -52,8 +53,17 @@ export const BlogUpdateArticlePage = () => {
         <div css={style.formContainer}>
           <form
             css={style.form}
-            onSubmit={e => {
-              logic.updateArticle()
+            onSubmit={async e => {
+              e.preventDefault()
+              try {
+                logic.setLoading(true)
+                await logic.updateArticle()
+                navigate(urls.blogApp.blogPage)
+              } catch (err) {
+                logic.setError('Database is temporarily unavailable')
+              } finally {
+                logic.setLoading(false)
+              }
             }}
           >
             <label>Title</label>

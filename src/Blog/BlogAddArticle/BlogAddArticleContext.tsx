@@ -8,10 +8,7 @@ const useLogicState = () => {
   const [text, setText] = useState('')
   const [textError, setTextError] = useState('')
 
-  const setNewArticleData = async () => {
-    const payload = { title, text }
-    services.blog.setNew(payload)
-  }
+  const setNewArticleData = () => services.blog.setNew({ title, text })
 
   const createArticle = () => {
     setTitleError('')

@@ -13,7 +13,7 @@ type Article = {
 }
 
 const useLogicState = () => {
-  const [articleData, setArticleData] = useState(undefined as Article | undefined)
+  const [article, setArticle] = useState(undefined as Article | undefined)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const params = useParams<{ slug: string }>()
@@ -21,7 +21,8 @@ const useLogicState = () => {
 
   const getArticleData = async () => {
     try {
-      setArticleData(await services.blog.getBySlug(slug!))
+      const data = await services.blog.getBySlug(slug!)
+      setArticle(data)
     } catch (err) {
       setError('Article not found')
       console.info(err)
@@ -30,16 +31,25 @@ const useLogicState = () => {
     }
   }
 
-  const deleteArticle = async () => services.blog.deleteBySlug(slug!)
+  const deleteArticle = async () => {
+    try {
+      await services.blog.deleteBySlug(slug!)
+    } catch (err) {
+      setError('Article not found')
+      console.info(err)
+    }
+  }
 
   return {
-    articleData,
-    setArticleData,
+    article,
+    setArticle,
     getArticleData,
     loading,
     error,
     slug,
     deleteArticle,
+    setLoading,
+    setError,
   }
 }
 

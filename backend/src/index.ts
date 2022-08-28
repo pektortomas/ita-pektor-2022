@@ -112,7 +112,12 @@ app.post('/update-article/:slug', (req, res) => {
   const articles = data.articles.map(article =>
     article.slug === slug ? { ...article, body: req.body } : article
   )
+  if (!data.articles.some(article => article.slug === slug)) {
+    res.sendStatus(500)
+  }
+
   putDataToJSON('articles', { articles })
+  res.send('Article updated')
 })
 
 app.delete('/delete-article/:slug', (req, res) => {
@@ -120,7 +125,11 @@ app.delete('/delete-article/:slug', (req, res) => {
   const slug = req.params.slug
   const articles = data.articles.filter(article => article.slug !== slug)
 
+  if (!data.articles.some(article => article.slug === slug)) {
+    res.sendStatus(500)
+  }
   putDataToJSON('articles', { articles })
+  res.send('Article deleted')
 })
 
 app.listen(port)

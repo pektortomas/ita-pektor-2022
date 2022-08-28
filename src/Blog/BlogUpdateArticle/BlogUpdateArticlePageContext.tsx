@@ -39,7 +39,7 @@ const useLogicState = () => {
     services.blog.updateBySlug(slug!, payload)
   }
 
-  const updateArticle = () => {
+  const updateArticle = async () => {
     setTitleError('')
     setTextError('')
 
@@ -60,9 +60,16 @@ const useLogicState = () => {
       return
     }
 
-    updateArticleData()
-    setTitle('')
-    setText('')
+    try {
+      setLoading(true)
+      await updateArticleData()
+      setTitle('')
+      setText('')
+    } catch (err) {
+      console.info(err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return {
@@ -78,6 +85,7 @@ const useLogicState = () => {
     setError,
     loading,
     error,
+    setLoading,
   }
 }
 
