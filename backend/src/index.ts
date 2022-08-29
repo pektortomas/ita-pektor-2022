@@ -104,6 +104,7 @@ app.post('/articles/', (req, res) => {
   const id = generateID()
   data.articles.unshift({ id: id, slug: generateSlug(req.body.title, id), body: req.body })
   putDataToJSON('articles', data)
+  res.send('ok')
 })
 
 app.post('/update-article/:slug', (req, res) => {
