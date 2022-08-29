@@ -36,7 +36,7 @@ const useLogicState = () => {
 
   const updateArticleData = async () => {
     const payload = { title, text }
-    services.blog.updateBySlug(slug!, payload)
+    await services.blog.updateBySlug(slug!, payload)
   }
 
   const updateArticle = async () => {
@@ -66,7 +66,8 @@ const useLogicState = () => {
       setTitle('')
       setText('')
     } catch (err) {
-      console.info(err)
+      console.error(err)
+      setError('Database is temporarily unavailable')
     } finally {
       setLoading(false)
     }

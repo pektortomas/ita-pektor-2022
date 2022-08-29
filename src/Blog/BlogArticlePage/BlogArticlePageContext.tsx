@@ -25,20 +25,13 @@ const useLogicState = () => {
       setArticle(data)
     } catch (err) {
       setError('Article not found')
-      console.info(err)
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  const deleteArticle = async () => {
-    try {
-      await services.blog.deleteBySlug(slug!)
-    } catch (err) {
-      setError('Article not found')
-      console.info(err)
-    }
-  }
+  const deleteArticle = async () => await services.blog.deleteBySlug(slug!)
 
   return {
     article,

@@ -23,7 +23,7 @@ const useLogicState = () => {
       setArticleData(await services.blog.getAll())
     } catch (err) {
       setError('Database is temporarily unavailable')
-      console.info(err)
+      console.error(err)
     } finally {
       setLoading(false)
     }

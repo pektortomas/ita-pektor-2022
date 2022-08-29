@@ -79,7 +79,7 @@ app.get('/articles', (req, res) => {
   const data = getDataFromJSON('articles').articles
 
   if (data.length < 1) {
-    res.send(204)
+    res.sendStatus(204)
   } else if (isArticleReadable(data)) {
     res.sendStatus(422)
   } else {
@@ -113,11 +113,11 @@ app.post('/update-article/:slug', (req, res) => {
     article.slug === slug ? { ...article, body: req.body } : article
   )
   if (!data.articles.some(article => article.slug === slug)) {
-    res.sendStatus(500)
+    res.sendStatus(400)
+  } else {
+    putDataToJSON('articles', { articles })
+    res.send('Article updated')
   }
-
-  putDataToJSON('articles', { articles })
-  res.send('Article updated')
 })
 
 app.delete('/delete-article/:slug', (req, res) => {
@@ -126,10 +126,11 @@ app.delete('/delete-article/:slug', (req, res) => {
   const articles = data.articles.filter(article => article.slug !== slug)
 
   if (!data.articles.some(article => article.slug === slug)) {
-    res.sendStatus(500)
+    res.sendStatus(400)
+  } else {
+    putDataToJSON('articles', { articles })
+    res.send('Article deleted')
   }
-  putDataToJSON('articles', { articles })
-  res.send('Article deleted')
 })
 
 app.listen(port)
