@@ -1,16 +1,8 @@
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
 import { services } from '../../util/serviceLayer'
-import { useParams } from 'react-router-dom'
+import { urls } from '../../util/urls'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
-
-type Article = {
-  id: number
-  slug: string
-  body: {
-    title: string
-    text: string
-  }
-}
 
 const useLogicState = () => {
   const [loading, setLoading] = useState(true)
@@ -21,22 +13,17 @@ const useLogicState = () => {
   const [textError, setTextError] = useState('')
   const params = useParams<{ slug: string }>()
   const slug = params.slug
+  let navigate = useNavigate()
 
   const getArticleData = async () => {
     try {
-      const response = (await services.blog.getBySlug(slug!)) as Article
+      const response = await services.blog.getBySlug(slug!)
       setTitle(await response.body.title)
       setText(await response.body.text)
     } catch (err) {
-      setError('Database is temporarily unavailable')
     } finally {
       setLoading(false)
     }
-  }
-
-  const updateArticleData = async () => {
-    const payload = { title, text }
-    await services.blog.updateBySlug(slug!, payload)
   }
 
   const updateArticle = async () => {
@@ -62,9 +49,11 @@ const useLogicState = () => {
 
     try {
       setLoading(true)
-      await updateArticleData()
+      const payload = { title, text }
+      await services.blog.updateBySlug(slug!, payload)
       setTitle('')
       setText('')
+      navigate(urls.blogApp.blogPage)
     } catch (err) {
       console.error(err)
       setError('Database is temporarily unavailable')

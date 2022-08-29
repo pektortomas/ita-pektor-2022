@@ -22,10 +22,9 @@ export const services = {
     deleteBySlug: async (slug: string) => {
       const response = await fetch(`${apiURL}delete-article/${slug}`, { method: 'DELETE' })
       if (!response.ok) throw new Error('Error in database 1')
-      return await response
     },
     updateBySlug: async (slug: string, body: {}) => {
-      const response = await fetch(`${apiURL}update-article/${1}`, {
+      const response = await fetch(`${apiURL}update-article/${slug}`, {
         method: 'POST',
         headers: new Headers({
           'content-type': 'application/json',
@@ -33,7 +32,6 @@ export const services = {
         body: JSON.stringify(body),
       })
       if (!response.ok) throw new Error('Error in database')
-      return await response
     },
     getAll: async () => {
       const response = await fetch(`${apiURL}articles`)

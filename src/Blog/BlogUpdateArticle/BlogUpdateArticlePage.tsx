@@ -56,13 +56,9 @@ export const BlogUpdateArticlePage = () => {
             onSubmit={async e => {
               e.preventDefault()
               try {
-                logic.setLoading(true)
                 await logic.updateArticle()
-                navigate(urls.blogApp.blogPage)
               } catch (err) {
                 logic.setError('Database is temporarily unavailable')
-              } finally {
-                logic.setLoading(false)
               }
             }}
           >
