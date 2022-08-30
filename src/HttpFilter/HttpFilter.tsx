@@ -1,5 +1,5 @@
-import { backendFilterUrl } from '../util/backendUrls'
 import { css } from '@emotion/react'
+import { services } from '../util/serviceLayer'
 import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
@@ -31,10 +31,9 @@ export const HttpFilter = () => {
           setValue(e.target.value)
           try {
             setLoading(true)
-            const response = await fetch(backendFilterUrl(e.target.value))
-            setData(await response.json())
+            setData(await services.httpFilter.filter(e.target.value))
           } catch (err) {
-            if (err) setCustomError('Databáze je dočasně nedostupná')
+            if (err) setCustomError('Database is temporarily unavailable')
           } finally {
             setLoading(false)
           }

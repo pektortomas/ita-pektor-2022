@@ -1,20 +1,14 @@
-import { generateID, generateSlug, useLocalStorage } from '../util/helperFunctions'
-import { genericHookContextBuilder } from '../util/genericHookContextBuilder'
+import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
+import { services } from '../../util/serviceLayer'
 import { useState } from 'react'
 
-type Article = {
-  id: number
-  title: string
-  text: string
-  slug: string
-}
-
 const useLogicState = () => {
-  const [article, setArticle] = useLocalStorage('article', [] as Article[])
   const [title, setTitle] = useState('')
   const [titleError, setTitleError] = useState('')
   const [text, setText] = useState('')
   const [textError, setTextError] = useState('')
+
+  const setNewArticleData = () => services.blog.setNew({ title, text })
 
   const createArticle = () => {
     setTitleError('')
@@ -37,22 +31,12 @@ const useLogicState = () => {
       return
     }
 
-    setArticle([
-      {
-        id: generateID(),
-        title: title,
-        text: text,
-        slug: generateSlug(title),
-      },
-      ...article,
-    ])
+    setNewArticleData()
     setTitle('')
     setText('')
   }
 
   return {
-    article,
-    setArticle,
     title,
     setTitle,
     text,
@@ -63,5 +47,5 @@ const useLogicState = () => {
   }
 }
 
-export const { ContextProvider: BlogAppContextProvider, Context: BlogAppContext } =
+export const { ContextProvider: BlogAddArticleContextProvider, Context: BlogAddArticleContext } =
   genericHookContextBuilder(useLogicState)

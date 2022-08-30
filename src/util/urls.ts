@@ -11,5 +11,8 @@ export const urls = {
     blogPage: '/blog',
     newArticle: '/blog/new-article',
     articleDetail: '/blog/article/:slug',
+    getAarticleDetail: (slug: string) => `article/${slug}`,
+    updateArticle: '/blog/update-article/:slug',
+    setAarticleUpdate: (slug: string) => `/blog/update-article/${slug}`,
   },
 } as const

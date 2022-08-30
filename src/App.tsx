@@ -1,7 +1,14 @@
-import { BlogAddArticlePage } from './BlogApp/BlogAddArticlePage'
-import { BlogAppContextProvider } from './BlogApp/BlogAppContext'
-import { BlogArticlePage } from './BlogApp/BlogArticlePage'
-import { BlogPage } from './BlogApp/BlogApp'
+import { BlogAddArticleContextProvider } from './Blog/BlogAddArticle/BlogAddArticleContext'
+import { BlogAddArticlePage } from './Blog/BlogAddArticle/BlogAddArticlePage'
+import { BlogAppContextProvider } from './Blog/Blogapp/BlogAppContext'
+import { BlogArticlePage } from './Blog/BlogArticlePage/BlogArticlePage'
+import { BlogArticlePageContextProvider } from './Blog/BlogArticlePage/BlogArticlePageContext'
+import { BlogPage } from './Blog/Blogapp/BlogApp'
+import { BlogUpdateArticlePage } from './Blog/BlogUpdateArticle/BlogUpdateArticlePage'
+import {
+  BlogUpdateArticlePageContext,
+  BlogUpdateArticlePageContextProvider,
+} from './Blog/BlogUpdateArticle/BlogUpdateArticlePageContext'
 import { Counter } from './Counter/Counter'
 import { Global, css, jsx } from '@emotion/react'
 import { HackerTyper } from './HackerTyper/HackerTyper'
@@ -53,17 +60,25 @@ function App() {
         <Route
           path={urls.blogApp.newArticle}
           element={
-            <BlogAppContextProvider>
+            <BlogAddArticleContextProvider>
               <BlogAddArticlePage />
-            </BlogAppContextProvider>
+            </BlogAddArticleContextProvider>
           }
         />
         <Route
           path={urls.blogApp.articleDetail}
           element={
-            <BlogAppContextProvider>
+            <BlogArticlePageContextProvider>
               <BlogArticlePage />
-            </BlogAppContextProvider>
+            </BlogArticlePageContextProvider>
+          }
+        />
+        <Route
+          path={urls.blogApp.updateArticle}
+          element={
+            <BlogUpdateArticlePageContextProvider>
+              <BlogUpdateArticlePage />
+            </BlogUpdateArticlePageContextProvider>
           }
         />
       </Routes>
