@@ -17,8 +17,11 @@ import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JSHistory } from './JSHistory/JSHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
+import { Provider } from 'react-redux'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { TodoApp } from './TodoApp/TodoApp'
+import { TodoAppRedux } from './TodoAppRedux/TodoAppRedux'
+import { store } from './store'
 import { theme } from './util/theme'
 import { urls } from './util/urls'
 /** @jsxImportSource @emotion/react */
@@ -45,6 +48,14 @@ function App() {
         <Route path={urls.counterApp} element={<Counter />} />
         <Route path={urls.hackerTyper} element={<HackerTyper />} />
         <Route path={urls.todoApp} element={<TodoApp />} />
+        <Route
+          path={urls.todoAppRedux}
+          element={
+            <Provider store={store}>
+              <TodoAppRedux />
+            </Provider>
+          }
+        />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.httpFilter} element={<HttpFilter />} />
