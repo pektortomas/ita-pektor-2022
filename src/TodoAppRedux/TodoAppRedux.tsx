@@ -5,12 +5,14 @@ import {
   removeTask,
   setFilter,
   setNewTask,
+  setSortTasks,
   setTaskName,
 } from './todoAppSlice'
 import { css } from '@emotion/react'
 import { generateID } from '../util/helperFunctions'
 import { theme } from '../util/theme'
 import { useAppDispatch, useAppSelector } from '../util/reduxTypedHooks'
+import { useRef } from 'react'
 
 /** @jsxImportSource @emotion/react */
 
@@ -71,10 +73,16 @@ const style = {
     backgroundColor: theme.colors.white,
     color: theme.colors.black,
     borderRadius: '3rem',
+    cursor: 'move',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '90%',
       textAlign: 'center',
     },
+  }),
+  taskRow: css({
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
   }),
   taskTextContainer: css({
     width: '70%',
@@ -173,6 +181,7 @@ type Task = {
 }
 type TaskProps = {
   task: Task
+  index: number
 }
 
 type TodoAppState = {
@@ -186,7 +195,7 @@ const TaskComponent = (props: TaskProps) => {
   const dispatch = useAppDispatch()
 
   return (
-    <div css={[style.taskContainer, props.task.complete === true ? style.taskComplete : undefined]}>
+    <div css={[style.taskRow, props.task.complete === true ? style.taskComplete : undefined]}>
       <button
         css={[style.taskButton, style.complete]}
         onClick={() => dispatch(completeTask(props.task.id))}
@@ -214,6 +223,9 @@ const TaskComponent = (props: TaskProps) => {
 export const TodoAppRedux = () => {
   const todoAppState = useAppSelector(state => state.todoApp)
   const dispatch = useAppDispatch()
+
+  const dragItem = useRef<number>()
+  const dragOverItem = useRef<number>()
 
   const getFilteredTasks = (state: TodoAppState) => {
     if (state.filter === 'Active') {
@@ -256,8 +268,22 @@ export const TodoAppRedux = () => {
           />
         </form>
         <div css={style.taskList}>
-          {getFilteredTasks(todoAppState).map(task => (
-            <TaskComponent key={task.id} task={task} />
+          {getFilteredTasks(todoAppState).map((task, index) => (
+            <div
+              css={style.taskContainer}
+              key={task.id}
+              draggable
+              onDragStart={e => (dragItem.current = index)}
+              onDragEnter={e => (dragOverItem.current = index)}
+              onDragEnd={() =>
+                dispatch(
+                  setSortTasks({ dragItem: dragItem.current!, dragOverItem: dragOverItem.current! })
+                )
+              }
+              onDragOver={e => e.preventDefault()}
+            >
+              <TaskComponent task={task} index={index} />
+            </div>
           ))}
         </div>
         <nav css={style.taskFilterNav}>

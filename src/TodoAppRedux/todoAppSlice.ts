@@ -15,6 +15,11 @@ type Task = {
   complete: boolean
 }
 
+type SortParams = {
+  dragItem: number
+  dragOverItem: number
+}
+
 const getTasksFromLS = (key: string): Task[] | [] => {
   try {
     const item = window.localStorage.getItem(key)
@@ -70,11 +75,23 @@ export const todoAppSlice = createSlice({
       state.tasks = state.tasks.filter(task => !task.complete)
       setTaskToLS(keyToLS, state.tasks)
     },
+    setSortTasks: (state, action: PayloadAction<SortParams>) => {
+      const draggedItem = state.tasks.splice(action.payload.dragItem, 1)[0]
+      state.tasks.splice(action.payload.dragOverItem, 0, draggedItem)
+      setTaskToLS(keyToLS, state.tasks)
+    },
   },
 })
 
-export const { setTaskName, setNewTask, setFilter, removeTask, completeTask, removeCompleteTask } =
-  todoAppSlice.actions
+export const {
+  setTaskName,
+  setNewTask,
+  setFilter,
+  removeTask,
+  completeTask,
+  removeCompleteTask,
+  setSortTasks,
+} = todoAppSlice.actions
 
 export const selecTodos = (state: RootState) => state.todoApp
 
