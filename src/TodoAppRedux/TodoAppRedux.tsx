@@ -224,8 +224,8 @@ export const TodoAppRedux = () => {
   const todoAppState = useAppSelector(state => state.todoApp)
   const dispatch = useAppDispatch()
 
-  const dragItem = useRef<number>()
-  const dragOverItem = useRef<number>()
+  const dragItem = useRef(0)
+  const dragOverItem = useRef(0)
 
   const getFilteredTasks = (state: TodoAppState) => {
     if (state.filter === 'Active') {
