@@ -261,16 +261,16 @@ export const Home = () => {
     <>
       <div css={styleHome.homePage}>
         <div css={styleHome.col}>
-          <img css={styleHome.leftCode} src={code} alt='' />
-          <img css={styleHome.leftImg} src={img1} alt='' />
+          <img css={styleHome.leftCode} src={code} />
+          <img css={styleHome.leftImg} src={img1} />
           <div css={styleHome.icon_container}>
             <div css={styleHome.icon}>
-              <a href='http://https://gitlab.com/'>
+              <a href='https://gitlab.com/'>
                 <ReactLogo css={styleHome.iconLogo} />
               </a>
             </div>
             <div css={styleHome.icon}>
-              <a href='http://https://gitlab.com/'>
+              <a href='https://gitlab.com/'>
                 <ReactLogo css={styleHome.iconLogo} />
               </a>
             </div>
@@ -278,7 +278,7 @@ export const Home = () => {
         </div>
         <div css={styleHome.col}>
           <div>
-            <img src={logo} alt='' css={styleHome.logo} />
+            <img src={logo} css={styleHome.logo} />
             <h3 css={styleHome.subHeading}>with soul of artist</h3>
             <h1 css={styleHome.mainHeading}>Tomáš Pektor</h1>
             <span css={styleHome.reactText}>react developer</span>
@@ -291,8 +291,8 @@ export const Home = () => {
           </div>
         </div>
         <div css={styleHome.col}>
-          <img css={styleHome.rightImg} src={img2} alt='' />
-          <img css={styleHome.rightCode} src={code} alt='' />
+          <img css={styleHome.rightImg} src={img2} />
+          <img css={styleHome.rightCode} src={code} />
           <div css={styleHome.nav}>
             <div css={styleHome.nav_control}>
               <div css={styleHome.nav_control_active}></div>
@@ -303,17 +303,17 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      {/* Next page */}
+
       <div css={stylePortfolio.portfolioPage}>
         <div css={stylePortfolio.col}>
           <div css={stylePortfolio.icon_container}>
             <div css={styleHome.icon}>
-              <a href='http://https://gitlab.com/'>
+              <a href='https://gitlab.com/'>
                 <ReactLogo css={styleHome.iconLogo} />
               </a>
             </div>
             <div css={styleHome.icon}>
-              <a href='http://https://gitlab.com/'>
+              <a href='https://gitlab.com/'>
                 <ReactLogo css={styleHome.iconLogo} />
               </a>
             </div>
@@ -321,7 +321,7 @@ export const Home = () => {
         </div>
         <div css={stylePortfolio.colMain}>
           <div>
-            <img src={logo} alt='' css={stylePortfolio.logo} />
+            <img src={logo} css={stylePortfolio.logo} />
             <h1 css={stylePortfolio.mainHeading}>Name of project</h1>
             <span css={stylePortfolio.reactText}>Portfolio</span>
             <h3 css={stylePortfolio.subHeading}>Project description detail</h3>
@@ -342,7 +342,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      {/* About Me */}
+
       <div css={stylePortfolio.portfolioPage}>
         <div css={stylePortfolio.col}>
           <div css={stylePortfolio.icon_container}>
@@ -360,10 +360,9 @@ export const Home = () => {
         </div>
         <div css={stylePortfolio.colMain}>
           <div>
-            <img src={logo} alt='' css={stylePortfolio.logo} />
+            <img src={logo} css={stylePortfolio.logo} />
             <h1 css={stylePortfolio.mainHeading}>Tomáš Pektor</h1>
             <span css={stylePortfolio.reactText}>About ME</span>
-            {/* <h3 css={stylePortfolio.subHeading}>Project description detail</h3> */}
           </div>
           <div css={stylePortfolio.project}></div>
           <div css={styleHome.nav_scroll}>
