@@ -176,6 +176,7 @@ const getMonthInflationFromYearData = (
 
   return valuesWithInflation
 }
+
 const getPropertyValueWithInflation = (
   yearlyInflation: number,
   propertyValue: number,
@@ -312,9 +313,9 @@ export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
   const [years, setYears] = useState(30)
-  const [inflation, setInflation] = useState(5)
-  const total = calculateMortgageTotal(amount, interest!, years!)
+  const [inflation, setInflation] = useState(2)
   const [propertyValue, setPropertyValue] = useState(3_000_000)
+  const total = calculateMortgageTotal(amount, interest!, years!)
   const payment = calculateAnnuityPayment({ interest, years, total, amount })
   const principalPay = payment?.map(payment => ({ principalPay: amount - payment.currentValue }))
   const dataWithInflation = getMonthInflationFromYearData(
