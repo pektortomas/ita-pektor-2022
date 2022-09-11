@@ -99,6 +99,7 @@ type ChartProps = {
   payment: PaymentData[] | []
   principalPay: { principalPay: number }[] | []
   dataWithInflation: { valueWithInflation: number }[] | []
+  futurePropertyValue: { propertyWithInflation: any }[] | []
 }
 
 export const calculateMortgageTotal = (
@@ -171,6 +172,19 @@ const getMonthInflationFromYearData = (
         i > 0 ? monthPrincipal[i - 1] * inflationCoeficient : monthPrincipal[i],
     })
     inflationCoeficient = inflationCoeficient * (1 + monthlyInflation)
+  })
+
+  return valuesWithInflation
+}
+const getPropertyValueWithInflation = (arg: {
+  inflation: number
+  propertyValue: number
+  years: number
+}) => {
+  let value = arg.propertyValue
+  const valuesWithInflation = new Array(arg.years).fill(0).map((_, i, arr) => {
+    i > 0 ? (value += arr[i - 1] + (arg.propertyValue / 100) * arg.inflation) : value
+    return { propertyWithInflation: value }
   })
 
   return valuesWithInflation
@@ -267,6 +281,21 @@ const MortgageGraphs = (props: ChartProps) => {
           stroke={theme.colors.green}
         />
       </LineChart>
+      <h1>Property future value</h1>
+      <LineChart width={460} height={300} data={props.futurePropertyValue}>
+        <CartesianGrid />
+        <XAxis dataKey='' tick={false} />
+        <YAxis yAxisId='left' />
+        <YAxis yAxisId='right' orientation='right' />
+        <Tooltip />
+        <Legend />
+        <Line
+          yAxisId='right'
+          type='monotone'
+          dataKey='propertyWithInflation'
+          stroke={theme.colors.red}
+        />
+      </LineChart>
     </div>
   )
 }
@@ -274,9 +303,10 @@ const MortgageGraphs = (props: ChartProps) => {
 export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
-  const [years, setYears] = useState(1)
-  const [inflation, setInflation] = useState(2)
+  const [years, setYears] = useState(30)
+  const [inflation, setInflation] = useState(5)
   const total = calculateMortgageTotal(amount, interest!, years!)
+  const [propertyValue, setPropertyValue] = useState(3_000_000)
   const payment = calculateAnnuityPayment({ interest, years, total, amount })
   const principalPay = payment?.map(payment => ({ principalPay: amount - payment.currentValue }))
   const dataWithInflation = getMonthInflationFromYearData(
@@ -290,6 +320,7 @@ export const MortgageCalculator = () => {
     }),
     years
   )
+  const propertyFutureValue = getPropertyValueWithInflation({ inflation, propertyValue, years })
 
   return (
     <div css={style.MortgageCalculatorPage}>
@@ -362,6 +393,20 @@ export const MortgageCalculator = () => {
               onChange={e => setInflation(parseFloat(e.target.value))}
             />
           </label>
+          <label css={style.label}>
+            Property Value
+            <input
+              css={style.input}
+              type='number'
+              name='time'
+              min='0.1'
+              step='0.1'
+              placeholder='Enter value'
+              autoComplete='off'
+              value={propertyValue}
+              onChange={e => setPropertyValue(parseFloat(e.target.value))}
+            />
+          </label>
         </div>
         <div>
           <p>Payment for month</p>
@@ -373,6 +418,7 @@ export const MortgageCalculator = () => {
         payment={payment ?? []}
         principalPay={principalPay ?? []}
         dataWithInflation={dataWithInflation ?? []}
+        futurePropertyValue={propertyFutureValue ?? []}
       />
     </div>
   )
