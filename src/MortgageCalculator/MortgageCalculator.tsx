@@ -99,7 +99,7 @@ type ChartProps = {
   payment: PaymentData[] | []
   principalPay: { principalPay: number }[] | []
   dataWithInflation: { valueWithInflation: number }[] | []
-  futurePropertyValue: { propertyFutureValue: number }[] | []
+  futurePropertyValue: { propertyWithInflation: any }[] | []
 }
 
 export const calculateMortgageTotal = (
@@ -176,25 +176,17 @@ const getMonthInflationFromYearData = (
 
   return valuesWithInflation
 }
-const getPropertyValueWithInflation = (
-  yearlyInflation: number,
-  propertyValue: number,
+const getPropertyValueWithInflation = (arg: {
+  inflation: number
+  propertyValue: number
   years: number
-) => {
-  const valuesWithInflation = new Array()
-  const yearArr = new Array(years).fill(1)
-
-  yearArr.forEach((_, i) => {
-    valuesWithInflation.push({
-      propertyWithInflation:
-        i > 0
-          ? valuesWithInflation[i - 1].propertyWithInflation +
-            (propertyValue / 100) * yearlyInflation
-          : propertyValue,
-    })
+}) => {
+  let value = arg.propertyValue
+  const valuesWithInflation = new Array(arg.years).fill(0).map((_, i, arr) => {
+    i > 0 ? (value += arr[i - 1] + (arg.propertyValue / 100) * arg.inflation) : value
+    return { propertyWithInflation: value }
   })
 
-  console.info(valuesWithInflation)
   return valuesWithInflation
 }
 
@@ -328,7 +320,7 @@ export const MortgageCalculator = () => {
     }),
     years
   )
-  const propertyFutureValue = getPropertyValueWithInflation(inflation, propertyValue, years)
+  const propertyFutureValue = getPropertyValueWithInflation({ inflation, propertyValue, years })
 
   return (
     <div css={style.MortgageCalculatorPage}>
