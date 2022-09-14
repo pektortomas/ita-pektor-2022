@@ -29,7 +29,6 @@ import { urls } from './util/urls'
 const GlobalStyles = css({
   '& *': {
     fontFamily: 'sans-serif',
-    color: theme.colors.darkGrey,
   },
   body: {
     margin: '0px',

@@ -4,7 +4,6 @@ import { theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
-import { type } from '@testing-library/user-event/dist/type'
 
 const style = {
   MortgageCalculatorPage: css({
@@ -29,7 +28,7 @@ const style = {
     width: '25rem',
     height: '50%',
     textAlign: 'center',
-    background: theme.colors.whiteTransparent,
+    background: theme.colors.white_transparent,
     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
       maxWidth: '90%',
       padding: '3rem 0',
@@ -77,7 +76,7 @@ const style = {
   table: css({
     display: 'table',
     textAlign: 'center',
-    background: theme.colors.whiteTransparent,
+    background: theme.colors.white_transparent,
     padding: '3rem',
     borderRadius: '10px',
     width: '25rem',
@@ -99,7 +98,7 @@ type ChartProps = {
   payment: PaymentData[] | []
   principalPay: { principalPay: number }[] | []
   dataWithInflation: { valueWithInflation: number }[] | []
-  futurePropertyValue: { propertyWithInflation: any }[] | []
+  futurePropertyValue: { propertyWithInflation: number }[] | []
 }
 
 export const calculateMortgageTotal = (
