@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet'
+import { JSHistory } from './JSHistory/JSHistory'
 import { Link } from 'react-router-dom'
 import { ReactComponent as ReactLogo } from './img/reactLogo.svg'
 import { ScrollTrigger } from 'gsap/all'
@@ -6,20 +7,24 @@ import { css } from '@emotion/react'
 import { gsap } from 'gsap'
 import { theme } from './util/theme'
 import { urls } from './util/urls'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Avatar from './img/avatar.png'
+import React from 'react'
 import code from './img/code.svg'
 import git from './img/logos/github.svg'
 import img1 from './img/st1.png'
 import img2 from './img/st2.png'
+import jsScr from './img/screens/jsHistory.jpg'
 import linkedIn from './img/logos/linkedin.svg'
 import logo from './img/logTP.svg'
-import scr from './img/scr.png'
+import memoryScr from './img/screens/memory.jpg'
+import mortgageScr from './img/screens/mortgage.jpg'
+import todoScr from './img/screens/todo.jpg'
 
 /** @jsxImportSource @emotion/react */
 const style = {
   buttonBlue: css({
-    background: theme.colors.react_blue_dark,
+    background: theme.colors.reactBlueDark,
     color: theme.colors.white,
     textTransform: 'uppercase',
     cursor: 'pointer',
@@ -174,13 +179,13 @@ const styleHome = {
     textTransform: 'uppercase',
     fontSize: '2rem',
     letterSpacing: '1rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
   }),
   reactLogoContainer: css({
     width: '20rem',
     height: '20rem',
     marginTop: '5rem',
-    border: `0.1px solid ${theme.colors.react_blue_transparent}`,
+    border: `0.1px solid ${theme.colors.reactBlueTransparent}`,
     borderRadius: '50%',
     display: 'flex',
     justifyContent: 'center',
@@ -274,7 +279,7 @@ const stylePortfolio = {
     textTransform: 'uppercase',
     fontSize: '2rem',
     letterSpacing: '1rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
   }),
   icon_container: css({
     position: 'absolute',
@@ -299,8 +304,6 @@ const stylePortfolio = {
   project: css({
     width: '50rem',
     height: '26rem',
-    background: `url(${scr})`,
-    backgroundSize: 'cover',
     boxShadow: theme.shadows.basicShadow,
     borderRadius: '1rem',
     margin: '2rem 0',
@@ -312,6 +315,22 @@ const stylePortfolio = {
     '&:hover': {
       boxShadow: theme.glows.reactGlowActive,
     },
+  }),
+  jsHistory: css({
+    background: `url(${jsScr})`,
+    backgroundSize: 'cover',
+  }),
+  todo: css({
+    background: `url(${todoScr})`,
+    backgroundSize: 'cover',
+  }),
+  memory: css({
+    background: `url(${memoryScr})`,
+    backgroundSize: 'cover',
+  }),
+  mortgage: css({
+    background: `url(${mortgageScr})`,
+    backgroundSize: 'cover',
   }),
 }
 
@@ -355,6 +374,130 @@ const styleAboutMe = {
     margin: '2rem 0',
   }),
 }
+
+const carouselStyle = {
+  carousel: css({
+    //overflow: 'hidden',
+  }),
+  carouselRow: css({
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  }),
+  inner: css({
+    whiteSpace: 'nowrap',
+    transition: 'transform 1s',
+  }),
+  carouselItem: css({
+    zIndex: '300',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+  }),
+  indicator: css({
+    display: 'inline-flex',
+    justifyContent: 'center',
+  }),
+  indicatorButton: css({
+    position: 'absolute',
+    width: '2rem',
+    height: '5rem',
+    background: theme.colors.reactBlueDark,
+    color: theme.colors.white,
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    border: 'none',
+    borderRadius: theme.borderRadius.default,
+    transition: theme.transitions.allEaseOut,
+    '&:hover': {
+      filter: theme.glows.reactGlowSVG,
+    },
+  }),
+  left: css({
+    zIndex: '1',
+    top: '46%',
+    left: '34%',
+  }),
+  right: css({
+    zIndex: '1',
+    top: '46%',
+    right: '34%',
+  }),
+}
+
+export const CarouselItem = (props: any) => {
+  return (
+    <div css={carouselStyle.carouselItem} style={{ width: props.width }}>
+      {props.children}
+    </div>
+  )
+}
+
+const Carousel = (props: any) => {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  const updateIndex = (newIndex: number) => {
+    if (newIndex < 0) {
+      newIndex = React.Children.count(props.children) - 1
+    } else if (newIndex >= React.Children.count(props.children)) {
+      newIndex = 0
+    }
+
+    setActiveIndex(newIndex)
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!paused) {
+        updateIndex(activeIndex + 1)
+      }
+    }, 4000)
+
+    return () => {
+      if (interval) {
+        clearInterval(interval)
+      }
+    }
+  })
+
+  return (
+    <div
+      css={carouselStyle.carousel}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div css={carouselStyle.carouselRow}>
+        <button
+          css={[carouselStyle.indicatorButton, carouselStyle.left]}
+          onClick={() => {
+            updateIndex(activeIndex - 1)
+          }}
+        >
+          {`<`}
+        </button>
+        <div css={carouselStyle.inner} style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+          {React.Children.map(props.children, (child, index) => {
+            return React.cloneElement(child)
+          })}
+        </div>
+        <button
+          css={[carouselStyle.indicatorButton, carouselStyle.right]}
+          onClick={() => {
+            updateIndex(activeIndex + 1)
+          }}
+        >
+          {`>`}
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export const Home = () => {
   return (
     <div css={style.viewport}>
@@ -417,9 +560,29 @@ export const Home = () => {
             <span css={stylePortfolio.reactText}>Portfolio</span>
             <h3 css={stylePortfolio.subHeading}>Project description detail</h3>
           </div>
-          <Link to={urls.jsHistory}>
-            <div css={stylePortfolio.project}></div>
-          </Link>
+          <Carousel>
+            <CarouselItem>
+              <Link to={urls.jsHistory}>
+                <div css={[stylePortfolio.project, stylePortfolio.jsHistory]}></div>
+              </Link>
+            </CarouselItem>
+            <CarouselItem>
+              <Link to={urls.todoAppRedux}>
+                <div css={[stylePortfolio.project, stylePortfolio.todo]}></div>
+              </Link>
+            </CarouselItem>
+            <CarouselItem>
+              <Link to={urls.memoryGame}>
+                <div css={[stylePortfolio.project, stylePortfolio.memory]}></div>
+              </Link>
+            </CarouselItem>
+            <CarouselItem>
+              <Link to={urls.mortgageCalculator}>
+                <div css={[stylePortfolio.project, stylePortfolio.mortgage]}></div>
+              </Link>
+            </CarouselItem>
+          </Carousel>
+
           <div css={styleHome.nav_scroll}>
             <div css={styleHome.nav_scroll_active}></div>
           </div>

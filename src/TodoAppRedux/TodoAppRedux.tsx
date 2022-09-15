@@ -27,7 +27,7 @@ type StyledRoundButtonProps = {
 }
 
 const StyledBackButton = styled.button({
-  background: theme.colors.react_blue_dark,
+  background: theme.colors.reactBlueDark,
   border: 'none',
   width: '12rem',
   height: '3rem',
@@ -47,7 +47,7 @@ const StyledBackButton = styled.button({
 const StyledRoundButton = styled.button<StyledRoundButtonProps>(props => ({
   background: theme.colors.main_grey,
   border: '.5px solid',
-  borderColor: theme.colors.white_transparent,
+  borderColor: theme.colors.whiteTransparent,
   width: '2.5rem',
   height: '2.5rem',
   margin: '.5rem',
@@ -58,7 +58,7 @@ const StyledRoundButton = styled.button<StyledRoundButtonProps>(props => ({
   fontWeight: 'bolder',
   letterSpacing: '.1rem',
   cursor: 'pointer',
-  boxShadow: theme.shadows.in_harder,
+  boxShadow: theme.shadows.inHarder,
   transition: theme.transitions.allEaseOut,
   '&:hover': {
     borderColor:
@@ -66,7 +66,7 @@ const StyledRoundButton = styled.button<StyledRoundButtonProps>(props => ({
         ? theme.colors.green
         : props.buttonType === 'remove'
         ? theme.colors.red
-        : theme.colors.react_blue,
+        : theme.colors.reactBlue,
   },
 }))
 
@@ -77,164 +77,6 @@ const StyledMainHeading = styled.h1({
   letterSpacing: '.3rem',
   margin: '0',
 })
-
-// const style = {
-//   todoPage: css({
-//     background: theme.colors.lightReactBlue,
-//     minHeight: '100vh',
-//     minWidth: '100%',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//   }),
-//   todoContainer: css({
-//     display: 'flex',
-//     margin: '2% 0',
-//     minHeight: '20rem',
-//     width: '50rem',
-//     flexDirection: 'column',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     alignContent: 'center',
-//     border: '1px solid',
-//     borderColor: theme.colors.white,
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       width: '90%',
-//       textAlign: 'center',
-//     },
-//   }),
-//   todoForm: css({
-//     width: '100%',
-//   }),
-//   todoInput: css({
-//     height: '5rem',
-//     width: '100%',
-//     border: 'none',
-//     outline: 'none',
-//     padding: '0',
-//     textAlign: 'center',
-//     fontSize: theme.fontSizes.midSize,
-//   }),
-//   taskList: css({
-//     width: '100%',
-//     margin: '5%',
-//     minHeight: '10rem',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//   }),
-//   taskContainer: css({
-//     padding: '3%',
-//     width: '70%',
-//     marginTop: '2%',
-//     height: '3rem',
-//     display: 'flex',
-//     justifyContent: 'space-evenly',
-//     backgroundColor: theme.colors.white,
-//     color: theme.colors.black,
-//     borderRadius: '3rem',
-//     cursor: 'move',
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       width: '90%',
-//       textAlign: 'center',
-//     },
-//   }),
-//   taskRow: css({
-//     display: 'flex',
-//     justifyContent: 'center',
-//     width: '100%',
-//   }),
-//   taskTextContainer: css({
-//     width: '70%',
-//     display: 'inline-block',
-//     textAlign: 'center',
-//   }),
-//   taskComplete: css({
-//     opacity: '70%',
-//   }),
-//   taskTextCompleted: css({
-//     textDecoration: 'line-through',
-//   }),
-//   taskButton: css({
-//     borderRadius: '3rem',
-//     width: '3rem',
-//     height: '3rem',
-//     border: 'none',
-//     backgroundColor: theme.colors.reactBlue,
-//     color: theme.colors.white,
-//     cursor: 'pointer',
-//     transition: theme.transitions.basicEaseIn,
-//   }),
-//   complete: css({
-//     '&:hover': {
-//       backgroundColor: theme.colors.green,
-//     },
-//   }),
-//   remove: css({
-//     '&:hover': {
-//       backgroundColor: theme.colors.red,
-//     },
-//   }),
-//   taskFilterNav: css({
-//     width: '100%',
-//     height: '3rem',
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//     justifyContent: 'space-evenly',
-//     color: theme.colors.white,
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       height: '20%',
-//       flexDirection: 'column',
-//       textAlign: 'center',
-//     },
-//   }),
-//   taskFilterButton: css({
-//     width: '30%',
-//     border: '1px solid',
-//     borderColor: theme.colors.white,
-//     padding: '0 1rem',
-//     borderTopLeftRadius: '10px',
-//     borderTopRightRadius: '10px',
-//     backgroundColor: theme.colors.white,
-//     cursor: 'pointer',
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       borderRadius: '10px',
-//       height: '3rem',
-//       textAlign: 'center',
-//       display: 'flex',
-//       justifyContent: 'center',
-//       alignItems: 'center',
-//     },
-//   }),
-//   filterButtonsContainer: css({
-//     width: '60%',
-//     display: 'flex',
-//     justifyContent: 'space-evenly',
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       width: '100%',
-//     },
-//   }),
-//   disabled: css({
-//     opacity: '0',
-//   }),
-//   taskRemoveButton: css({
-//     width: '20%',
-//     border: 'none',
-//     padding: '0 1rem',
-//     borderTopLeftRadius: '10px',
-//     borderTopRightRadius: '10px',
-//     backgroundColor: theme.colors.red,
-//     color: theme.colors.white,
-//     cursor: 'pointer',
-//     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-//       width: '100%',
-//       height: '4rem',
-//       marginTop: '1rem',
-//     },
-//   }),
-// }
 
 const style = {
   page: css({
@@ -274,7 +116,7 @@ const style = {
     textTransform: 'uppercase',
     fontSize: '0.8rem',
     letterSpacing: '.5rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
   }),
   heading: css({
     margin: '1rem 0',
@@ -283,7 +125,7 @@ const style = {
     color: theme.colors.white,
     textTransform: 'uppercase',
     letterSpacing: '.2rem',
-    boxShadow: theme.shadows.in_hard,
+    boxShadow: theme.shadows.inHard,
     background: theme.colors.dark_grey,
     height: '3rem',
     borderRadius: '5px',
@@ -314,7 +156,7 @@ const style = {
     cursor: 'move',
   }),
   taskComplete: css({
-    background: theme.colors.white_transparent,
+    background: theme.colors.whiteTransparent,
     opacity: 0.5,
     textTransform: 'uppercase',
     textDecoration: 'line-through',
@@ -376,7 +218,7 @@ const style = {
     transition: theme.transitions.allEaseOut,
     '&:hover': {
       filter: theme.glows.reactGlowSVG_little,
-      borderColor: theme.colors.react_blue,
+      borderColor: theme.colors.reactBlue,
     },
   }),
 }
@@ -405,7 +247,6 @@ const TaskComponent = (props: TaskProps) => {
     <div css={[style.task, props.task.complete === true ? style.taskComplete : undefined]}>
       <StyledRoundButton
         buttonType='complete'
-        // css={[style.taskButton, style.complete]}
         onClick={() => dispatch(completeTask(props.task.id))}
       >
         <img css={style.iconC} src={checkIcon} />
@@ -413,11 +254,7 @@ const TaskComponent = (props: TaskProps) => {
       <div>
         <p>{props.task.name}</p>
       </div>
-      <StyledRoundButton
-        buttonType='remove'
-        // css={[style.taskButton, style.remove]}
-        onClick={() => dispatch(removeTask(props.task.id))}
-      >
+      <StyledRoundButton buttonType='remove' onClick={() => dispatch(removeTask(props.task.id))}>
         <img css={style.iconX} src={xmarkIcon} />
       </StyledRoundButton>
     </div>

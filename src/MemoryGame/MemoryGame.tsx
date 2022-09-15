@@ -19,7 +19,7 @@ import styled from '@emotion/styled'
 /** @jsxImportSource @emotion/react */
 
 const StyledBackButton = styled.button({
-  background: theme.colors.react_blue_dark,
+  background: theme.colors.reactBlueDark,
   border: 'none',
   width: '12rem',
   height: '3rem',
@@ -82,7 +82,7 @@ const style = {
     textTransform: 'uppercase',
     fontSize: '0.8rem',
     letterSpacing: '.5rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
   }),
   heading: css({
     margin: '1rem 0 0 0',
@@ -104,7 +104,7 @@ const style = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    boxShadow: theme.shadows.in_hard,
+    boxShadow: theme.shadows.inHard,
     background: theme.colors.dark_grey,
   }),
 
@@ -125,7 +125,7 @@ const style = {
   innerButton: css({
     background: theme.colors.main_grey,
     border: '1px solid',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
     borderColor: theme.colors.dark_grey,
     boxShadow: theme.shadows.inOut,
     width: '100%',
@@ -141,7 +141,7 @@ const style = {
     transition: theme.transitions.allEaseOut,
     '&:hover': {
       filter: theme.glows.reactGlowSVG_little,
-      borderColor: theme.colors.react_blue,
+      borderColor: theme.colors.reactBlue,
     },
   }),
   colMain: css({
