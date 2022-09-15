@@ -1,5 +1,6 @@
 export const urls = {
   home: '/',
+  cvDownload: '/cvTech.pdf',
   jsHistory: '/js-history',
   counterApp: '/counter',
   hackerTyper: '/hacker-typer',

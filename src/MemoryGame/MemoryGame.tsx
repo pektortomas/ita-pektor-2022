@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { generateID, pause, shuffle } from '../util/helperFunctions'
 import { theme } from '../util/theme'
+import { urls } from '../util/urls'
 import { useState } from 'react'
 import CssImg from './cardImages/css.jpg'
 import DefaultImg from './cardImages/default.png'
@@ -11,83 +13,157 @@ import NodeImg from './cardImages/node.jpg'
 import ReactImg from './cardImages/react.jpg'
 import TSImg from './cardImages/typescript.jpg'
 import WebpackImg from './cardImages/webpack.jpg'
+import logo from '../img/logTP.svg'
+import styled from '@emotion/styled'
+
 /** @jsxImportSource @emotion/react */
 
+const StyledBackButton = styled.button({
+  background: theme.colors.react_blue_dark,
+  border: 'none',
+  width: '12rem',
+  height: '3rem',
+  fontSize: '0.6rem',
+  textTransform: 'uppercase',
+  borderRadius: '8px',
+  color: theme.colors.white,
+  fontWeight: 'bolder',
+  letterSpacing: '.1rem',
+  cursor: 'pointer',
+  '&:hover': {
+    filter: theme.glows.reactGlowSVG,
+  },
+})
+
+const StyledMainHeading = styled.h1({
+  fontWeight: 'bolder',
+  textTransform: 'uppercase',
+  fontSize: '1.5rem',
+  letterSpacing: '.3rem',
+  margin: '0',
+})
+
 const style = {
-  memoryGamePage: css({
-    height: '100vh',
+  page: css({
+    maxWidth: '100%',
     margin: '0',
+    padding: '0 5rem',
+    height: '100vh',
+    maxHeight: '100vh',
+    background: theme.colors.main_grey,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    color: theme.colors.white,
+  }),
+  content: css({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    textAlign: 'center',
+    width: '100%',
+    margin: '2rem auto 0 auto',
+  }),
+  mainContent: css({
+    width: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    background: theme.colors.lightReactBlue,
+    margin: '2rem auto',
   }),
-  column: css({
-    height: '50%',
-    width: '25%',
+  topRow: css({
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    textAlign: 'center',
+    justifyContent: 'space-between',
+    padding: '5rem 0 0 0',
   }),
-  actualRound: css({
-    height: '10rem',
-    width: '90%',
-    borderRadius: '15px',
-    background: theme.colors.whiteTransparent,
-    boxShadow: theme.shadows.basicShadow,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
+  reactText: css({
+    fontWeight: 'light',
+    textTransform: 'uppercase',
+    fontSize: '0.8rem',
+    letterSpacing: '.5rem',
+    color: theme.colors.react_blue,
   }),
-  actualScore: css({
-    height: '10rem',
-    width: '90%',
-    borderRadius: '15px',
-    color: `${theme.colors.white} !important`,
-    background: theme.colors.reactBlue,
-    boxShadow: theme.shadows.basicShadow,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
+  heading: css({
+    margin: '1rem 0 0 0',
+  }),
+  logo: css({
+    width: '4rem',
   }),
   gameBoard: css({
-    height: '100vh',
-    width: '70%',
     display: 'grid',
-    gridTemplateColumns: '12rem 12rem 12rem 12rem',
-    gridTemplateRows: '12rem 12rem 12rem 12rem',
+    gridTemplateColumns: '9rem 9rem 9rem 9rem',
+    gridTemplateRows: '9rem 9rem 9rem 9rem',
     justifyContent: 'center',
     alignContent: 'center',
   }),
-  memoryGameCard: css({
-    height: '11rem',
-    width: '11rem',
-    backgroundColor: theme.colors.whiteTransparent,
-    backgroundSize: 'cover !important',
-    borderRadius: '15px',
-    margin: '1rem',
-    boxShadow: theme.shadows.basicShadow,
+  card: css({
+    height: '8rem',
+    width: '8rem',
+    borderRadius: '8px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxShadow: theme.shadows.in_hard,
+    background: theme.colors.dark_grey,
   }),
-  button: css({
-    borderRadius: '10px',
-    width: '15rem',
-    margin: '1rem 2rem',
-    padding: '1rem 2rem',
-    cursor: 'pointer',
+
+  clickButton: css({
+    background: theme.colors.main_grey,
     border: 'none',
-    background: theme.colors.white,
+    width: '12rem',
+    height: '2.8rem',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    boxShadow: theme.shadows.out,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '.3rem',
+    margin: '1rem 0',
+  }),
+  innerButton: css({
+    background: theme.colors.main_grey,
+    border: '1px solid',
+    color: theme.colors.react_blue,
+    borderColor: theme.colors.dark_grey,
+    boxShadow: theme.shadows.inOut,
+    width: '100%',
+    height: '100%',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '0.6rem',
     textTransform: 'uppercase',
-    transition: theme.transitions.basicEaseIn,
-    boxShadow: theme.shadows.basicShadow,
+    letterSpacing: '.2rem',
+    transition: theme.transitions.allEaseOut,
     '&:hover': {
-      background: theme.colors.green,
+      filter: theme.glows.reactGlowSVG_little,
+      borderColor: theme.colors.react_blue,
     },
+  }),
+  colMain: css({
+    width: '40rem',
+    height: '36rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '0 2rem',
+  }),
+  col: css({
+    width: '7rem',
+    textAlign: 'left',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    margin: '0',
+  }),
+  gameText: css({
+    fontWeight: 'lighter',
+    textTransform: 'uppercase',
+    letterSpacing: '.2rem',
   }),
   reveal: css({
     backfaceVisibility: 'hidden',
@@ -162,7 +238,7 @@ const MemoryGameCard = (props: CardProps) => (
           props.revealCard(props.cardData.id)
         }
       }}
-      css={[style.memoryGameCard, style.reveal, props.isGuessed ? style.guessed : undefined]}
+      css={[style.card, style.reveal, props.isGuessed ? style.guessed : undefined]}
       src={props.isReveal || props.isGuessed ? props.cardData.src : DefaultImg}
     />
   </div>
@@ -201,55 +277,71 @@ export const MemoryGame = () => {
   }
 
   return (
-    <div css={style.memoryGamePage}>
-      <div css={style.column}>
-        {gameRound === startRound && (
-          <button
-            css={style.button}
-            onClick={() => {
-              setplayCards(shuffle(cardsPack))
-              setGameRound(1)
-            }}
-          >
-            Start Game
-          </button>
-        )}
-        {corretGuessed.length === maxScore && (
-          <button
-            css={style.button}
-            onClick={() => {
-              setplayCards(shuffle(cardsPack))
-              setGameRound(1)
-              setCorretGuessed([])
-            }}
-          >
-            Restart Game
-          </button>
-        )}
-        {gameRound !== startRound && (
-          <>
-            <div css={style.actualScore}>
-              <h3>Skóre</h3>
-              <p>{corretGuessed.length / 2}</p>
-            </div>
-            <div css={style.actualRound}>
-              <h3>Kolo</h3>
-              <p>{gameRound}</p>
-            </div>
-          </>
-        )}
+    <div css={style.page}>
+      <div css={style.topRow}>
+        <Link to={urls.home}>
+          <StyledBackButton>Back to Home Page</StyledBackButton>
+        </Link>
+        <img src={logo} css={style.logo} />
       </div>
-      <div css={style.gameBoard}>
-        {playCards.map(card => (
-          <MemoryGameCard
-            key={card.id}
-            cardData={card}
-            revealCard={handleClickTip}
-            isReveal={gameRound === startRound ? true : getRevalCards(card.id)}
-            isGuessed={getCorrectCards(card.id)}
-            isCorrect={setCorrectGuess()}
-          />
-        ))}
+      <div css={style.content}>
+        <div css={style.heading}>
+          <StyledMainHeading>Memory Game</StyledMainHeading>
+          <span css={style.reactText}>Try your memory!</span>
+        </div>
+        <div css={style.mainContent}>
+          <div css={style.col}>
+            <p css={style.gameText}>Round {gameRound}</p>
+          </div>
+
+          <div css={style.colMain}>
+            <div css={style.gameBoard}>
+              {playCards.map(card => (
+                <MemoryGameCard
+                  key={card.id}
+                  cardData={card}
+                  revealCard={handleClickTip}
+                  isReveal={gameRound === startRound ? true : getRevalCards(card.id)}
+                  isGuessed={getCorrectCards(card.id)}
+                  isCorrect={setCorrectGuess()}
+                />
+              ))}
+            </div>
+          </div>
+          <div css={style.col}>
+            {gameRound === startRound && (
+              <div css={style.clickButton}>
+                <button
+                  css={style.innerButton}
+                  onClick={() => {
+                    setplayCards(shuffle(cardsPack))
+                    setGameRound(1)
+                  }}
+                >
+                  Start Game
+                </button>
+              </div>
+            )}
+
+            {gameRound !== startRound && (
+              <p css={style.gameText}>Score {corretGuessed.length / 2}</p>
+            )}
+          </div>
+        </div>
+        {corretGuessed.length === maxScore && (
+          <div css={style.clickButton}>
+            <button
+              css={style.innerButton}
+              onClick={() => {
+                setplayCards(shuffle(cardsPack))
+                setGameRound(1)
+                setCorretGuessed([])
+              }}
+            >
+              Restart Game
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
