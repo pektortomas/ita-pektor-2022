@@ -429,48 +429,29 @@ const carouselStyle = {
   }),
 }
 
-export const CarouselItem = (props: any) => {
-  return (
-    <div css={carouselStyle.carouselItem} style={{ width: props.width }}>
-      {props.children}
-    </div>
-  )
+type carouselProps = {
+  children: JSX.Element | JSX.Element[]
 }
 
-const Carousel = (props: any) => {
+export const CarouselItem = (props: carouselProps) => {
+  return <div css={carouselStyle.carouselItem}>{props.children}</div>
+}
+
+const Carousel = (props: carouselProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [paused, setPaused] = useState(false)
 
   const updateIndex = (newIndex: number) => {
-    if (newIndex < 0) {
-      newIndex = React.Children.count(props.children) - 1
-    } else if (newIndex >= React.Children.count(props.children)) {
-      newIndex = 0
-    }
-
-    setActiveIndex(newIndex)
+    setActiveIndex(
+      newIndex < 0
+        ? React.Children.count(props.children) - 1
+        : newIndex >= React.Children.count(props.children)
+        ? 0
+        : newIndex
+    )
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!paused) {
-        updateIndex(activeIndex + 1)
-      }
-    }, 4000)
-
-    return () => {
-      if (interval) {
-        clearInterval(interval)
-      }
-    }
-  })
-
   return (
-    <div
-      css={carouselStyle.carousel}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <div css={carouselStyle.carousel}>
       <div css={carouselStyle.carouselRow}>
         <button
           css={[carouselStyle.indicatorButton, carouselStyle.left]}

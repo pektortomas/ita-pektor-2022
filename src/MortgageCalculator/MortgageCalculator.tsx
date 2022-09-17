@@ -9,87 +9,6 @@ import { urls } from '../util/urls'
 import logo from '../img/logTP.svg'
 import styled from '@emotion/styled'
 
-// const style = {
-//   MortgageCalculatorPage: css({
-//     height: '100%',
-//     margin: '0px',
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     background: theme.colors.lightReactBlue,
-//     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
-//       width: '100vw',
-//     },
-//   }),
-//   MortgageCalculator: css({
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//     padding: '3rem',
-//     borderRadius: '10px',
-//     width: '25rem',
-//     height: '50%',
-//     textAlign: 'center',
-//     background: theme.colors.whiteTransparent,
-//     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
-//       maxWidth: '90%',
-//       padding: '3rem 0',
-//     },
-//   }),
-//   heading: css({
-//     margin: '0px',
-//   }),
-//   inputs: css({
-//     display: 'flex',
-//     flexDirection: 'column',
-//     textAlign: 'center',
-//     justifyContent: 'space-evenly',
-//     height: '50%',
-//   }),
-//   input: css({
-//     margin: '.5rem',
-//     height: '2.5rem',
-//     fontSize: '1.5rem',
-//     border: '1px solid',
-//     borderRadius: '10px',
-//     textAlign: 'center',
-//     borderColor: theme.colors.reactBlue,
-//     '&:focus': {
-//       outline: 'none',
-//     },
-//     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
-//       width: '90%',
-//     },
-//   }),
-//   div: css({
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     textAlign: 'center',
-//   }),
-//   tableContainer: css({
-//     maxHeight: '50vh',
-//     overflow: 'scroll',
-//     overflowX: 'hidden',
-//     margin: '5rem 0 ',
-//     padding: '0 3rem',
-//   }),
-//   table: css({
-//     display: 'table',
-//     textAlign: 'center',
-//     background: theme.colors.whiteTransparent,
-//     padding: '3rem',
-//     borderRadius: '10px',
-//     width: '25rem',
-//     maxHeight: '10vh',
-//   }),
-//   chart: css({
-//     margin: '5rem',
-//   }),
-// }
 type ActualChart = 'default' | 'inflation' | 'property'
 
 type PaymentData = {
@@ -324,7 +243,7 @@ const MortgageGraphs = (props: ChartProps) => {
 }
 
 export const MortgageCalculator = () => {
-  const [actualChart, setActualChart] = useState<ActualChart>('default')
+  const [actualChart, setActualChart] = useState('default' as ActualChart)
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
   const [years, setYears] = useState(30)
