@@ -20,7 +20,7 @@ const style = {
   }),
   post: css({
     textAlign: 'center',
-    background: theme.colors.white_transparent,
+    background: theme.colors.whiteTransparent,
     padding: '3rem',
     borderRadius: '10px',
     width: '25rem',

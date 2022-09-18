@@ -3,18 +3,17 @@ import { keyframes } from '@emotion/react'
 export const theme = {
   colors: {
     white: 'white',
-    white_transparent: 'rgba(86, 89, 103, 0.1)',
+    whiteTransparent: 'rgba(86, 89, 103, 0.1)',
     black: 'black',
     darkGrey: '#334A52',
-    reactBlue: '#61DBFB',
     lightReactBlue: '#CCF2FA',
     red: '#FF0000',
     green: '#7CFC00',
     main_grey: '#262626',
     dark_grey: '#1a1a1a',
-    react_blue: '#61DBFB',
-    react_blue_transparent: 'rgba(97, 219, 251, 0.07)',
-    react_blue_dark: '#11B4DF',
+    reactBlue: '#61DBFB',
+    reactBlueTransparent: 'rgba(97, 219, 251, 0.07)',
+    reactBlueDark: '#11B4DF',
   },
   fontSizes: {
     bigSize: '2.5rem',
@@ -31,8 +30,8 @@ export const theme = {
     out: '6px 6px 10px #1a1a1a,-6px -6px 10px #323232;',
     in: 'inset 6px 6px 10px #1a1a1a,inset -6px -6px 10px #323232;',
     inOut: 'inset 3px 3px 8px #323232,inset -3px -3px 8px #1a1a1a;',
-    in_hard: 'inset 0px 2px 3px #0d0d0d',
-    in_harder: 'inset 0px 2px 5px #1a1a1a',
+    inHard: 'inset 0px 2px 3px #0d0d0d',
+    inHarder: 'inset 0px 2px 5px #1a1a1a',
     outIn:
       '6px 6px 10px #1a1a1a,-6px -6px 10px #323232, inset 1px 1px 15px #1a1a1a,inset -3px -3px 10px #323232;',
   },

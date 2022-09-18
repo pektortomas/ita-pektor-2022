@@ -10,7 +10,7 @@ import styled from '@emotion/styled'
 /** @jsxImportSource @emotion/react */
 
 const StyledBackButton = styled.button({
-  background: theme.colors.react_blue_dark,
+  background: theme.colors.reactBlueDark,
   border: 'none',
   width: '12rem',
   height: '3rem',
@@ -57,7 +57,7 @@ const style = {
     margin: '0',
   }),
   backButton: css({
-    background: theme.colors.react_blue_dark,
+    background: theme.colors.reactBlueDark,
     border: 'none',
     width: '12rem',
     height: '3rem',
@@ -90,7 +90,7 @@ const style = {
     textTransform: 'uppercase',
     fontSize: '0.8rem',
     letterSpacing: '.5rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
   }),
   hackerConsole: css({
     height: '100%',
@@ -98,7 +98,7 @@ const style = {
     borderRadius: '10px',
     outline: 'none',
     padding: '2rem',
-    color: theme.colors.react_blue,
+    color: theme.colors.reactBlue,
     background: theme.colors.main_grey,
     boxShadow: theme.shadows.in,
     resize: 'none',

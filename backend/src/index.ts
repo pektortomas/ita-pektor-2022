@@ -3,6 +3,8 @@ import console from 'console'
 import cors from 'cors'
 import express from 'express'
 import fs from 'fs'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 
 type Data = {
   id: string
@@ -25,6 +27,70 @@ const port = 1234
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+const options = {
+  definition: {
+    explorer: true,
+    openapi: '3.0.0',
+    info: {
+      title: 'Blog REST Api',
+      version: '1.0.0',
+      description: 'Blog api',
+      contact: {
+        name: 'Tomáš Pektor',
+        url: 'http://tomaspektor.cz/',
+        email: 'pektor.tomas@gmail.com',
+      },
+    },
+    components: {
+      schemas: {
+        article: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'number',
+              description: 'Generated number',
+            },
+            slug: {
+              type: 'string',
+              description: 'Generated url slug from tittle-id',
+            },
+            body: {
+              type: 'object',
+              description: 'Object contains title and text',
+            },
+            title: {
+              type: 'string',
+              description: 'Main article title',
+            },
+            text: {
+              type: 'string',
+              description: 'Article text',
+            },
+          },
+          example: {
+            id: 751354,
+            slug: 'article-751354',
+            body: {
+              title: 'article',
+              text: 'article text',
+            },
+          },
+        },
+      },
+    },
+    servers: [
+      {
+        url: 'http://localhost:1234',
+      },
+    ],
+  },
+
+  apis: ['src/index.ts'],
+}
+
+const swaggerSpec = swaggerJSDoc(options)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 const setUnifyString = (string: string) => {
   return string.toLocaleLowerCase().replace(/ /g, '').replace(/[y]/g, 'i')
@@ -61,6 +127,32 @@ app.get('/http-filter', (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /blog-filter:
+ *   get:
+ *     summary: Return the filtered articles data
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: search term
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Filter term
+ *     responses:
+ *       200:
+ *         description: Returns JSON list of articles based on filter term
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/article'
+ *       500:
+ *         description: Server error
+ */
+
 app.get('/blog-filter', (req, res) => {
   const data = getDataFromJSON('articles').articles
 
@@ -75,6 +167,29 @@ app.get('/blog-filter', (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /articles:
+ *   get:
+ *     summary: Return all articles
+ *     tags: [Blog]
+ *     responses:
+ *       200:
+ *         description: Returns JSON list of articles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/article'
+ *       204:
+ *         description: Empty database
+ *       422:
+ *         description: Invalid data
+ *       500:
+ *         description: Server error
+ */
+
 app.get('/articles', (req, res) => {
   const data = getDataFromJSON('articles').articles
 
@@ -87,6 +202,31 @@ app.get('/articles', (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /articles/:slug:
+ *   get:
+ *     summary: Return article by its slug
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique slug
+ *     responses:
+ *       200:
+ *         description: Returns JSON Article
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/article'
+ *       500:
+ *         description: Server error
+ */
 app.get('/articles/:slug', (req, res) => {
   const data = getDataFromJSON('articles').articles
   const slug = req.params.slug
@@ -99,6 +239,29 @@ app.get('/articles/:slug', (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /articles/:
+ *   post:
+ *     summary: Post new article to database
+ *     tags: [Blog]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *              title:
+ *                type: string
+ *              text:
+ *                type: string
+ *     responses:
+ *       200:
+ *         description: Returns "Ok"
+ *       500:
+ *         description: Server error
+ */
 app.post('/articles/', (req, res) => {
   const data = getDataFromJSON('articles')
   const id = generateID()
@@ -107,6 +270,38 @@ app.post('/articles/', (req, res) => {
   res.send('ok')
 })
 
+/**
+ * @swagger
+ * /update-article/:slug:
+ *   post:
+ *     summary: Update article in database
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique slug
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *              title:
+ *                type: string
+ *              text:
+ *                type: string
+ *     responses:
+ *       200:
+ *         description: Returns "Article updated"
+ *       400:
+ *         description: Error in database
+ *       500:
+ *         description: Server error
+ */
 app.post('/update-article/:slug', (req, res) => {
   const data = getDataFromJSON('articles')
   const slug = req.params.slug
@@ -121,6 +316,27 @@ app.post('/update-article/:slug', (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /delete-article/:slug:
+ *   delete:
+ *     summary: Delete article in database
+ *     tags: [Blog]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Unique slug
+ *     responses:
+ *       200:
+ *         description: Returns "Article deleted"
+ *       400:
+ *         description: Error in database
+ *       500:
+ *         description: Server error
+ */
 app.delete('/delete-article/:slug', (req, res) => {
   const data = getDataFromJSON('articles')
   const slug = req.params.slug
