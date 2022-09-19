@@ -1,0 +1,2 @@
+# Todo App
+React TodoApp to manage your daily tasks. App alows you to create, complete, delete and move all tasks. The filter of completetd and active tasks is also included in app. Whole app uses React context and local storage. 
