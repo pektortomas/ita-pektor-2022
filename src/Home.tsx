@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/all'
 import { css } from '@emotion/react'
 import { gsap } from 'gsap'
 import { theme } from './util/theme'
+import { url } from 'inspector'
 import { urls } from './util/urls'
 import { useEffect, useRef, useState } from 'react'
 import Avatar from './img/avatar.png'
@@ -19,6 +20,10 @@ import linkedIn from './img/logos/linkedin.svg'
 import logo from './img/logTP.svg'
 import memoryScr from './img/screens/memory.jpg'
 import mortgageScr from './img/screens/mortgage.jpg'
+import stackjs from './img/icons/stack/js.png'
+import stacknode from './img/icons/stack/node.png'
+import stackreact from './img/icons/stack/react.png'
+import stacktypescript from './img/icons/stack/typescript.png'
 import todoScr from './img/screens/todo.jpg'
 
 /** @jsxImportSource @emotion/react */
@@ -350,8 +355,13 @@ const styleAboutMe = {
   stackIcon: css({
     borderRadius: '50%',
     background: theme.colors.white,
+    border: 'none',
     width: '5rem',
     height: '5rem',
+    padding: '0',
+    margin: '0 0.5rem',
+    display: 'flex',
+    justifyContent: 'center',
   }),
   myStack: css({
     display: 'flex',
@@ -488,7 +498,7 @@ export const Home = () => {
           <img css={styleHome.leftImg} src={img1} />
           <div css={styleHome.icon_container}>
             <div css={styleHome.icon}>
-              <a href='https://github.com/pektortomas'>
+              <a href='https://github.com/pektortomas/ita-pektor-2022'>
                 <img src={git} css={styleHome.iconLogo} />
               </a>
             </div>
@@ -523,7 +533,7 @@ export const Home = () => {
         <div css={stylePortfolio.col}>
           <div css={stylePortfolio.icon_container}>
             <div css={styleHome.icon}>
-              <a href='https://github.com/pektortomas'>
+              <a href='https://github.com/pektortomas/ita-pektor-2022'>
                 <img src={git} css={styleHome.iconLogo} />
               </a>
             </div>
@@ -577,10 +587,18 @@ export const Home = () => {
             <div>
               <h3 css={stylePortfolio.subHeading}>My Stack</h3>
               <div css={styleAboutMe.myStack}>
-                <div css={styleAboutMe.stackIcon}></div>
-                <div css={styleAboutMe.stackIcon}></div>
-                <div css={styleAboutMe.stackIcon}></div>
-                <div css={styleAboutMe.stackIcon}></div>
+                <div css={styleAboutMe.stackIcon}>
+                  <img src={stackjs} />
+                </div>
+                <div css={styleAboutMe.stackIcon}>
+                  <img src={stackreact} />
+                </div>
+                <div css={styleAboutMe.stackIcon}>
+                  <img src={stacktypescript} />
+                </div>
+                <div css={styleAboutMe.stackIcon}>
+                  <img src={stacknode} />
+                </div>
               </div>
             </div>
           </div>
@@ -601,7 +619,7 @@ export const Home = () => {
               <h3 css={stylePortfolio.subHeading}>Contact me</h3>
               <div css={styleAboutMe.socIcons}>
                 <div css={styleHome.icon}>
-                  <a href='https://github.com/pektortomas'>
+                  <a href='https://github.com/pektortomas/ita-pektor-2022'>
                     <img src={git} css={styleHome.iconLogo} />
                   </a>
                 </div>
@@ -615,8 +633,8 @@ export const Home = () => {
             <div>
               <h3 css={stylePortfolio.subHeading}>My resume/CV</h3>
               <div css={styleAboutMe.myStack}>
-                <Link to={urls.cvDownload}>
-                  <button css={style.buttonBlue}>Download in PDF</button>
+                <Link to={urls.cv}>
+                  <button css={style.buttonBlue}>View RESUME/CV</button>
                 </Link>
               </div>
             </div>
