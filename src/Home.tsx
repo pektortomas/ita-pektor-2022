@@ -84,6 +84,7 @@ const styleHome = {
       paddingBottom: '3rem',
       position: 'relative',
       justifyContent: 'flex-start',
+      minHeight: '-webkit-fill-available',
     },
   }),
   col: css({
@@ -372,6 +373,7 @@ const stylePortfolio = {
       paddingBottom: '3rem',
       position: 'relative',
       justifyContent: 'flex-start',
+      maxHeight: '-webkit-fill-available',
     },
   }),
   col: css({
@@ -571,6 +573,7 @@ const stylePortfolio = {
 const styleAboutMe = {
   portfolioPage: css({
     height: '100vh',
+    maxHeight: '100vh',
     width: '100%',
     maxWidth: '100vw',
     background: theme.colors.main_grey,
@@ -580,6 +583,13 @@ const styleAboutMe = {
     color: theme.colors.white,
     fontFamily: "'Roboto Condensed', sans-serif",
     overflow: 'hidden',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100vw',
+      paddingBottom: '3rem',
+      position: 'relative',
+      justifyContent: 'flex-start',
+      maxHeight: '-webkit-fill-available',
+    },
   }),
   stackIcon: css({
     borderRadius: '50%',
@@ -678,6 +688,10 @@ const styleAboutMe = {
     },
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '15rem',
+      margin: '1rem 0',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '10rem',
       margin: '1rem 0',
     },
   }),

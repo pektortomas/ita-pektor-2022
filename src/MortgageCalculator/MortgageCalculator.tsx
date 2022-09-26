@@ -49,8 +49,8 @@ const calculateAnnuityPayment = (arg: {
   total: number
   amount: number
 }) => {
-  if (!arg.years || !arg.total) return
   const payment = [] as PaymentData[]
+  if (!arg.years || !arg.total) return [{ currentValue: 1, monthInterest: 1, monthPrincipal: 1 }]
   const months = new Array(arg.years * 12).fill(1)
   const getMonthInterest = (prevValue: number) => {
     return (arg.interest / 12) * (prevValue / 100)
@@ -252,6 +252,7 @@ export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(2_500_000)
   const [interest, setInterest] = useState(6)
   const [years, setYears] = useState(30)
+  console.info(years)
   const [inflation, setInflation] = useState(5)
   const total = calculateMortgageTotal(amount, interest!, years!)
   const [propertyValue, setPropertyValue] = useState(3_000_000)
@@ -303,7 +304,9 @@ export const MortgageCalculator = () => {
                   autoComplete='off'
                   required
                   value={amount}
-                  onChange={e => setAmount(parseInt(e.target.value))}
+                  onChange={e =>
+                    setAmount(parseInt(e.target.value.length > 0 ? e.target.value : '1000'))
+                  }
                 />
               </div>
 
@@ -335,7 +338,9 @@ export const MortgageCalculator = () => {
                     autoComplete='off'
                     required
                     value={years}
-                    onChange={e => setYears(parseInt(e.target.value))}
+                    onChange={e =>
+                      setYears(parseInt(e.target.value.length > 0 ? e.target.value : '1'))
+                    }
                   />
                 </div>
                 <div css={style.inputContainer}>
