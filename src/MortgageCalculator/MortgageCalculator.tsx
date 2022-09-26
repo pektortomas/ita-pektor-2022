@@ -575,6 +575,7 @@ const style = {
     justifyContent: 'space-between',
     padding: '5rem 0 0 0',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0 0 0 ',
       justifyContent: 'center',
     },
   }),
@@ -584,9 +585,15 @@ const style = {
     fontSize: '0.8rem',
     letterSpacing: '.5rem',
     color: theme.colors.reactBlue,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      fontSize: '0.6rem',
+    },
   }),
   heading: css({
     margin: '1rem 0 0 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '0',
+    },
   }),
   logo: css({
     width: '4rem',

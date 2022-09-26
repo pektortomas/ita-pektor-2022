@@ -72,6 +72,7 @@ const style = {
     margin: '2rem auto 0 auto',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       padding: '0',
+      margin: '0rem auto',
     },
   }),
   mainContent: css({
@@ -90,7 +91,7 @@ const style = {
     justifyContent: 'space-between',
     padding: '5rem 0 0 0',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      padding: '2rem 0',
+      padding: '2rem 0 0 0 ',
       justifyContent: 'center',
     },
   }),
@@ -103,6 +104,10 @@ const style = {
   }),
   heading: css({
     margin: '1rem 0 0 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '0',
+      justifyContent: 'center',
+    },
   }),
   logo: css({
     width: '4rem',

@@ -81,6 +81,9 @@ const styleHome = {
     scrollSnapAlign: 'start',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '100vw',
+      paddingBottom: '3rem',
+      position: 'relative',
+      justifyContent: 'flex-start',
     },
   }),
   col: css({
@@ -104,6 +107,7 @@ const styleHome = {
     width: '33%',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '100%',
+      padding: '2.2rem 0',
     },
   }),
   logo: css({
@@ -171,6 +175,9 @@ const styleHome = {
     borderRadius: '1rem',
     position: 'absolute',
     bottom: '2rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      bottom: '3.25rem',
+    },
   }),
   nav_scroll_active: css({
     width: '1.3rem',
@@ -338,10 +345,10 @@ const styleHome = {
       display: 'block',
     },
     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
-      width: '35rem',
+      width: '32rem',
     },
     [`@media (max-width: ${theme.mediaMaxSizes.mobileMin})`]: {
-      width: '30rem',
+      width: '28rem',
     },
   }),
 }
@@ -360,6 +367,12 @@ const stylePortfolio = {
     overflow: 'hidden',
     overflowX: 'hidden',
     scrollSnapAlign: 'start',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100vw',
+      paddingBottom: '3rem',
+      position: 'relative',
+      justifyContent: 'flex-start',
+    },
   }),
   col: css({
     position: 'relative',
@@ -384,6 +397,7 @@ const stylePortfolio = {
       width: '100%',
       justifyContent: 'space-between',
       height: '75%',
+      padding: '2rem 0',
     },
   }),
   logo: css({
@@ -606,6 +620,7 @@ const styleAboutMe = {
     },
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
       width: '100%',
+      padding: '1.5rem 0',
     },
   }),
   col: css({
@@ -691,7 +706,8 @@ const styleAboutMe = {
       borderRadius: theme.borderRadius.small,
     },
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      padding: '1.2rem 2rem',
+      fontSize: '.7rem',
+      padding: '1rem 2rem',
       borderRadius: theme.borderRadius.small,
     },
   }),
@@ -1013,7 +1029,7 @@ export const Home = () => {
             <h3 css={stylePortfolio.subHeading}>My resume/CV</h3>
             <div css={styleAboutMe.myStack}>
               <Link to={urls.cv}>
-                <button css={style.buttonBlue}>View RESUME/CV</button>
+                <button css={styleAboutMe.buttonBlue}>View RESUME/CV</button>
               </Link>
             </div>
           </div>

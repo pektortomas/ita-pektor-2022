@@ -134,7 +134,7 @@ const style = {
     justifyContent: 'space-between',
     padding: '3rem 0',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      padding: '2rem 0',
+      padding: '2rem 0 0 0 ',
       justifyContent: 'center',
     },
   }),

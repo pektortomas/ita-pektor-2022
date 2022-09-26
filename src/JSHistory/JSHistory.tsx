@@ -110,7 +110,7 @@ const style = {
       filter: theme.glows.reactGlowSVG,
     },
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      margin: '2rem 0',
+      margin: '2rem 0 5rem 0',
     },
   }),
   topRow: css({

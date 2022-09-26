@@ -43,7 +43,7 @@ const style = {
     margin: '0',
     padding: '0 5rem',
     height: '100vh',
-    maxHeight: '100vh',
+    maxHeight: '100%',
     background: theme.colors.main_grey,
     display: 'flex',
     flexDirection: 'column',
@@ -93,7 +93,7 @@ const style = {
     height: '60%',
     marginTop: '5rem',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      marginTop: '1rem',
+      marginTop: '0',
       width: '90%',
       textAlign: 'center',
     },
@@ -103,7 +103,7 @@ const style = {
     justifyContent: 'space-between',
     padding: '3rem 0',
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      padding: '2rem 0',
+      padding: '2rem 0 0 0 ',
       justifyContent: 'center',
     },
   }),
@@ -155,9 +155,8 @@ export const HackerTyper = () => {
         </div>
         <textarea
           css={style.hackerConsole}
-          autoFocus
           spellCheck={false}
-          value={pressCount === 0 ? 'Start typing...' : sourceCode.slice(0, pressCount)}
+          value={pressCount === 0 ? 'Click and start typing...' : sourceCode.slice(0, pressCount)}
           onChange={() => setPressCount(pressCount > sourceCode.length ? 0 : pressCount + 3)}
         />
       </div>
