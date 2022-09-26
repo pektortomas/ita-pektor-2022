@@ -1,6 +1,8 @@
+import { HashLink } from 'react-router-hash-link'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { customClasses } from '../util/theme'
 import { theme } from '../util/theme'
 import { urls } from '../util/urls'
 import logo from '../img/logTP.svg'
@@ -10,26 +12,45 @@ const style = {
   page: css({
     maxWidth: '100%',
     margin: '0',
+    minheight: '100vh',
     height: '100vh',
     maxHeight: '100%',
     background: theme.colors.main_grey,
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     color: theme.colors.white,
     padding: '0 5rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      height: '100%',
+      padding: '0',
+    },
   }),
   logo: css({
     width: '4rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '3rem',
+      marginBottom: '1rem',
+    },
   }),
   content: css({
     display: 'flex',
     width: '100%',
-    height: '60%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      flexDirection: 'column',
+    },
   }),
   jsLogo: css({
     width: '15rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '10rem',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '7rem',
+    },
   }),
   col1: css({
     width: '20%',
@@ -41,6 +62,11 @@ const style = {
   col2: css({
     width: '50%',
     textAlign: 'left',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0 ',
+      width: '80%',
+      textAlign: 'center',
+    },
   }),
   mainHeading: css({
     fontWeight: 'bolder',
@@ -49,6 +75,9 @@ const style = {
     letterSpacing: '.3rem',
     margin: '0',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '1rem 0',
+    },
   }),
   reactText: css({
     fontWeight: 'light',
@@ -80,11 +109,18 @@ const style = {
     '&:hover': {
       filter: theme.glows.reactGlowSVG,
     },
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '2rem 0',
+    },
   }),
   topRow: css({
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '5rem 0',
+    padding: '3rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0',
+      justifyContent: 'center',
+    },
   }),
 }
 
@@ -97,9 +133,9 @@ export const JSHistory = () => {
         <link rel='canonical' href='http://tomaspektor.cz/js-history' />
       </Helmet>
       <div css={style.topRow}>
-        <Link to={urls.home}>
+        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
           <button css={style.backButton}>Back to Home Page</button>
-        </Link>
+        </HashLink>
         <img css={style.logo} src={logo} />
       </div>
 
@@ -148,6 +184,9 @@ export const JSHistory = () => {
             </div>
           </article>
         </main>
+        <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+          <button css={style.backButton}>Back to Home Page</button>
+        </HashLink>
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import { HashLink } from 'react-router-hash-link'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import {
@@ -10,8 +11,8 @@ import {
   setTaskName,
 } from './todoAppSlice'
 import { css, useTheme } from '@emotion/react'
+import { customClasses, theme } from '../util/theme'
 import { generateID } from '../util/helperFunctions'
-import { theme } from '../util/theme'
 import { urls } from '../util/urls'
 import { useAppDispatch, useAppSelector } from '../util/reduxTypedHooks'
 import { useRef } from 'react'
@@ -42,6 +43,9 @@ const StyledBackButton = styled.button({
   '&:hover': {
     filter: theme.glows.reactGlowSVG,
   },
+  [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+    margin: '2rem 0',
+  },
 })
 
 const StyledRoundButton = styled.button<StyledRoundButtonProps>(props => ({
@@ -68,6 +72,9 @@ const StyledRoundButton = styled.button<StyledRoundButtonProps>(props => ({
         ? theme.colors.red
         : theme.colors.reactBlue,
   },
+  [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+    margin: '1rem 0',
+  },
 }))
 
 const StyledMainHeading = styled.h1({
@@ -80,7 +87,7 @@ const StyledMainHeading = styled.h1({
 
 const style = {
   page: css({
-    maxWidth: '100%',
+    maxWidth: '100vw',
     margin: '0',
     padding: '0 5rem',
     height: '100%',
@@ -90,9 +97,17 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+      justifyContent: 'center',
+    },
   }),
   logo: css({
     width: '4rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '3rem',
+      marginBottom: '1rem',
+    },
   }),
   content: css({
     display: 'flex',
@@ -102,14 +117,26 @@ const style = {
     textAlign: 'center',
     width: '70%',
     margin: '0 auto',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100%',
+    },
   }),
   mainContent: css({
     margin: '3rem auto',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '90%',
+      justifyContent: 'center',
+    },
   }),
   topRow: css({
     display: 'flex',
+    width: '100%',
     justifyContent: 'space-between',
-    padding: '5rem 0',
+    padding: '3rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0',
+      justifyContent: 'center',
+    },
   }),
   reactText: css({
     fontWeight: 'light',
@@ -134,6 +161,10 @@ const style = {
     width: '95%',
     textAlign: 'center',
     padding: '0 1rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '90%',
+      fontSize: '.6rem',
+    },
   }),
   taskContainer: css({
     display: 'flex',
@@ -184,6 +215,12 @@ const style = {
     width: '100%',
     justifyContent: 'center',
     display: 'flex',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      height: '20%',
+    },
   }),
   clickButton: css({
     background: theme.colors.main_grey,
@@ -198,6 +235,9 @@ const style = {
     justifyContent: 'center',
     padding: '.3rem',
     margin: '0 1rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '.5rem 0',
+    },
   }),
   innerButton: css({
     background: theme.colors.main_grey,
@@ -286,9 +326,9 @@ export const TodoAppRedux = () => {
         <link rel='canonical' href='http://tomaspektor.cz/todo-app' />
       </Helmet>
       <div css={style.topRow}>
-        <Link to={urls.home}>
+        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
-        </Link>
+        </HashLink>
         <img css={style.logo} src={logo} />
       </div>
       <div css={style.content}>
@@ -359,6 +399,9 @@ export const TodoAppRedux = () => {
               </button>
             </div>
           </div>
+          <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+            <StyledBackButton>Back to Home Page</StyledBackButton>
+          </HashLink>
         </div>
       </div>
     </div>

@@ -1,15 +1,16 @@
 import { Helmet } from 'react-helmet'
 import { css } from '@emotion/react'
-import { theme } from '../util/theme'
+import { customClasses, theme } from '../util/theme'
 import { useState } from 'react'
 /** @jsxImportSource @emotion/react */
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
+import { HashLink } from 'react-router-hash-link'
 import { Link } from 'react-router-dom'
 import { urls } from '../util/urls'
 import logo from '../img/logTP.svg'
 import styled from '@emotion/styled'
 
-type ActualChart = 'default' | 'inflation' | 'property'
+type ActualChart = 'default' | 'principal' | 'inflation' | 'property'
 
 type PaymentData = {
   currentValue: number
@@ -148,49 +149,53 @@ const MortgageGraphs = (props: ChartProps) => {
       {props.actualChart === 'default' && (
         <div css={style.chartContainer}>
           <h2>Loan Graphs</h2>
-          <div css={style.chartRow}>
-            <LineChart width={460} height={300} data={props.payment}>
-              <CartesianGrid />
-              <XAxis dataKey='monthInterest' tick={false} />
-              <YAxis yAxisId='left' />
-              <YAxis yAxisId='right' orientation='right' />
-              <Tooltip />
-              <Legend />
-              <Line
-                yAxisId='left'
-                type='monotone'
-                dataKey='monthInterest'
-                stroke={theme.colors.reactBlue}
-                activeDot={{ r: 8 }}
-              />
-              <Line
-                yAxisId='right'
-                type='monotone'
-                dataKey='monthPrincipal'
-                stroke={theme.colors.green}
-              />
-            </LineChart>
-            <LineChart width={410} height={300} data={props.principalPay}>
-              <CartesianGrid />
-              <XAxis dataKey='principalPay' tick={false} />
-              <YAxis yAxisId='left' />
-              <Tooltip />
-              <Legend />
-              <Line
-                yAxisId='left'
-                type='monotone'
-                dataKey='principalPay'
-                stroke={theme.colors.reactBlue}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </div>
+          <LineChart width={530} height={300} data={props.payment}>
+            <CartesianGrid />
+            <XAxis dataKey='monthInterest' tick={false} />
+            <YAxis yAxisId='left' />
+            <YAxis yAxisId='right' orientation='right' />
+            <Tooltip />
+            <Legend />
+            <Line
+              yAxisId='left'
+              type='monotone'
+              dataKey='monthInterest'
+              stroke={theme.colors.reactBlue}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              yAxisId='right'
+              type='monotone'
+              dataKey='monthPrincipal'
+              stroke={theme.colors.green}
+            />
+          </LineChart>
+        </div>
+      )}
+
+      {props.actualChart === 'principal' && (
+        <div css={style.chartContainer}>
+          <h2>Principal pay in time</h2>
+          <LineChart width={530} height={300} data={props.principalPay}>
+            <CartesianGrid />
+            <XAxis dataKey='principalPay' tick={false} />
+            <YAxis yAxisId='left' />
+            <Tooltip />
+            <Legend />
+            <Line
+              yAxisId='left'
+              type='monotone'
+              dataKey='principalPay'
+              stroke={theme.colors.reactBlue}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
         </div>
       )}
       {props.actualChart === 'inflation' && (
         <div css={style.chartContainer}>
           <h2>Data with inflation</h2>
-          <LineChart width={550} height={300} data={props.dataWithInflation}>
+          <LineChart width={530} height={300} data={props.dataWithInflation}>
             <CartesianGrid />
             <XAxis dataKey='' tick={false} />
             <YAxis yAxisId='left' />
@@ -222,7 +227,7 @@ const MortgageGraphs = (props: ChartProps) => {
       {props.actualChart === 'property' && (
         <div css={style.chartContainer}>
           <h2>Property future value</h2>
-          <LineChart width={550} height={300} data={props.futurePropertyValue}>
+          <LineChart width={530} height={300} data={props.futurePropertyValue}>
             <CartesianGrid />
             <XAxis dataKey='' tick={false} />
             <YAxis yAxisId='left' />
@@ -273,9 +278,9 @@ export const MortgageCalculator = () => {
         <link rel='canonical' href='http://tomaspektor.cz/mortgage-calculator' />
       </Helmet>
       <div css={style.topRow}>
-        <Link to={urls.home}>
+        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
-        </Link>
+        </HashLink>
         <img src={logo} css={style.logo} />
       </div>
       <div css={style.content}>
@@ -304,7 +309,7 @@ export const MortgageCalculator = () => {
 
               <div css={style.inputRow}>
                 <div css={style.inputContainer}>
-                  <p>Interest Rate</p>
+                  <p>Interest</p>
                   <input
                     css={style.inputSmall}
                     type='number'
@@ -320,7 +325,7 @@ export const MortgageCalculator = () => {
                 </div>
 
                 <div css={style.inputContainer}>
-                  <p>Loan term in years</p>
+                  <p>Years</p>
                   <input
                     css={style.inputSmall}
                     type='number'
@@ -382,7 +387,12 @@ export const MortgageCalculator = () => {
             <div css={style.filterRow}>
               <div css={style.clickButton}>
                 <button css={style.innerButton} onClick={() => setActualChart('default')}>
-                  Loan & Principal
+                  Loan
+                </button>
+              </div>
+              <div css={style.clickButton}>
+                <button css={style.innerButton} onClick={() => setActualChart('principal')}>
+                  Principal
                 </button>
               </div>
               <div css={style.clickButton}>
@@ -396,6 +406,9 @@ export const MortgageCalculator = () => {
                 </button>
               </div>
             </div>
+            <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+              <StyledBackButton>Back to Home Page</StyledBackButton>
+            </HashLink>
           </div>
         </div>
       </div>
@@ -418,6 +431,9 @@ const StyledBackButton = styled.button({
   '&:hover': {
     filter: theme.glows.reactGlowSVG,
   },
+  [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+    margin: '2rem 0',
+  },
 })
 
 const StyledMainHeading = styled.h1({
@@ -433,13 +449,17 @@ const style = {
     maxWidth: '100vw',
     margin: '0',
     padding: '0 5rem',
-    height: '100vh',
+    height: '100%',
+    minHeight: '100vh',
     maxHeight: '100%',
     background: theme.colors.main_grey,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+    },
   }),
   col1: css({
     width: '40%',
@@ -448,6 +468,10 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100%',
+      margin: '0 auto',
+    },
   }),
   col2: css({
     width: '60%',
@@ -457,6 +481,11 @@ const style = {
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
     padding: '0 5rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      alignItems: 'center',
+      padding: '0',
+      width: '100%',
+    },
   }),
   input: css({
     color: theme.colors.white,
@@ -470,7 +499,9 @@ const style = {
     outline: 'none',
     width: '95%',
     textAlign: 'center',
-    padding: '0 1rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+    },
   }),
   inputSmall: css({
     color: theme.colors.white,
@@ -482,9 +513,14 @@ const style = {
     borderRadius: '5px',
     border: 'none',
     outline: 'none',
-    width: '80%',
+    width: '90%',
     textAlign: 'center',
-    padding: '0 1rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '95%',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '90%',
+    },
   }),
   inputContainer: css({
     display: 'flex',
@@ -516,6 +552,11 @@ const style = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '1rem',
+    marginBottom: '1.2rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '80%',
+      margin: '1rem 0',
+    },
   }),
   mainContent: css({
     width: '100%',
@@ -524,11 +565,18 @@ const style = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     margin: '2rem auto',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      flexDirection: 'column',
+    },
   }),
   topRow: css({
     display: 'flex',
+    width: '100%',
     justifyContent: 'space-between',
     padding: '5rem 0 0 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      justifyContent: 'center',
+    },
   }),
   reactText: css({
     fontWeight: 'light',
@@ -542,6 +590,9 @@ const style = {
   }),
   logo: css({
     width: '4rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      justifyContent: '2rem',
+    },
   }),
   tableContainer: css({
     height: '12rem',
@@ -558,10 +609,16 @@ const style = {
   table: css({
     width: '100%',
     display: 'table',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '90%',
+    },
   }),
   charts: css({
     width: '100%',
     overflow: 'hidden',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      display: 'none',
+    },
   }),
   chartContainer: css({
     width: '100%',
@@ -570,6 +627,9 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      width: '100%',
+    },
   }),
   chartRow: css({
     width: '100%',
@@ -577,9 +637,16 @@ const style = {
     display: 'flex',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
   }),
   bigInput: css({
     width: '100%',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '0 auto',
+    },
   }),
   inputRow: css({
     width: '100%',
@@ -648,5 +715,9 @@ const style = {
     width: '100%',
     justifyContent: 'center',
     display: 'flex',
+    flexWrap: 'wrap',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      display: 'none',
+    },
   }),
 }
