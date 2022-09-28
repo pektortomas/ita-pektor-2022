@@ -143,7 +143,7 @@ export const HackerTyper = () => {
         <link rel='canonical' href='http://tomaspektor.cz/hacker-typer' />
       </Helmet>
       <div css={style.topRow}>
-        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
         </HashLink>
         <img css={style.logo} src={logo} />
@@ -160,7 +160,7 @@ export const HackerTyper = () => {
           onChange={() => setPressCount(pressCount > sourceCode.length ? 0 : pressCount + 3)}
         />
       </div>
-      <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+      <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
         <StyledBackButton>Back to Home Page</StyledBackButton>
       </HashLink>
     </div>

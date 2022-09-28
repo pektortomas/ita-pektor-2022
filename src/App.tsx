@@ -10,11 +10,9 @@ import {
   BlogUpdateArticlePageContextProvider,
 } from './Blog/BlogUpdateArticle/BlogUpdateArticlePageContext'
 import { CV } from './CV'
-import { Counter } from './Counter/Counter'
 import { Global, css, jsx } from '@emotion/react'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './Home'
-import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JSHistory } from './JSHistory/JSHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
@@ -45,7 +43,6 @@ function App() {
       <Routes>
         <Route path={urls.home} element={<Home />} />
         <Route path={urls.jsHistory} element={<JSHistory />} />
-        <Route path={urls.counterApp} element={<Counter />} />
         <Route path={urls.hackerTyper} element={<HackerTyper />} />
         <Route path={urls.todoApp} element={<TodoApp />} />
         <Route
@@ -58,7 +55,6 @@ function App() {
         />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
-        <Route path={urls.httpFilter} element={<HttpFilter />} />
         <Route path={urls.cv} element={<CV />} />
 
         <Route

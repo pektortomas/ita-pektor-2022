@@ -900,9 +900,9 @@ export const Home = () => {
       desc: 'React loan calculator',
     },
   ]
-  const [project, setProject] = useState(projects[0])
+  const [projectIndex, setProjectIndex] = useState(0)
   const handleClick = (i: number) => {
-    setProject(projects[i])
+    setProjectIndex(i)
   }
   return (
     <div css={style.viewport}>
@@ -954,9 +954,9 @@ export const Home = () => {
         <div css={stylePortfolio.colMain}>
           <div>
             <img src={logo} css={stylePortfolio.logo} />
-            <h1 css={stylePortfolio.mainHeading}>{project.name}</h1>
+            <h1 css={stylePortfolio.mainHeading}>{projects[projectIndex].name}</h1>
             <span css={stylePortfolio.reactText}>Portfolio</span>
-            <h3 css={stylePortfolio.subHeading}>{project.desc}</h3>
+            <h3 css={stylePortfolio.subHeading}>{projects[projectIndex].desc}</h3>
           </div>
           <Carousel setProjectName={handleClick}>
             <CarouselItem>
@@ -1025,12 +1025,12 @@ export const Home = () => {
             <h3 css={stylePortfolio.subHeading}>Contact me</h3>
             <div css={styleAboutMe.socIcons}>
               <div css={styleAboutMe.icon}>
-                <a href='https://github.com/pektortomas/ita-pektor-2022'>
+                <a href={urls.gitHub}>
                   <img src={git} css={styleHome.iconLogo} />
                 </a>
               </div>
               <div css={styleAboutMe.icon}>
-                <a href='https://www.linkedin.com/in/tomas-pektor/'>
+                <a href={urls.linkedIn}>
                   <img src={linkedIn} css={styleHome.iconLogo} />
                 </a>
               </div>
@@ -1054,12 +1054,12 @@ export const Home = () => {
               <h3 css={stylePortfolio.subHeading}>Contact me</h3>
               <div css={styleAboutMe.socIcons}>
                 <div css={styleHome.icon}>
-                  <a href='https://github.com/pektortomas/ita-pektor-2022'>
+                  <a href={urls.gitHub}>
                     <img src={git} css={styleHome.iconLogo} />
                   </a>
                 </div>
                 <div css={styleHome.icon}>
-                  <a href='https://www.linkedin.com/in/tomas-pektor/'>
+                  <a href={urls.linkedIn}>
                     <img src={linkedIn} css={styleHome.iconLogo} />
                   </a>
                 </div>

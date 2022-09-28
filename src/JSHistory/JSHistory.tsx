@@ -133,7 +133,7 @@ export const JSHistory = () => {
         <link rel='canonical' href='http://tomaspektor.cz/js-history' />
       </Helmet>
       <div css={style.topRow}>
-        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <button css={style.backButton}>Back to Home Page</button>
         </HashLink>
         <img css={style.logo} src={logo} />
@@ -184,7 +184,7 @@ export const JSHistory = () => {
             </div>
           </article>
         </main>
-        <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
           <button css={style.backButton}>Back to Home Page</button>
         </HashLink>
       </div>

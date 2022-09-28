@@ -279,7 +279,7 @@ export const MortgageCalculator = () => {
         <link rel='canonical' href='http://tomaspektor.cz/mortgage-calculator' />
       </Helmet>
       <div css={style.topRow}>
-        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
         </HashLink>
         <img src={logo} css={style.logo} />
@@ -411,7 +411,7 @@ export const MortgageCalculator = () => {
                 </button>
               </div>
             </div>
-            <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+            <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
               <StyledBackButton>Back to Home Page</StyledBackButton>
             </HashLink>
           </div>

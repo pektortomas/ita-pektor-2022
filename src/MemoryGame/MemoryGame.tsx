@@ -118,27 +118,27 @@ const style = {
   }),
   gameBoard: css({
     display: 'grid',
-    gridTemplateColumns: '9rem 9rem 9rem 9rem',
-    gridTemplateRows: '9rem 9rem 9rem 9rem',
+    gridTemplateColumns: 'repeat(4, 9rem)',
+    gridTemplateRows: 'repeat(4, 9rem)',
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
     maxWidth: '100%',
     [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
-      gridTemplateColumns: '8rem 8rem 8rem 8rem',
-      gridTemplateRows: '8rem 8rem 8rem 8rem',
+      gridTemplateColumns: 'repeat(4, 8rem)',
+      gridTemplateRows: 'repeat(4, 8rem)',
     },
     [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
-      gridTemplateColumns: '6rem 6rem 6rem 6rem',
-      gridTemplateRows: '6rem 6rem 6rem 6rem',
+      gridTemplateColumns: 'repeat(4, 6rem)',
+      gridTemplateRows: 'repeat(4, 6rem)',
     },
     [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
-      gridTemplateColumns: '5rem 5rem 5rem 5rem',
-      gridTemplateRows: '5rem 5rem 5rem 5rem',
+      gridTemplateColumns: 'repeat(4, 5rem)',
+      gridTemplateRows: 'repeat(4, 5rem)',
     },
     [`@media (max-width: ${theme.mediaMaxSizes.mobileMin})`]: {
-      gridTemplateColumns: '4.5rem 4.5rem 4.5rem 4.5rem',
-      gridTemplateRows: '4.5rem 4.5rem 4.5rem 4.5rem',
+      gridTemplateColumns: 'repeat(4, 4.5rem)',
+      gridTemplateRows: 'repeat(4, 4.5rem)',
     },
   }),
   card: css({
@@ -353,7 +353,7 @@ export const MemoryGame = () => {
         <title>Tomáš Pektor - Memory Game</title>
       </Helmet>
       <div css={style.topRow}>
-        <HashLink to='/#portfolio' css={customClasses.tabletHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
         </HashLink>
         <img src={logo} css={style.logo} />
@@ -416,7 +416,7 @@ export const MemoryGame = () => {
             </button>
           </div>
         )}
-        <HashLink to='/#portfolio' css={customClasses.desktopHidden}>
+        <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
         </HashLink>
       </div>
