@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { theme } from './util/theme'
+import { customClasses, theme } from './util/theme'
 import { urls } from './util/urls'
 import avatar from './img/avatar.png'
 import logo from './img/logTP.svg'
@@ -19,6 +19,10 @@ const style = {
     flexDirection: 'column',
     color: theme.colors.white,
     padding: '0 5rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+      minHeight: 'avalible',
+    },
   }),
   logo: css({
     width: '4rem',
@@ -35,11 +39,12 @@ const style = {
     width: '15rem',
   }),
   col2: css({
-    width: '100%',
+    width: '80%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
   }),
   mainHeading: css({
     fontWeight: 'bolder',
@@ -48,6 +53,9 @@ const style = {
     letterSpacing: '.3rem',
     margin: '0',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      textAlign: 'center',
+    },
   }),
   smallHeading: css({
     fontWeight: 'bolder',
@@ -64,6 +72,10 @@ const style = {
     fontSize: '0.8rem',
     letterSpacing: '.5rem',
     color: theme.colors.reactBlue,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      textAlign: 'center',
+      fontSize: '0.6rem',
+    },
   }),
   reactTextSmall: css({
     fontWeight: 'light',
@@ -86,9 +98,12 @@ const style = {
     lineHeight: '1.2rem',
     letterSpacing: '.2rem',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      justifyContent: 'center',
+    },
   }),
   textBlock: css({
-    marginBottom: '2rem',
+    margin: '2rem 0',
   }),
   smallText: css({
     fontSize: '.7rem',
@@ -113,6 +128,9 @@ const style = {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '5rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      justifyContent: 'center',
+    },
   }),
 }
 
@@ -120,59 +138,56 @@ export const CV = () => {
   return (
     <div css={style.page}>
       <Helmet>
-        <title>Tomáš Pektor - Javascript History</title>
-        <meta name='description' content='Statická stránka v Reactu' />
-        <link rel='canonical' href='http://tomaspektor.cz/js-history' />
+        <title>Tomáš Pektor - My Resume</title>
       </Helmet>
       <div css={style.topRow}>
         <Link to={urls.home}>
           <button css={style.backButton}>Back to Home Page</button>
         </Link>
-        <img css={style.logo} src={logo} />
+        <img css={[style.logo, customClasses.tabletHidden]} src={logo} />
       </div>
 
       <div css={style.content}>
         <main css={style.col2}>
           <h1 css={style.mainHeading}>Tomáš Pektor</h1>
           <span css={style.reactText}>React developer</span>
-          <article>
-            <div css={style.text}>
-              <img css={style.jsLogo} src={avatar}></img>¨
-              <div css={style.textBlock}>
-                <h3 css={style.smallHeading}>Tech Stack</h3>
-                <p css={style.reactText}>REACT.JS</p>
-                <p css={style.reactText}>JAVASCRIPT</p>
-                <p css={style.reactText}>TYPESCRIPT</p>
-                <p css={style.reactText}>NODE.JS</p>
-                <p css={style.reactText}>CSS</p>
-                <p css={style.reactText}>HTML</p>
-              </div>
-              <div css={style.textBlock}>
-                <h3 css={style.smallHeading}>Education</h3>
-                <p css={style.smallText}>2009-2013</p>
-                <p css={style.reactText}>SOŠE,COP HLUBOKÁ NAD VLTAVOU</p>
-                <p>IT AND NETWORKS</p>
-              </div>
-              <div css={style.textBlock}>
-                <h3 css={style.smallHeading}>Courses</h3>
-                <p css={style.smallText}>2022</p>
-                <p css={style.reactText}>SMARTBRAINS IT ABSOLVENT</p>
-                <p>FRONTEND REACTDEVELOPMENT IN TYPESCRIPT</p>
-              </div>
-              <div css={style.textBlock}>
-                <h3 css={style.smallHeading}>Languages</h3>
-                <p css={style.smallText}>Native</p>
-                <p css={style.reactText}>CZECH</p>
-                <p css={style.smallText}>B2</p>
-                <p css={style.reactText}>ENGLISH</p>
-                <p css={style.smallText}>A2</p>
-                <p css={style.reactText}>GERMAN</p>
-              </div>
-              <a href={urls.cvDownload}>
-                <button css={style.backButton}>Download in PDF</button>
-              </a>
+
+          <div css={style.text}>
+            <img css={style.jsLogo} src={avatar}></img>¨
+            <div css={style.textBlock}>
+              <h3 css={style.smallHeading}>Tech Stack</h3>
+              <p css={style.reactText}>REACT.JS</p>
+              <p css={style.reactText}>JAVASCRIPT</p>
+              <p css={style.reactText}>TYPESCRIPT</p>
+              <p css={style.reactText}>NODE.JS</p>
+              <p css={style.reactText}>CSS</p>
+              <p css={style.reactText}>HTML</p>
             </div>
-          </article>
+            <div css={style.textBlock}>
+              <h3 css={style.smallHeading}>Education</h3>
+              <p css={style.smallText}>2009-2013</p>
+              <p css={style.reactText}>SOŠE,COP HLUBOKÁ NAD VLTAVOU</p>
+              <p>IT AND NETWORKS</p>
+            </div>
+            <div css={style.textBlock}>
+              <h3 css={style.smallHeading}>Courses</h3>
+              <p css={style.smallText}>2022</p>
+              <p css={style.reactText}>SMARTBRAINS IT ABSOLVENT</p>
+              <p>FRONTEND REACTDEVELOPMENT IN TYPESCRIPT</p>
+            </div>
+            <div css={style.textBlock}>
+              <h3 css={style.smallHeading}>Languages</h3>
+              <p css={style.smallText}>Native</p>
+              <p css={style.reactText}>CZECH</p>
+              <p css={style.smallText}>B2</p>
+              <p css={style.reactText}>ENGLISH</p>
+              <p css={style.smallText}>A2</p>
+              <p css={style.reactText}>GERMAN</p>
+            </div>
+            <a href={urls.cvDownload}>
+              <button css={style.backButton}>Download in PDF</button>
+            </a>
+          </div>
         </main>
       </div>
     </div>
