@@ -880,20 +880,20 @@ const Carousel = (props: carouselProps) => {
 export const Home = () => {
   const projects = [
     {
-      name: 'JS History',
-      desc: 'Simple React web',
+      name: 'Todo App',
+      desc: 'Redux Todo App',
     },
     {
       name: 'Hacker Typer',
       desc: 'Simple react state game',
     },
     {
-      name: 'Todo App',
-      desc: 'Redux Todo App',
-    },
-    {
       name: 'Memory Game',
       desc: 'React interactive game',
+    },
+    {
+      name: 'JS History',
+      desc: 'Simple React web',
     },
     {
       name: 'Loan Calculator',
@@ -960,8 +960,8 @@ export const Home = () => {
           </div>
           <Carousel setProjectName={handleClick}>
             <CarouselItem>
-              <Link to={urls.jsHistory}>
-                <div css={[stylePortfolio.project, stylePortfolio.jsHistory]}></div>
+              <Link to={urls.todoAppRedux}>
+                <div css={[stylePortfolio.project, stylePortfolio.todo]}></div>
               </Link>
             </CarouselItem>
             <CarouselItem>
@@ -970,13 +970,13 @@ export const Home = () => {
               </Link>
             </CarouselItem>
             <CarouselItem>
-              <Link to={urls.todoAppRedux}>
-                <div css={[stylePortfolio.project, stylePortfolio.todo]}></div>
+              <Link to={urls.memoryGame}>
+                <div css={[stylePortfolio.project, stylePortfolio.memory]}></div>
               </Link>
             </CarouselItem>
             <CarouselItem>
-              <Link to={urls.memoryGame}>
-                <div css={[stylePortfolio.project, stylePortfolio.memory]}></div>
+              <Link to={urls.jsHistory}>
+                <div css={[stylePortfolio.project, stylePortfolio.jsHistory]}></div>
               </Link>
             </CarouselItem>
             <CarouselItem>
