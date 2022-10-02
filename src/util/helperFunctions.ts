@@ -1,3 +1,4 @@
+import { error } from 'console'
 import { useEffect, useState } from 'react'
 
 export const generateID = () => {
@@ -47,4 +48,9 @@ export const useComponentDidMount = (fn: () => void) => {
   useEffect(() => {
     fn()
   }, [])
+}
+
+export const getErrorMessage = (error: unknown) => {
+  if (error instanceof Error) return error.message
+  return String(error)
 }

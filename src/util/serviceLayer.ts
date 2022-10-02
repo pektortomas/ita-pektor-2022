@@ -35,7 +35,11 @@ export const services = {
     },
     getAll: async () => {
       const response = await fetch(`${apiURL}articles`)
-      if (!response.ok) throw new Error('Error in database')
+
+      if (response.status === 204) {
+        throw new Error('Empty database')
+      } else if (!response.ok) throw new Error('Error in database')
+
       return await response.json()
     },
     setNew: async (body: {}) => {

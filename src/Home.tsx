@@ -9,6 +9,8 @@ import { urls } from './util/urls'
 import { useEffect, useRef, useState } from 'react'
 import Avatar from './img/avatar.png'
 import React from 'react'
+import blogScr from './img/screens/blog.jpg'
+import blogScrM from './img/screens/mobile-blog.jpg'
 import code from './img/code.svg'
 import git from './img/logos/github.svg'
 import hackerScr from './img/screens/hackerTyper.jpg'
@@ -568,6 +570,17 @@ const stylePortfolio = {
       backgroundRepeat: 'no-repeat',
     },
   }),
+  blog: css({
+    background: `url(${blogScr})`,
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      background: `url(${blogScrM})`,
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    },
+  }),
 }
 
 const styleAboutMe = {
@@ -892,12 +905,16 @@ export const Home = () => {
       desc: 'React interactive game',
     },
     {
-      name: 'JS History',
-      desc: 'Simple React web',
-    },
-    {
       name: 'Loan Calculator',
       desc: 'React loan calculator',
+    },
+    {
+      name: 'Blog CRUD',
+      desc: 'Blog CRUD app with simple Backend',
+    },
+    {
+      name: 'JS History',
+      desc: 'Simple React web',
     },
   ]
   const [projectIndex, setProjectIndex] = useState(0)
@@ -975,13 +992,18 @@ export const Home = () => {
               </Link>
             </CarouselItem>
             <CarouselItem>
-              <Link to={urls.jsHistory}>
-                <div css={[stylePortfolio.project, stylePortfolio.jsHistory]}></div>
+              <Link to={urls.mortgageCalculator}>
+                <div css={[stylePortfolio.project, stylePortfolio.mortgage]}></div>
               </Link>
             </CarouselItem>
             <CarouselItem>
-              <Link to={urls.mortgageCalculator}>
-                <div css={[stylePortfolio.project, stylePortfolio.mortgage]}></div>
+              <Link to={urls.blogApp.blogPage}>
+                <div css={[stylePortfolio.project, stylePortfolio.blog]}></div>
+              </Link>
+            </CarouselItem>
+            <CarouselItem>
+              <Link to={urls.jsHistory}>
+                <div css={[stylePortfolio.project, stylePortfolio.jsHistory]}></div>
               </Link>
             </CarouselItem>
           </Carousel>

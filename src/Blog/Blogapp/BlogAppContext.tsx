@@ -1,4 +1,5 @@
 import { genericHookContextBuilder } from '../../util/genericHookContextBuilder'
+import { getErrorMessage } from '../../util/helperFunctions'
 import { services } from '../../util/serviceLayer'
 import { useState } from 'react'
 
@@ -16,14 +17,19 @@ const useLogicState = () => {
   const [articleData, setArticleData] = useState([] as Article[])
   const [filterArticles, setFilterArticles] = useState(articleData)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [error, setError] = useState({ errorType: '', text: '' })
 
   const getArticleData = async () => {
     try {
       setArticleData(await services.blog.getAll())
     } catch (err) {
-      setError('Database is temporarily unavailable')
-      console.error(err)
+      if (getErrorMessage(err) === 'Empty database') {
+        setError({ errorType: 'Empty database', text: 'Create new article' })
+      } else
+        setError({
+          errorType: 'Error in database',
+          text: 'Please clone GIT repository to your local machine to run this app',
+        })
     } finally {
       setLoading(false)
     }
