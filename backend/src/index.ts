@@ -22,11 +22,25 @@ type Article = {
   }
 }
 
+const initDatabase = () => {
+  const initData = { articles: [] }
+  fs.access(`${__dirname}/../articles.json`, err => {
+    if (err) {
+      console.info('Database does not exist....')
+      fs.writeFile(`${__dirname}/../articles.json`, JSON.stringify(initData), err => {
+        console.info('Database was created')
+        if (err) throw err
+      })
+    }
+  })
+}
+
 const app = express()
 const port = 1234
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+initDatabase()
 
 const options = {
   definition: {
