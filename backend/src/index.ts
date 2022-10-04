@@ -5,6 +5,7 @@ import express from 'express'
 import fs from 'fs'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import util from 'util'
 
 type Data = {
   id: string
@@ -22,25 +23,25 @@ type Article = {
   }
 }
 
-const initDatabase = () => {
+const checkFile = util.promisify(fs.stat)
+const createFile = util.promisify(fs.writeFile)
+
+const initDb = async () => {
   const initData = { articles: [] }
-  fs.access(`${__dirname}/../articles.json`, err => {
-    if (err) {
-      console.info('Database does not exist....')
-      fs.writeFile(`${__dirname}/../articles.json`, JSON.stringify(initData), err => {
-        console.info('Database was created')
-        if (err) throw err
-      })
-    }
-  })
+  try {
+    await checkFile(`${__dirname}/../articles.json`)
+  } catch (error) {
+    await createFile(`${__dirname}/../articles.json`, JSON.stringify(initData))
+  }
 }
+
+initDb()
 
 const app = express()
 const port = 1234
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-initDatabase()
 
 const options = {
   definition: {
