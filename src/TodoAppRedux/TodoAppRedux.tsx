@@ -284,11 +284,19 @@ type TodoAppState = {
 }
 
 const reorder = <T,>(list: T[], startIndex: number, endIndex: number): T[] => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
+  const remove = (array: T[], index: number) => [
+    ...array.slice(0, index),
+    ...array.slice(index + 1),
+  ]
+  const insert = (array: T[], index: number, value: T): T[] => [
+    ...array.slice(0, index),
+    value,
+    ...array.slice(index),
+  ]
 
-  return result
+  const newArray = remove(list, startIndex)
+  const [removed] = list.slice(startIndex, startIndex + 1)
+  return insert(newArray, endIndex, removed)
 }
 
 const TaskComponent = (props: TaskProps) => {
