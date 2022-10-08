@@ -1,21 +1,25 @@
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
 import { HashLink } from 'react-router-hash-link'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
+import { ReactElement } from 'react-markdown/lib/react-markdown'
 import {
   completeTask,
   removeCompleteTask,
   removeTask,
   setFilter,
   setNewTask,
+  setNewTaskOrder,
   setSortTasks,
   setTaskName,
 } from './todoAppSlice'
 import { css, useTheme } from '@emotion/react'
 import { customClasses, theme } from '../util/theme'
 import { generateID } from '../util/helperFunctions'
+import { stringify } from 'querystring'
 import { urls } from '../util/urls'
 import { useAppDispatch, useAppSelector } from '../util/reduxTypedHooks'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import checkIcon from '../img/icons/check.svg'
 import logo from '../img/logTP.svg'
 import styled from '@emotion/styled'
@@ -184,7 +188,7 @@ const style = {
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: '1rem 0',
-    cursor: 'move',
+    cursor: 'grab',
   }),
   taskComplete: css({
     background: theme.colors.whiteTransparent,
@@ -264,7 +268,7 @@ const style = {
 }
 
 type Task = {
-  id: number
+  id: string
   name: string
   complete: boolean
 }
@@ -279,8 +283,23 @@ type TodoAppState = {
   taskName: string
 }
 
+const reorder = <T,>(list: T[], startIndex: number, endIndex: number): T[] => {
+  const remove = (array: T[], index: number) => [
+    ...array.slice(0, index),
+    ...array.slice(index + 1),
+  ]
+  const insert = (array: T[], index: number, value: T): T[] => [
+    ...array.slice(0, index),
+    value,
+    ...array.slice(index),
+  ]
+
+  const newArray = remove(list, startIndex)
+  const [removed] = list.slice(startIndex, startIndex + 1)
+  return insert(newArray, endIndex, removed)
+}
+
 const TaskComponent = (props: TaskProps) => {
-  const todoAppState = useAppSelector(state => state.todoApp)
   const dispatch = useAppDispatch()
 
   return (
@@ -305,9 +324,6 @@ export const TodoAppRedux = () => {
   const todoAppState = useAppSelector(state => state.todoApp)
   const dispatch = useAppDispatch()
 
-  const dragItem = useRef(0)
-  const dragOverItem = useRef(0)
-
   const getFilteredTasks = (state: TodoAppState) => {
     if (state.filter === 'Active') {
       return state.tasks.filter(task => !task.complete)
@@ -316,6 +332,17 @@ export const TodoAppRedux = () => {
     } else {
       return state.tasks
     }
+  }
+
+  const tasks = getFilteredTasks(todoAppState)
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return
+    }
+
+    const reorderItems = reorder(tasks, result.source.index, result.destination.index)
+    dispatch(setNewTaskOrder(reorderItems))
   }
 
   return (
@@ -342,7 +369,7 @@ export const TodoAppRedux = () => {
               e.preventDefault()
               dispatch(
                 setNewTask({
-                  id: generateID(),
+                  id: `${generateID()}`,
                   name: todoAppState.taskName,
                   complete: false,
                 } as Task)
@@ -357,27 +384,28 @@ export const TodoAppRedux = () => {
               onChange={e => dispatch(setTaskName(e.target.value))}
             />
           </form>
-          <div css={style.taskContainer}>
-            {getFilteredTasks(todoAppState).map((task, index) => (
-              <div
-                key={task.id}
-                draggable
-                onDragStart={e => (dragItem.current = index)}
-                onDragEnter={e => (dragOverItem.current = index)}
-                onDragEnd={() =>
-                  dispatch(
-                    setSortTasks({
-                      dragItem: dragItem.current!,
-                      dragOverItem: dragOverItem.current!,
-                    })
-                  )
-                }
-                onDragOver={e => e.preventDefault()}
-              >
-                <TaskComponent task={task} index={index} />
-              </div>
-            ))}
-          </div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId='droppable'>
+              {provided => (
+                <div css={style.taskContainer} {...provided.droppableProps} ref={provided.innerRef}>
+                  {tasks.map((task, index) => (
+                    <Draggable key={task.id} draggableId={task.id} index={index}>
+                      {provided => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <TaskComponent task={task} index={index} />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
           <p css={style.taskLeft}>
             {todoAppState.tasks.filter(task => !task.complete).length} items left
           </p>

@@ -20,5 +20,6 @@ export const urls = {
     setAarticleUpdate: (slug: string) => `/blog/update-article/${slug}`,
   },
   gitHub: 'https://github.com/pektortomas/ita-pektor-2022',
+  gitHubBlog: 'https://github.com/pektortomas/ita-pektor-2022/tree/main/src/Blog',
   linkedIn: 'https://www.linkedin.com/in/tomas-pektor/',
 } as const

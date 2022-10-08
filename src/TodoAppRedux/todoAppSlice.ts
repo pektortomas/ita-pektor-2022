@@ -10,7 +10,7 @@ type TodoAppState = {
 type TaskFilter = 'All' | 'Active' | 'Complete'
 
 type Task = {
-  id: number
+  id: string
   name: string
   complete: boolean
 }
@@ -80,6 +80,10 @@ export const todoAppSlice = createSlice({
       state.tasks.splice(action.payload.dragOverItem, 0, draggedItem)
       setTaskToLS(keyToLS, state.tasks)
     },
+    setNewTaskOrder: (state, action: PayloadAction<Task[]>) => {
+      state.tasks = action.payload
+      setTaskToLS(keyToLS, state.tasks)
+    },
   },
 })
 
@@ -91,6 +95,7 @@ export const {
   completeTask,
   removeCompleteTask,
   setSortTasks,
+  setNewTaskOrder,
 } = todoAppSlice.actions
 
 export const selecTodos = (state: RootState) => state.todoApp
