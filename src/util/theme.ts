@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 
 export const theme = {
   colors: {
@@ -20,8 +20,9 @@ export const theme = {
     midSize: '1.5rem',
   },
   mediaMaxSizes: {
-    mobile: '480px',
-    tablet: '1024px',
+    mobileMin: '330px',
+    mobile: '500px',
+    tablet: '1025px',
     desktop: '1280px',
     desktopBig: '1600px',
   },
@@ -55,5 +56,24 @@ export const theme = {
   borderRadius: {
     default: '15px',
     round: '50%',
+    small: '5px',
   },
+} as const
+
+export const customClasses = {
+  mobileHidden: css({
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      display: 'none',
+    },
+  }),
+  tabletHidden: css({
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      display: 'none',
+    },
+  }),
+  desktopHidden: css({
+    [`@media (min-width: ${theme.mediaMaxSizes.tablet})`]: {
+      display: 'none',
+    },
+  }),
 } as const

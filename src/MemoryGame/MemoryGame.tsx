@@ -1,7 +1,9 @@
+import { HashLink } from 'react-router-hash-link'
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { customClasses, theme } from '../util/theme'
 import { generateID, pause, shuffle } from '../util/helperFunctions'
-import { theme } from '../util/theme'
 import { urls } from '../util/urls'
 import { useState } from 'react'
 import CssImg from './cardImages/css.jpg'
@@ -45,16 +47,20 @@ const StyledMainHeading = styled.h1({
 
 const style = {
   page: css({
-    maxWidth: '100%',
+    maxWidth: '100vw',
     margin: '0',
     padding: '0 5rem',
-    height: '100vh',
-    maxHeight: '100vh',
+    minHeight: '100vh',
+    height: '100%',
     background: theme.colors.main_grey,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    alignContent: 'center',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+    },
   }),
   content: css({
     display: 'flex',
@@ -64,18 +70,30 @@ const style = {
     textAlign: 'center',
     width: '100%',
     margin: '2rem auto 0 auto',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0',
+      margin: '0rem auto',
+    },
   }),
   mainContent: css({
-    width: '100%',
+    width: '80%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     margin: '2rem auto',
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      flexDirection: 'column',
+      marginTop: '2rem',
+    },
   }),
   topRow: css({
     display: 'flex',
     justifyContent: 'space-between',
     padding: '5rem 0 0 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0 0 0 ',
+      justifyContent: 'center',
+    },
   }),
   reactText: css({
     fontWeight: 'light',
@@ -86,16 +104,42 @@ const style = {
   }),
   heading: css({
     margin: '1rem 0 0 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '0',
+      justifyContent: 'center',
+    },
   }),
   logo: css({
     width: '4rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '3rem',
+      marginBottom: '1rem',
+    },
   }),
   gameBoard: css({
     display: 'grid',
-    gridTemplateColumns: '9rem 9rem 9rem 9rem',
-    gridTemplateRows: '9rem 9rem 9rem 9rem',
+    gridTemplateColumns: 'repeat(4, 9rem)',
+    gridTemplateRows: 'repeat(4, 9rem)',
     justifyContent: 'center',
     alignContent: 'center',
+    alignItems: 'center',
+    maxWidth: '100%',
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      gridTemplateColumns: 'repeat(4, 8rem)',
+      gridTemplateRows: 'repeat(4, 8rem)',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      gridTemplateColumns: 'repeat(4, 6rem)',
+      gridTemplateRows: 'repeat(4, 6rem)',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      gridTemplateColumns: 'repeat(4, 5rem)',
+      gridTemplateRows: 'repeat(4, 5rem)',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobileMin})`]: {
+      gridTemplateColumns: 'repeat(4, 4.5rem)',
+      gridTemplateRows: 'repeat(4, 4.5rem)',
+    },
   }),
   card: css({
     height: '8rem',
@@ -106,6 +150,22 @@ const style = {
     alignItems: 'center',
     boxShadow: theme.shadows.inHard,
     background: theme.colors.dark_grey,
+    [`@media (max-width: ${theme.mediaMaxSizes.desktop})`]: {
+      height: '7rem',
+      width: '7rem',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      height: '5.5rem',
+      width: '5.5rem',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      height: '4.7rem',
+      width: '4.7rem',
+    },
+    [`@media (max-width: ${theme.mediaMaxSizes.mobileMin})`]: {
+      height: '4rem',
+      width: '4rem',
+    },
   }),
 
   clickButton: css({
@@ -121,6 +181,9 @@ const style = {
     justifyContent: 'center',
     padding: '.3rem',
     margin: '1rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      margin: '0',
+    },
   }),
   innerButton: css({
     background: theme.colors.main_grey,
@@ -151,6 +214,11 @@ const style = {
     justifyContent: 'center',
     alignItems: 'center',
     margin: '0 2rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      margin: '0',
+      height: '25rem',
+      width: '100%',
+    },
   }),
   col: css({
     width: '7rem',
@@ -164,6 +232,9 @@ const style = {
     fontWeight: 'lighter',
     textTransform: 'uppercase',
     letterSpacing: '.2rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      margin: '0',
+    },
   }),
   reveal: css({
     backfaceVisibility: 'hidden',
@@ -278,10 +349,13 @@ export const MemoryGame = () => {
 
   return (
     <div css={style.page}>
+      <Helmet>
+        <title>Tomáš Pektor - Memory Game</title>
+      </Helmet>
       <div css={style.topRow}>
-        <Link to={urls.home}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
-        </Link>
+        </HashLink>
         <img src={logo} css={style.logo} />
       </div>
       <div css={style.content}>
@@ -342,6 +416,9 @@ export const MemoryGame = () => {
             </button>
           </div>
         )}
+        <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
+          <StyledBackButton>Back to Home Page</StyledBackButton>
+        </HashLink>
       </div>
     </div>
   )

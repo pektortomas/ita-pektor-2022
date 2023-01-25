@@ -1,5 +1,6 @@
 export const urls = {
   home: '/',
+  portfolioHash: '/#portfolio',
   cv: '/cv',
   cvDownload: 'http://tomaspektor.cz/cvTech.pdf',
   jsHistory: '/js-history',
@@ -18,4 +19,7 @@ export const urls = {
     updateArticle: '/blog/update-article/:slug',
     setAarticleUpdate: (slug: string) => `/blog/update-article/${slug}`,
   },
+  gitHub: 'https://github.com/pektortomas/ita-pektor-2022',
+  gitHubBlog: 'https://github.com/pektortomas/ita-pektor-2022/tree/main/src/Blog',
+  linkedIn: 'https://www.linkedin.com/in/tomas-pektor/',
 } as const

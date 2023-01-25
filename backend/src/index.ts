@@ -5,6 +5,7 @@ import express from 'express'
 import fs from 'fs'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import util from 'util'
 
 type Data = {
   id: string
@@ -21,6 +22,20 @@ type Article = {
     text: string
   }
 }
+
+const checkFile = util.promisify(fs.stat)
+const createFile = util.promisify(fs.writeFile)
+
+const initDb = async () => {
+  const initData = { articles: [] }
+  try {
+    await checkFile(`${__dirname}/../articles.json`)
+  } catch (error) {
+    await createFile(`${__dirname}/../articles.json`, JSON.stringify(initData))
+  }
+}
+
+initDb()
 
 const app = express()
 const port = 1234

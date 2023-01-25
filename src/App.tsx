@@ -34,6 +34,9 @@ const GlobalStyles = css({
     padding: '0px',
     boxSizing: 'border-box',
   },
+  a: {
+    textDecoration: 'none',
+  },
 })
 
 function App() {

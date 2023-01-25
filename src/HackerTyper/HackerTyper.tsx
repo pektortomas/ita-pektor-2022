@@ -1,8 +1,9 @@
+import { HashLink } from 'react-router-hash-link'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { customClasses, theme } from '../util/theme'
 import { sourceCode } from './sourceCode'
-import { theme } from '../util/theme'
 import { urls } from '../util/urls'
 import { useState } from 'react'
 import logo from '../img/logTP.svg'
@@ -24,6 +25,9 @@ const StyledBackButton = styled.button({
   '&:hover': {
     filter: theme.glows.reactGlowSVG,
   },
+  [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+    margin: '2rem 0',
+  },
 })
 const StyledMainHeading = styled.h1({
   fontWeight: 'bolder',
@@ -39,15 +43,24 @@ const style = {
     margin: '0',
     padding: '0 5rem',
     height: '100vh',
-    maxHeight: '100vh',
+    maxHeight: '100%',
     background: theme.colors.main_grey,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     color: theme.colors.white,
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '0 1rem',
+      textAlign: 'center',
+      alignItems: 'center',
+    },
   }),
   logo: css({
     width: '4rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.mobile})`]: {
+      width: '3rem',
+      marginBottom: '1rem',
+    },
   }),
   mainHeading: css({
     fontWeight: 'bolder',
@@ -79,11 +92,20 @@ const style = {
     textAlign: 'left',
     height: '60%',
     marginTop: '5rem',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      marginTop: '0',
+      width: '90%',
+      textAlign: 'center',
+    },
   }),
   topRow: css({
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '5rem 0',
+    padding: '3rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      padding: '2rem 0 0 0 ',
+      justifyContent: 'center',
+    },
   }),
   reactText: css({
     fontWeight: 'light',
@@ -105,6 +127,9 @@ const style = {
   }),
   heading: css({
     margin: '1rem 0',
+    [`@media (max-width: ${theme.mediaMaxSizes.tablet})`]: {
+      marginBottom: '2rem',
+    },
   }),
 }
 export const HackerTyper = () => {
@@ -118,9 +143,9 @@ export const HackerTyper = () => {
         <link rel='canonical' href='http://tomaspektor.cz/hacker-typer' />
       </Helmet>
       <div css={style.topRow}>
-        <Link to={urls.home}>
+        <HashLink to={urls.portfolioHash} css={customClasses.tabletHidden}>
           <StyledBackButton>Back to Home Page</StyledBackButton>
-        </Link>
+        </HashLink>
         <img css={style.logo} src={logo} />
       </div>
       <div css={style.content}>
@@ -130,12 +155,14 @@ export const HackerTyper = () => {
         </div>
         <textarea
           css={style.hackerConsole}
-          autoFocus
           spellCheck={false}
-          value={pressCount === 0 ? 'Start typing...' : sourceCode.slice(0, pressCount)}
+          value={pressCount === 0 ? 'Click and start typing...' : sourceCode.slice(0, pressCount)}
           onChange={() => setPressCount(pressCount > sourceCode.length ? 0 : pressCount + 3)}
         />
       </div>
+      <HashLink to={urls.portfolioHash} css={customClasses.desktopHidden}>
+        <StyledBackButton>Back to Home Page</StyledBackButton>
+      </HashLink>
     </div>
   )
 }
